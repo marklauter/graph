@@ -1,9 +1,14 @@
 # graph
-playing with graph based on this video and article
+playing with graph
+
+## references
 
 - https://www.youtube.com/watch?v=aRo6na52tZs&t=2s
 - https://en.wikipedia.org/wiki/Graph_theory
 - https://en.wikipedia.org/wiki/Graph_database
+- https://graphdatabases.com/
+
+## notes
 
 variable structure & connections
 
