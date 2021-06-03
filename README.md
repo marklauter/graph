@@ -3,6 +3,7 @@ playing with graph based on this video and article
 
 - https://www.youtube.com/watch?v=aRo6na52tZs&t=2s
 - https://en.wikipedia.org/wiki/Graph_theory
+- https://en.wikipedia.org/wiki/Graph_database
 
 variable structure & connections
 
