@@ -1,11 +1,11 @@
 ﻿namespace graph.elements
 {
-    public class Node
+    public class Vertex
         : Element
     {
-        public Node() { }
+        public Vertex() { }
 
-        public Node(string label)
+        public Vertex(string label)
             : base(label)
         {
         }
