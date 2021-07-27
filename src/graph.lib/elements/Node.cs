@@ -1,4 +1,4 @@
-﻿namespace graph.lib
+﻿namespace graph.elements
 {
     public class Node
         : Element

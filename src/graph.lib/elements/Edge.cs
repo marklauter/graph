@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace graph.lib
+namespace graph.elements
 {
     public class Edge
         : Element
