@@ -3,7 +3,7 @@ playing with graph
 
 ## references
 
-- https://www.youtube.com/watch?v=aRo6na52tZs&t=2s
+- https://www.youtube.com/watch?v=aRo6na52tZs
 - https://en.wikipedia.org/wiki/Graph_theory
 - https://en.wikipedia.org/wiki/Graph_database
 - https://graphdatabases.com/
