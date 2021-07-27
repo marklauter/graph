@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 
-namespace graph.lib
+namespace graph.elements
 {
     public abstract class Element
     {
@@ -14,10 +15,16 @@ namespace graph.lib
             }
 
             this.Label = Label;
+            this.Attributes = new Dictionary<string, object>();
+            this.Id = Guid.NewGuid();
         }
+
+        public Guid Id { get; }
 
         public string Label { get; }
 
-        public bool HasLabel => !String.IsNullOrEmpty(this.Label);
+        public bool IsLabeled => !String.IsNullOrEmpty(this.Label);
+
+        public Dictionary<string, object> Attributes { get; }
     }
 }
