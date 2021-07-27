@@ -32,6 +32,13 @@ namespace graph.sets
 
         private readonly Dictionary<Guid, List<Guid>> map;
 
-        public List<Guid> this[Guid g] => this.map[g];
+        internal List<Guid> this[Guid key] => this.map[key];
+
+        internal int Degree(Guid key)
+        {
+            return this.map.TryGetValue(key, out var guids)
+                ? guids.Count
+                : 0;
+        }
     }
 }

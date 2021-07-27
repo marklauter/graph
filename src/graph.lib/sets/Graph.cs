@@ -14,7 +14,6 @@ namespace graph.sets
         {
             this.Vertices = new Set<Vertex>($"{label} Nodes");
             this.Edges = new Set<Edge>($"{label} Edges");
-
             this.map = new VertexMap(this.Edges);
         }
 
@@ -44,5 +43,10 @@ namespace graph.sets
         public Set<Edge> Edges { get; }
 
         private readonly VertexMap map;
+
+        public int Degree(Vertex vertex)
+        {
+            return this.map.Degree(vertex.Id);
+        }
     }
 }
