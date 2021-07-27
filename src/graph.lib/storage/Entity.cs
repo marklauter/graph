@@ -1,19 +1,21 @@
-﻿using System;
+﻿using graph.elements;
+using System;
 
-namespace graph.lib.storage
+namespace graph.storage
 {
     public sealed class Entity<T> where T : Element
     {
         private Entity() { }
 
-        public Entity(Guid id, T member)
+        public Entity(T member)
         {
-            this.Id = id;
             this.Member = member;
         }
 
-        public Guid Id { get; }
+        public Guid Id => this.Member.Id;
 
         public T Member { get; }
+
+        public int ETag { get; }
     }
 }
