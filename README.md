@@ -7,6 +7,9 @@ playing with graph
 - https://en.wikipedia.org/wiki/Graph_theory
 - https://en.wikipedia.org/wiki/Graph_database
 - https://graphdatabases.com/
+- http://graphml.graphdrawing.org/
+- https://graphql.org/
+- https://www.youtube.com/watch?v=h9wxtqoa1jY&list=PL6MpDZWD2gTF3mz26HSufmsIO-COKKb5j&index=1
 
 ## notes
 
