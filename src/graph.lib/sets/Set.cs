@@ -22,6 +22,7 @@ namespace Graph.Sets
         }
 
         public static readonly Set<T> Empty = new();
+
         public static Set<T> Create(IEnumerable<T> elements)
         {
             return new Set<T>(elements);

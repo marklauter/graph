@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Graph.Elements
 {
-    public class Edge
+    public sealed class Edge
         : Element, IEnumerable<Vertex>
     {
         private readonly Vertex[] vertices = new Vertex[2];

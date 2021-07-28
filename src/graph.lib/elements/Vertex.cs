@@ -1,8 +1,8 @@
 ﻿namespace Graph.Elements
 {
-    public class Vertex
+    public sealed class Vertex
         : Element
     {
-        private Vertex() { }
+        public Vertex() { }
     }
 }
