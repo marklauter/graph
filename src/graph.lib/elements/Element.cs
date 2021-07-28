@@ -1,49 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 
-namespace graph.elements
+namespace Graph.Elements
 {
     public abstract class Element
     {
-        private ImmutableSortedSet<string> classifications;
-        private ImmutableDictionary<string, object> features;
+        private ImmutableList<string> classifications = ImmutableList<string>.Empty;
+        private ImmutableDictionary<string, object> features = ImmutableDictionary<string, object>.Empty;
 
-        protected Element()
-        {
-            this.Id = Guid.NewGuid();
-            this.classifications = ImmutableSortedSet<string>.Empty;
-            this.features = ImmutableDictionary<string, object>.Empty;
-        }
+        protected Element() { }
 
-        protected Element(IEnumerable<string> classifications)
-            : this()
-        {
-            if (classifications is null)
-            {
-                throw new ArgumentNullException(nameof(classifications));
-            }
+        public Guid Id { get; } = Guid.NewGuid();
 
-            // todo: when upgraded to .Net 6.0 we can use ImmutableSortedSet.Create(enumerable)
-            this.classifications = classifications.ToImmutableSortedSet<string>();
-        }
-
-        protected Element(
-            IEnumerable<string> classifications, 
-            IDictionary<string, object> features)
-            : this(classifications)
-        {
-            if (features is null)
-            {
-                throw new ArgumentNullException(nameof(features));
-            }
-
-            this.features = features.ToImmutableDictionary();
-        }
-
-        public Guid Id { get; }
-
-        public IImmutableSet<string> Classifications => this.classifications;
+        public IImmutableList<string> Classifications => this.classifications;
 
         public IImmutableDictionary<string, object> Features => this.features;
 
@@ -52,9 +23,23 @@ namespace graph.elements
             this.classifications = this.classifications.Add(classification);
         }
 
+        public void Classify(IEnumerable<string> classifications)
+        {
+            this.classifications = this.classifications
+                .Union(classifications)
+                .ToImmutableList();
+        }
+
         public void Qualify(string key, object value)
         {
             this.features = this.features.SetItem(key, value);
+        }
+
+        public void Qualify(IDictionary<string, object> features)
+        {
+            this.features = this.features
+                .Union(features)
+                .ToImmutableDictionary();
         }
     }
 }
