@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace graph.sets
 {
@@ -9,30 +10,55 @@ namespace graph.sets
         : Element, IEnumerable<T>
         where T : Element
     {
-        private Set() { }
+        private ImmutableDictionary<Guid, T> elements = ImmutableDictionary<Guid, T>.Empty;
 
-        public Set(string label)
-            : base(label)
+        private Set() : base() { }
+
+        public static readonly Set<T> Empty = new();
+
+        public Set(IEnumerable<string> classifications)
+            : base(classifications)
         {
-            this.Elements = new Dictionary<Guid, T>();
         }
 
-        public Set(string label, IEnumerable<T> elements)
-            : this(label)
+        public Set(IEnumerable<string> classifications, IEnumerable<T> elements)
+            : this(classifications)
         {
-            foreach (var element in elements)
+            this.elements = elements.ToImmutableDictionary(e => e.Id, e => e);
+        }
+
+        protected IImmutableDictionary<Guid, T> ElementIndex => this.elements;
+
+        internal IEnumerable<T> Elements => this.elements.Values;
+
+        public T this[Guid elementId] => this.elements[elementId];
+
+        public void Add(T element)
+        {
+            this.elements = this.elements.Add(element.Id, element);
+        }
+
+        public T Remove(Guid elementId)
+        {
+            if (this.elements.TryGetValue(elementId, out var value))
             {
-                this.Elements.Add(element.Id, element);
+                this.elements = this.elements.Remove(elementId);
+                return value;
+            }
+            else
+            {
+                return default;
             }
         }
 
-        protected readonly Dictionary<Guid, T> Elements;
-
-        public T this[Guid g] => this.Elements[g];
+        public T Remove(T element)
+        {
+            return this.Remove(element.Id);
+        }
 
         public IEnumerator<T> GetEnumerator()
         {
-            foreach(var element in this.Elements.Values)
+            foreach (var element in this.elements.Values)
             {
                 yield return element;
             }

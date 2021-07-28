@@ -9,12 +9,17 @@ namespace graph.sets
     {
         private Graph() { }
 
-        public Graph(string label)
-            : base(label)
+        public Graph(IEnumerable<string> classifications)
+            : base(classifications)
         {
-            this.Vertices = new Set<Vertex>($"{label} Nodes");
-            this.Edges = new Set<Edge>($"{label} Edges");
-            this.map = new VertexMap(this.Edges);
+            if (classifications is null)
+            {
+                throw new ArgumentNullException(nameof(classifications));
+            }
+
+            this.Vertices = Set<Vertex>.Empty;
+            this.Edges = Set<Edge>.Empty;
+            this.map = VertexMap.Empty;
         }
 
         public Graph(

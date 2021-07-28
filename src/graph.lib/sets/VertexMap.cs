@@ -1,43 +1,44 @@
 ﻿using graph.elements;
 using System;
-using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 
 namespace graph.sets
 {
     internal sealed class VertexMap
     {
-        public VertexMap(Set<Edge> edges)
+        public static readonly VertexMap Empty = new VertexMap();
+
+        private VertexMap()
         {
-            this.map = new Dictionary<Guid, List<Guid>>();
-
-            foreach (var edge in edges)
-            {
-                if (!this.map.TryGetValue(edge.Vertex1.Id, out var v1Guids))
-                {
-                    v1Guids = new List<Guid>();
-                    this.map.Add(edge.Vertex1.Id, v1Guids);
-                }
-
-                v1Guids.Add(edge.Vertex2.Id);
-
-                if (!this.map.TryGetValue(edge.Vertex2.Id, out var v2Guids))
-                {
-                    v2Guids = new List<Guid>();
-                    this.map.Add(edge.Vertex2.Id, v2Guids);
-                }
-
-                v2Guids.Add(edge.Vertex1.Id);
-            }
+            this.map = ImmutableDictionary<Guid, Guid[]>.Empty;
         }
 
-        private readonly Dictionary<Guid, List<Guid>> map;
+        public VertexMap(Set<Edge> edges)
+        {
+            var leftGroup = edges.Elements
+                .GroupBy(edge => edge.Vertex1.Id, e => e.Vertex2.Id)
+                .Select(g => new { VertexId = g.Key, IncidentVertices = g.ToArray() });
 
-        internal List<Guid> this[Guid key] => this.map[key];
+            var rightGroup = edges.Elements
+                .GroupBy(edge => edge.Vertex2.Id, e => e.Vertex1.Id)
+                .Select(g => new { VertexId = g.Key, IncidentVertices = g.ToArray() });
+
+            var allIncidentalVertices = leftGroup
+                .Union(rightGroup);
+
+            this.map = allIncidentalVertices
+                .ToImmutableDictionary(iv => iv.VertexId, iv => iv.IncidentVertices);
+        }
+
+        private readonly ImmutableDictionary<Guid, Guid[]> map;
+
+        internal Guid[] this[Guid key] => this.map[key];
 
         internal int Degree(Guid key)
         {
             return this.map.TryGetValue(key, out var guids)
-                ? guids.Count
+                ? guids.Length
                 : 0;
         }
     }
