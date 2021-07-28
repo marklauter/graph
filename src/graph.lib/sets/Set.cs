@@ -1,12 +1,13 @@
-﻿using graph.elements;
+﻿using Graph.Elements;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 
-namespace graph.sets
+namespace Graph.Sets
 {
-    public class Set<T>
+    public sealed class Set<T>
         : Element, IEnumerable<T>
         where T : Element
     {
@@ -14,17 +15,16 @@ namespace graph.sets
 
         private Set() : base() { }
 
-        public static readonly Set<T> Empty = new();
-
-        public Set(IEnumerable<string> classifications)
-            : base(classifications)
-        {
-        }
-
-        public Set(IEnumerable<string> classifications, IEnumerable<T> elements)
-            : this(classifications)
+        private Set(IEnumerable<T> elements)
+            : this()
         {
             this.elements = elements.ToImmutableDictionary(e => e.Id, e => e);
+        }
+
+        public static readonly Set<T> Empty = new();
+        public static Set<T> Create(IEnumerable<T> elements)
+        {
+            return new Set<T>(elements);
         }
 
         protected IImmutableDictionary<Guid, T> ElementIndex => this.elements;
@@ -33,27 +33,34 @@ namespace graph.sets
 
         public T this[Guid elementId] => this.elements[elementId];
 
-        public void Add(T element)
+        public int Size => this.elements.Count;
+
+        public Set<T> Add(T element)
         {
             this.elements = this.elements.Add(element.Id, element);
+            return this;
         }
 
-        public T Remove(Guid elementId)
+        public Set<T> AddRange(IEnumerable<T> elements)
         {
-            if (this.elements.TryGetValue(elementId, out var value))
-            {
-                this.elements = this.elements.Remove(elementId);
-                return value;
-            }
-            else
-            {
-                return default;
-            }
+            this.elements = this.elements.AddRange(elements.ToImmutableDictionary(e => e.Id, e => e));
+            return this;
         }
 
-        public T Remove(T element)
+        public Set<T> Remove(Guid elementId)
+        {
+            this.elements = this.elements.Remove(elementId);
+            return this;
+        }
+
+        public Set<T> Remove(T element)
         {
             return this.Remove(element.Id);
+        }
+
+        public Set<T> Union(Set<T> other)
+        {
+            return new Set<T>(this.Elements.Union(other.Elements));
         }
 
         public IEnumerator<T> GetEnumerator()
@@ -67,6 +74,16 @@ namespace graph.sets
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
+        }
+
+        public static explicit operator T[](Set<T> set)
+        {
+            return set.elements.Values.ToArray();
+        }
+
+        public static explicit operator Set<T>(T[] elements)
+        {
+            return new Set<T>(elements);
         }
     }
 }
