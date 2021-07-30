@@ -7,18 +7,18 @@ using System.Linq;
 
 namespace Graph.Sets
 {
-    public sealed class Set<T>
+    public class Set<T>
         : Element, IEnumerable<T>
         where T : Element
     {
-        private ImmutableDictionary<Guid, T> elements = ImmutableDictionary<Guid, T>.Empty;
+        private T[] elements = Array.Empty<T>();
 
-        private Set() : base() { }
+        protected Set() : base() { }
 
-        private Set(IEnumerable<T> elements)
+        protected Set(IEnumerable<T> elements)
             : this()
         {
-            this.elements = elements.ToImmutableDictionary(e => e.Id, e => e);
+            this.elements = elements.ToArray(); // always makes a deep copy
         }
 
         public static readonly Set<T> Empty = new();
@@ -28,29 +28,38 @@ namespace Graph.Sets
             return new Set<T>(elements);
         }
 
-        protected IImmutableDictionary<Guid, T> ElementIndex => this.elements;
+        internal ImmutableArray<T> Elements => this.elements.ToImmutableArray();
 
-        internal IEnumerable<T> Elements => this.elements.Values;
+        public T this[int index] => this.elements[index];
 
-        public T this[Guid elementId] => this.elements[elementId];
-
-        public int Size => this.elements.Count;
+        public int Size => this.elements.Length;
 
         public Set<T> Add(T element)
         {
-            this.elements = this.elements.Add(element.Id, element);
+            this.elements = this.elements
+                .Union(new T[] { element })
+                .ToArray();
+
             return this;
         }
 
         public Set<T> AddRange(IEnumerable<T> elements)
         {
-            this.elements = this.elements.AddRange(elements.ToImmutableDictionary(e => e.Id, e => e));
+            this.elements = this.elements
+                .Union(elements)
+                .ToArray();
+
             return this;
         }
 
         public Set<T> Remove(Guid elementId)
         {
-            this.elements = this.elements.Remove(elementId);
+            var index = Array.FindIndex(this.elements, e => e.Id == elementId);
+            this.elements[index] = null;
+            this.elements = this.elements
+                .Where(e => e != null)
+                .ToArray();
+
             return this;
         }
 
@@ -61,12 +70,12 @@ namespace Graph.Sets
 
         public Set<T> Union(Set<T> other)
         {
-            return new Set<T>(this.Elements.Union(other.Elements));
+            return new Set<T>(this.elements.Union(other.elements));
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            foreach (var element in this.elements.Values)
+            foreach (var element in this.elements)
             {
                 yield return element;
             }
@@ -79,7 +88,7 @@ namespace Graph.Sets
 
         public static explicit operator T[](Set<T> set)
         {
-            return set.elements.Values.ToArray();
+            return set.elements.ToArray(); // return a copy
         }
 
         public static explicit operator Set<T>(T[] elements)

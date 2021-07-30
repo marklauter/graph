@@ -7,12 +7,11 @@ namespace Graph.Sets
         : Element
     {
         private readonly EdgeIndex edgeIndex = EdgeIndex.Empty;
+        private readonly Set<Vertex> vertices = Set<Vertex>.Empty;
+        private readonly Set<Edge> edges = Set<Edge>.Empty;
 
         public static Graph Empty => new();
 
-        public Set<Vertex> Vertices { get; } = Set<Vertex>.Empty;
-
-        public Set<Edge> Edges { get; } = Set<Edge>.Empty;
 
         public int Degree(Guid vertexId)
         {
@@ -23,5 +22,7 @@ namespace Graph.Sets
         {
             return this.Degree(vertex.Id);
         }
+
+        public int Size => this.vertices.Size;
     }
 }
