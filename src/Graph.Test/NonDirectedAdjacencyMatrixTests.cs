@@ -203,5 +203,30 @@ namespace Graph.Test
             Assert.Contains(0, neighbors);
             Assert.Contains(2, neighbors);
         }
+
+        [Fact]
+        public void AdjacencyMatrix_ToString_Succeeds()
+        {
+            var size = 3;
+            var matrix = NonDirectedAdjacencyMatrix.Empty.Resize(size);
+            Assert.Equal(size, matrix.Size);
+            matrix.Connect(0, 1);
+            matrix.Connect(1, 2);
+
+            Assert.False(matrix.Adjacent(0, 0));
+            Assert.True(matrix.Adjacent(0, 1));
+            Assert.False(matrix.Adjacent(0, 2));
+
+            Assert.True(matrix.Adjacent(1, 0));
+            Assert.False(matrix.Adjacent(1, 1));
+            Assert.True(matrix.Adjacent(1, 2));
+
+            Assert.False(matrix.Adjacent(2, 0));
+            Assert.True(matrix.Adjacent(2, 1));
+            Assert.False(matrix.Adjacent(2, 2));
+
+            var s = matrix.ToString();
+            Assert.NotEmpty(s);
+        }
     }
 }

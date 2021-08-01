@@ -44,9 +44,9 @@ namespace Graph.Sets
         public override string ToString()
         {
             var builder = new StringBuilder();
-            for (var o = this.matrix.Length - 1; o != 0; --o)
+            for (var o = this.Size - 1; o >= 0; --o)
             {
-                for (var i = this.matrix.Length - 1; i != 0; --i)
+                for (var i = this.Size - 1; i >= 0; --i)
                 {
                     builder.Append(this.matrix[o, i]);
                 }
