@@ -1,4 +1,4 @@
-﻿namespace Graph.Elements
+namespace Graph.Elements
 {
     public sealed class Vertex
         : Element
