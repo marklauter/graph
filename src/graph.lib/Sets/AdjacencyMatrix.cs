@@ -15,12 +15,6 @@ namespace Graph.Sets
             this.Size = 0;
         }
 
-        protected AdjacencyMatrix(int size)
-        {
-            this.Matrix = new byte[size, size];
-            this.Size = 0;
-        }
-
         protected AdjacencyMatrix(AdjacencyMatrix other, int size)
         {
             this.Matrix = new byte[size, size];

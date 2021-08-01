@@ -80,8 +80,6 @@ namespace Graph.Sets
 
         public abstract void Connect(int vertex1, int vertex2);
 
-        public abstract void Connect(int vertex1, int vertex2, byte weight);
-
         public abstract int Degree(int vertex);
 
         public abstract void Disconnect(int vertex1, int vertex2);

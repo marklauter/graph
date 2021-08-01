@@ -13,8 +13,6 @@ namespace Graph.Sets
 
         public void Connect(int vertex1, int vertex2);
 
-        public void Connect(int vertex1, int vertex2, byte weight);
-
         public int Degree(int vertex);
 
         public IEnumerable<int> DepthFirstSearchPostOrder(int vertex);

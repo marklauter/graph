@@ -31,11 +31,6 @@ namespace Graph.Sets
             this.Index[vertex2].Add(vertex1);
         }
 
-        public override void Connect(int vertex1, int vertex2, byte weight)
-        {
-            throw new NotImplementedException();
-        }
-
         public override void Disconnect(int vertex1, int vertex2)
         {
             this.Index[vertex1].Remove(vertex2);

@@ -14,16 +14,6 @@ namespace Graph.Sets
             this.Size = 0;
         }
 
-        protected AdjacencyList(int size)
-        {
-            this.Index = new HashSet<int>[size];
-            for (var i = size - 1; i >= 0; --i)
-            {
-                this.Index[i] = new HashSet<int>();
-            }
-            this.Size = size;
-        }
-
         protected AdjacencyList(AdjacencyList other, int size)
         {
             this.Index = new HashSet<int>[size];
