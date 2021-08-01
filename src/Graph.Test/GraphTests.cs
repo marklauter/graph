@@ -29,10 +29,20 @@ namespace Graph.Test
             var graph = this.EmptyGraph().Resize(size);
             Assert.Equal(size, graph.Size);
             graph.Connect(0, 1);
-            Assert.False(graph.Adjacent(0, 0));
-            Assert.True(graph.Adjacent(0, 1));
-            Assert.True(graph.Adjacent(1, 0));
-            Assert.False(graph.Adjacent(1, 1));
+            if (graph.Type == GraphType.Undirected)
+            {
+                Assert.False(graph.Adjacent(0, 0));
+                Assert.True(graph.Adjacent(0, 1));
+                Assert.True(graph.Adjacent(1, 0));
+                Assert.False(graph.Adjacent(1, 1));
+            }
+            else
+            {
+                Assert.False(graph.Adjacent(0, 0));
+                Assert.True(graph.Adjacent(0, 1));
+                Assert.False(graph.Adjacent(1, 0));
+                Assert.False(graph.Adjacent(1, 1));
+            }
         }
 
         [Fact]
@@ -42,22 +52,47 @@ namespace Graph.Test
             var graph = this.EmptyGraph().Resize(size);
             Assert.Equal(size, graph.Size);
             graph.Connect(0, 1);
-            Assert.False(graph.Adjacent(0, 0));
-            Assert.True(graph.Adjacent(0, 1));
-            Assert.True(graph.Adjacent(1, 0));
-            Assert.False(graph.Adjacent(1, 1));
+            if (graph.Type == GraphType.Undirected)
+            {
+                Assert.False(graph.Adjacent(0, 0));
+                Assert.True(graph.Adjacent(0, 1));
+                Assert.True(graph.Adjacent(1, 0));
+                Assert.False(graph.Adjacent(1, 1));
+            }
+            else
+            {
+                Assert.False(graph.Adjacent(0, 0));
+                Assert.True(graph.Adjacent(0, 1));
+                Assert.False(graph.Adjacent(1, 0));
+                Assert.False(graph.Adjacent(1, 1));
+            }
 
             size = 3;
             graph = graph.Resize(size);
             Assert.Equal(size, graph.Size);
-            Assert.False(graph.Adjacent(0, 0));
-            Assert.True(graph.Adjacent(0, 1));
-            Assert.True(graph.Adjacent(1, 0));
-            Assert.False(graph.Adjacent(1, 1));
-            Assert.False(graph.Adjacent(0, 2));
-            Assert.False(graph.Adjacent(1, 2));
-            Assert.False(graph.Adjacent(2, 1));
-            Assert.False(graph.Adjacent(2, 0));
+
+            if (graph.Type == GraphType.Undirected)
+            {
+                Assert.False(graph.Adjacent(0, 0));
+                Assert.True(graph.Adjacent(0, 1));
+                Assert.True(graph.Adjacent(1, 0));
+                Assert.False(graph.Adjacent(1, 1));
+                Assert.False(graph.Adjacent(0, 2));
+                Assert.False(graph.Adjacent(1, 2));
+                Assert.False(graph.Adjacent(2, 1));
+                Assert.False(graph.Adjacent(2, 0));
+            }
+            else
+            {
+                Assert.False(graph.Adjacent(0, 0));
+                Assert.True(graph.Adjacent(0, 1));
+                Assert.False(graph.Adjacent(1, 0));
+                Assert.False(graph.Adjacent(1, 1));
+                Assert.False(graph.Adjacent(0, 2));
+                Assert.False(graph.Adjacent(1, 2));
+                Assert.False(graph.Adjacent(2, 1));
+                Assert.False(graph.Adjacent(2, 0));
+            }
         }
 
         [Fact]
@@ -73,31 +108,6 @@ namespace Graph.Test
             graph.Connect(2, 3);
             graph.Connect(3, 4);
 
-            Assert.True(graph.Adjacent(0, 1));
-            Assert.True(graph.Adjacent(0, 2));
-            Assert.True(graph.Adjacent(0, 3));
-            Assert.False(graph.Adjacent(0, 4));
-
-            Assert.True(graph.Adjacent(1, 0));
-            Assert.False(graph.Adjacent(1, 2));
-            Assert.True(graph.Adjacent(1, 3));
-            Assert.False(graph.Adjacent(1, 4));
-
-            Assert.True(graph.Adjacent(2, 0));
-            Assert.False(graph.Adjacent(2, 1));
-            Assert.True(graph.Adjacent(2, 3));
-            Assert.False(graph.Adjacent(2, 4));
-
-            Assert.True(graph.Adjacent(3, 0));
-            Assert.True(graph.Adjacent(3, 1));
-            Assert.True(graph.Adjacent(3, 2));
-            Assert.True(graph.Adjacent(3, 4));
-
-            Assert.False(graph.Adjacent(4, 0));
-            Assert.False(graph.Adjacent(4, 1));
-            Assert.False(graph.Adjacent(4, 2));
-            Assert.True(graph.Adjacent(4, 3));
-
             var vertices = graph.DepthFirstSearchPreOrder(0);
             Assert.NotEmpty(vertices);
             for (var i = size - 1; i >= 0; --i)
@@ -112,37 +122,13 @@ namespace Graph.Test
             var size = 5;
             var graph = this.EmptyGraph().Resize(size);
             Assert.Equal(size, graph.Size);
+            
             graph.Connect(0, 1);
             graph.Connect(0, 2);
             graph.Connect(0, 3);
             graph.Connect(1, 3);
             graph.Connect(2, 3);
             graph.Connect(3, 4);
-
-            Assert.True(graph.Adjacent(0, 1));
-            Assert.True(graph.Adjacent(0, 2));
-            Assert.True(graph.Adjacent(0, 3));
-            Assert.False(graph.Adjacent(0, 4));
-
-            Assert.True(graph.Adjacent(1, 0));
-            Assert.False(graph.Adjacent(1, 2));
-            Assert.True(graph.Adjacent(1, 3));
-            Assert.False(graph.Adjacent(1, 4));
-
-            Assert.True(graph.Adjacent(2, 0));
-            Assert.False(graph.Adjacent(2, 1));
-            Assert.True(graph.Adjacent(2, 3));
-            Assert.False(graph.Adjacent(2, 4));
-
-            Assert.True(graph.Adjacent(3, 0));
-            Assert.True(graph.Adjacent(3, 1));
-            Assert.True(graph.Adjacent(3, 2));
-            Assert.True(graph.Adjacent(3, 4));
-
-            Assert.False(graph.Adjacent(4, 0));
-            Assert.False(graph.Adjacent(4, 1));
-            Assert.False(graph.Adjacent(4, 2));
-            Assert.True(graph.Adjacent(4, 3));
 
             var vertices = graph.DepthFirstSearchPostOrder(0);
             Assert.NotEmpty(vertices);
@@ -158,24 +144,22 @@ namespace Graph.Test
             var size = 3;
             var graph = this.EmptyGraph().Resize(size);
             Assert.Equal(size, graph.Size);
+            
             graph.Connect(0, 1);
             graph.Connect(1, 2);
 
-            Assert.False(graph.Adjacent(0, 0));
-            Assert.True(graph.Adjacent(0, 1));
-            Assert.False(graph.Adjacent(0, 2));
-
-            Assert.True(graph.Adjacent(1, 0));
-            Assert.False(graph.Adjacent(1, 1));
-            Assert.True(graph.Adjacent(1, 2));
-
-            Assert.False(graph.Adjacent(2, 0));
-            Assert.True(graph.Adjacent(2, 1));
-            Assert.False(graph.Adjacent(2, 2));
-
-            Assert.Equal(1, graph.Degree(0));
-            Assert.Equal(2, graph.Degree(1));
-            Assert.Equal(1, graph.Degree(2));
+            if (graph.Type == GraphType.Undirected)
+            {
+                Assert.Equal(1, graph.Degree(0));
+                Assert.Equal(2, graph.Degree(1));
+                Assert.Equal(1, graph.Degree(2));
+            }
+            else
+            {
+                Assert.Equal(1, graph.Degree(0));
+                Assert.Equal(1, graph.Degree(1));
+                Assert.Equal(0, graph.Degree(2));
+            }
         }
 
         [Fact]
@@ -184,24 +168,21 @@ namespace Graph.Test
             var size = 3;
             var graph = this.EmptyGraph().Resize(size);
             Assert.Equal(size, graph.Size);
+            
             graph.Connect(0, 1);
             graph.Connect(1, 2);
 
-            Assert.False(graph.Adjacent(0, 0));
-            Assert.True(graph.Adjacent(0, 1));
-            Assert.False(graph.Adjacent(0, 2));
-
-            Assert.True(graph.Adjacent(1, 0));
-            Assert.False(graph.Adjacent(1, 1));
-            Assert.True(graph.Adjacent(1, 2));
-
-            Assert.False(graph.Adjacent(2, 0));
-            Assert.True(graph.Adjacent(2, 1));
-            Assert.False(graph.Adjacent(2, 2));
-
             var neighbors = graph.Neighbors(1);
-            Assert.Contains(0, neighbors);
-            Assert.Contains(2, neighbors);
+            if (graph.Type == GraphType.Undirected)
+            {
+                Assert.Contains(0, neighbors);
+                Assert.Contains(2, neighbors);
+            }
+            else
+            {
+                Assert.DoesNotContain(0, neighbors);
+                Assert.Contains(2, neighbors);
+            }
         }
 
         [Fact]
