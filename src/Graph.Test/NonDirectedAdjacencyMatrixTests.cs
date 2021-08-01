@@ -151,5 +151,57 @@ namespace Graph.Test
                 Assert.Contains(i, nodes);
             }
         }
+
+        [Fact]
+        public void AdjacencyMatrix_Degrees_Succeeds()
+        {
+            var size = 3;
+            var matrix = NonDirectedAdjacencyMatrix.Empty.Resize(size);
+            Assert.Equal(size, matrix.Size);
+            matrix.Connect(0, 1);
+            matrix.Connect(1, 2);
+
+            Assert.False(matrix.Adjacent(0, 0));
+            Assert.True(matrix.Adjacent(0, 1));
+            Assert.False(matrix.Adjacent(0, 2));
+            
+            Assert.True(matrix.Adjacent(1, 0));
+            Assert.False(matrix.Adjacent(1, 1));
+            Assert.True(matrix.Adjacent(1, 2));
+
+            Assert.False(matrix.Adjacent(2, 0));
+            Assert.True(matrix.Adjacent(2, 1));
+            Assert.False(matrix.Adjacent(2, 2));
+
+            Assert.Equal(1, matrix.Degree(0));
+            Assert.Equal(2, matrix.Degree(1));
+            Assert.Equal(1, matrix.Degree(2));
+        }
+
+        [Fact]
+        public void AdjacencyMatrix_Neighbors_Succeeds()
+        {
+            var size = 3;
+            var matrix = NonDirectedAdjacencyMatrix.Empty.Resize(size);
+            Assert.Equal(size, matrix.Size);
+            matrix.Connect(0, 1);
+            matrix.Connect(1, 2);
+
+            Assert.False(matrix.Adjacent(0, 0));
+            Assert.True(matrix.Adjacent(0, 1));
+            Assert.False(matrix.Adjacent(0, 2));
+
+            Assert.True(matrix.Adjacent(1, 0));
+            Assert.False(matrix.Adjacent(1, 1));
+            Assert.True(matrix.Adjacent(1, 2));
+
+            Assert.False(matrix.Adjacent(2, 0));
+            Assert.True(matrix.Adjacent(2, 1));
+            Assert.False(matrix.Adjacent(2, 2));
+
+            var neighbors = matrix.Neighbors(1);
+            Assert.Contains(0, neighbors);
+            Assert.Contains(2, neighbors);
+        }
     }
 }

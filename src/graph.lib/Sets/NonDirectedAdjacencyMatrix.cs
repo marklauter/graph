@@ -77,7 +77,7 @@ namespace Graph.Sets
         public int Degree(int vertex)
         {
             var degree = 0;
-            for (var i = this.matrix.Length; i != 0; --i)
+            for (var i = this.Size - 1; i >= 0; --i)
             {
                 if (this.Adjacent(vertex, i))
                 {
@@ -96,7 +96,7 @@ namespace Graph.Sets
         public IEnumerable<int> Neighbors(int vertex)
         {
             var neighbors = new List<int>();
-            for (var i = this.matrix.Length - 1; i >= 0; --i)
+            for (var i = this.Size - 1; i >= 0; --i)
             {
                 if (this.Adjacent(vertex, i))
                 {
@@ -159,7 +159,7 @@ namespace Graph.Sets
                 }
             }
 
-            for(var i=0; i<vertices.Length;++i)
+            for (var i = 0; i < vertices.Length; ++i)
             {
                 vertices[i] = visitStack.Pop();
             }
