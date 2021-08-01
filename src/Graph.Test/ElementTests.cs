@@ -14,8 +14,8 @@ namespace Graph.Test
             var element = new ConcreteElement();
             Assert.NotNull(element);
             Assert.NotEqual(Guid.Empty, element.Id);
-            Assert.Empty(element.Classifications);
-            Assert.Empty(element.Features);
+            Assert.Empty(element.Labels);
+            Assert.Empty(element.Attributes);
         }
 
         [Fact]
@@ -24,10 +24,24 @@ namespace Graph.Test
             var element = new ConcreteElement();
             Assert.NotNull(element);
 
-            var classification = "class";
-            element.Classify(classification);
-            Assert.NotEmpty(element.Classifications);
-            Assert.Equal(classification, element.Classifications[0]);
+            var label = "class";
+            element.Classify(label);
+            Assert.NotEmpty(element.Labels);
+            Assert.True(element.Is(label));
+        }
+
+        [Fact]
+        public void Element_Classify_Single_Twice_Succeeds()
+        {
+            var element = new ConcreteElement();
+            Assert.NotNull(element);
+
+            var label = "class";
+            element.Classify(label);
+            element.Classify(label);
+            Assert.NotEmpty(element.Labels);
+            Assert.Single(element.Labels);
+            Assert.True(element.Is(label));
         }
 
         [Fact]
@@ -46,11 +60,40 @@ namespace Graph.Test
             var element = new ConcreteElement();
             Assert.NotNull(element);
 
-            var classifications = new string[] { "class1", "class2" };
-            element.Classify(classifications);
-            Assert.NotEmpty(element.Classifications);
-            Assert.Equal(classifications[0], element.Classifications[0]);
-            Assert.Equal(classifications[1], element.Classifications[1]);
+            var labels = new string[] { "class1", "class2" };
+            element.Classify(labels);
+            Assert.NotEmpty(element.Labels);
+            Assert.True(element.Is(labels[0]));
+            Assert.True(element.Is(labels[1]));
+        }
+
+        [Fact]
+        public void Element_Declassify_Succeeds()
+        {
+            var element = new ConcreteElement();
+            Assert.NotNull(element);
+
+            var label = "class";
+            element.Classify(label);
+            Assert.NotEmpty(element.Labels);
+            Assert.True(element.Is(label));
+            element.Declassify(label);
+            Assert.False(element.Is(label));
+        }
+
+        [Fact]
+        public void Element_Declassify_Twice_Succeeds()
+        {
+            var element = new ConcreteElement();
+            Assert.NotNull(element);
+
+            var label = "class";
+            element.Classify(label);
+            Assert.NotEmpty(element.Labels);
+            Assert.True(element.Is(label));
+            element.Declassify(label);
+            element.Declassify(label);
+            Assert.False(element.Is(label));
         }
 
         [Fact]
@@ -59,11 +102,11 @@ namespace Graph.Test
             var element = new ConcreteElement();
             Assert.NotNull(element);
 
-            var classifications = new string[] { "class1", "class1" };
-            element.Classify(classifications);
-            Assert.NotEmpty(element.Classifications);
-            Assert.Equal(1, element.Classifications.Count);
-            Assert.Equal(classifications[0], element.Classifications[0]);
+            var labels = new string[] { "class1", "class1" };
+            element.Classify(labels);
+            Assert.NotEmpty(element.Labels);
+            Assert.Single(element.Labels);
+            Assert.True(element.Is(labels[0]));
         }
     }
 }
