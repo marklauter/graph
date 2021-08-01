@@ -3,6 +3,5 @@
     public sealed class Vertex
         : Element
     {
-        public Vertex() { }
     }
 }
