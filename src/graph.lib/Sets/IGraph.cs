@@ -2,26 +2,33 @@
 
 namespace Graph.Sets
 {
-    public interface IGraph<T>
-        : IEnumerable<T>
+    public interface IGraph
+        : IEnumerable<int>
     {
-        public void Connect(T vertex1, T vertex2);
-        public void Connect(T vertex1, T vertex2, byte weight);
+        public bool Adjacent(int vertex1, int vertex2);
 
-        public void Disconnect(T vertex1, T vertex2);
+        public IEnumerable<int> BreadthFirstSearch(int vertex);
 
-        public int Degree(T vertex);
+        public IGraph Clone();
 
-        public bool Adjacent(T vertex1, T vertex2);
+        public void Connect(int vertex1, int vertex2);
 
-        public IEnumerable<T> Neighbors(T vertex);
+        public void Connect(int vertex1, int vertex2, byte weight);
 
-        public IEnumerable<T> DepthFirstSearchPreOrder(T vertex);
-        
-        public IEnumerable<T> DepthFirstSearchPostOrder(T vertex);
+        public int Degree(int vertex);
 
-        public IEnumerable<T> BreadthFirstSearch(T vertex);
+        public IEnumerable<int> DepthFirstSearchPostOrder(int vertex);
+
+        public IEnumerable<int> DepthFirstSearchPreOrder(int vertex);
+
+        public void Disconnect(int vertex1, int vertex2);
+
+        public IEnumerable<int> Neighbors(int vertex);
+
+        public IGraph Resize(int size);
 
         public int Size { get; }
+
+        public GraphType Type { get; }
     }
 }
