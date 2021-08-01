@@ -1,4 +1,5 @@
 ﻿using Graph.Sets;
+using System.Linq;
 using Xunit;
 
 namespace Graph.Test
@@ -28,7 +29,9 @@ namespace Graph.Test
             var size = 2;
             var graph = this.EmptyGraph().Resize(size);
             Assert.Equal(size, graph.Size);
+
             graph.Connect(0, 1);
+
             if (graph.Type == GraphType.Undirected)
             {
                 Assert.False(graph.Adjacent(0, 0));
@@ -42,6 +45,73 @@ namespace Graph.Test
                 Assert.True(graph.Adjacent(0, 1));
                 Assert.False(graph.Adjacent(1, 0));
                 Assert.False(graph.Adjacent(1, 1));
+            }
+        }
+
+        [Fact]
+        public void Graph_Connect_Twice_Succeeds()
+        {
+            var size = 2;
+            var graph = this.EmptyGraph().Resize(size);
+            Assert.Equal(size, graph.Size);
+
+            graph.Connect(0, 1);
+            graph.Connect(0, 1);
+
+            if (graph.Type == GraphType.Undirected)
+            {
+                Assert.False(graph.Adjacent(0, 0));
+                Assert.True(graph.Adjacent(0, 1));
+                Assert.True(graph.Adjacent(1, 0));
+                Assert.False(graph.Adjacent(1, 1));
+            }
+            else
+            {
+                Assert.False(graph.Adjacent(0, 0));
+                Assert.True(graph.Adjacent(0, 1));
+                Assert.False(graph.Adjacent(1, 0));
+                Assert.False(graph.Adjacent(1, 1));
+            }
+
+            Assert.Single(graph.Neighbors(0));
+        }
+
+        [Fact]
+        public void Graph_Disconnect_Succeeds()
+        {
+            var size = 2;
+            var graph = this.EmptyGraph().Resize(size);
+            Assert.Equal(size, graph.Size);
+
+            graph.Connect(0, 1);
+
+            if (graph.Type == GraphType.Undirected)
+            {
+                Assert.True(graph.Adjacent(0, 1));
+                Assert.True(graph.Adjacent(1, 0));
+            }
+            else
+            {
+                Assert.True(graph.Adjacent(0, 1));
+                Assert.False(graph.Adjacent(1, 0));
+            }
+
+            graph.Disconnect(0, 1);
+            Assert.False(graph.Adjacent(0, 1));
+            Assert.False(graph.Adjacent(1, 0));
+
+            graph.Connect(0, 1);
+            graph.Disconnect(1, 0);
+
+            if (graph.Type == GraphType.Undirected)
+            {
+                Assert.False(graph.Adjacent(0, 1));
+                Assert.False(graph.Adjacent(1, 0));
+            }
+            else
+            {
+                Assert.True(graph.Adjacent(0, 1));
+                Assert.False(graph.Adjacent(1, 0));
             }
         }
 
@@ -122,7 +192,7 @@ namespace Graph.Test
             var size = 5;
             var graph = this.EmptyGraph().Resize(size);
             Assert.Equal(size, graph.Size);
-            
+
             graph.Connect(0, 1);
             graph.Connect(0, 2);
             graph.Connect(0, 3);
@@ -144,7 +214,7 @@ namespace Graph.Test
             var size = 3;
             var graph = this.EmptyGraph().Resize(size);
             Assert.Equal(size, graph.Size);
-            
+
             graph.Connect(0, 1);
             graph.Connect(1, 2);
 
@@ -168,7 +238,7 @@ namespace Graph.Test
             var size = 3;
             var graph = this.EmptyGraph().Resize(size);
             Assert.Equal(size, graph.Size);
-            
+
             graph.Connect(0, 1);
             graph.Connect(1, 2);
 
