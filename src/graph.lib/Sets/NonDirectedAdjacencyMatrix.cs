@@ -5,10 +5,14 @@ using System.Text;
 
 namespace Graph.Sets
 {
-    public class NonDirectedAdjacencyMatrix
+    public sealed class NonDirectedAdjacencyMatrix
         : IGraph<int>
     {
         private readonly byte[,] matrix;
+
+        public static NonDirectedAdjacencyMatrix Empty { get; } = new();
+
+        public int Size { get; }
 
         private NonDirectedAdjacencyMatrix()
         {
@@ -18,28 +22,23 @@ namespace Graph.Sets
 
         private NonDirectedAdjacencyMatrix(NonDirectedAdjacencyMatrix other, int size)
         {
-            var newMatrix = new byte[size, size];
+            this.matrix = new byte[size, size];
 
             for (var o = other.Size - 1; o >= 0; --o)
             {
                 for (var i = other.Size - 1; i >= 0; --i)
                 {
-                    newMatrix[o, i] = other.matrix[o, i];
+                    this.matrix[o, i] = other.matrix[o, i];
                 }
             }
 
-            this.matrix = newMatrix;
             this.Size = (int)Math.Pow(this.matrix.Length, 1 / (double)this.matrix.Rank);
         }
-
-        public static NonDirectedAdjacencyMatrix Empty { get; } = new();
 
         public NonDirectedAdjacencyMatrix Resize(int size)
         {
             return new NonDirectedAdjacencyMatrix(this, size);
         }
-
-        public int Size { get; }
 
         public override string ToString()
         {

@@ -6,7 +6,7 @@ namespace Graph.Sets
     public sealed class Graph
         : Element
     {
-        private readonly EdgeIndex edgeIndex = EdgeIndex.Empty;
+        private readonly NonDirectedAdjacencyList edgeIndex = NonDirectedAdjacencyList.Empty;
         private readonly Set<Vertex> vertices = Set<Vertex>.Empty;
         private readonly Set<Edge> edges = Set<Edge>.Empty;
 
