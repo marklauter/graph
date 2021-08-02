@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Graph.Sets
+namespace Graph.Indexes
 {
     public abstract class AdjacencyMatrix
-        : Graph
+        : AdjacencyIndex
     {
         protected readonly byte[,] Matrix;
 

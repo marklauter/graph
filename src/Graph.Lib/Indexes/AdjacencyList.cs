@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Graph.Sets
+namespace Graph.Indexes
 {
     public abstract class AdjacencyList
-        : Graph
+        : AdjacencyIndex
     {
         protected readonly HashSet<int>[] Index;
 

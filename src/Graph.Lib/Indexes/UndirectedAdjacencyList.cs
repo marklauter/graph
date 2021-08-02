@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Graph.Sets;
 
-namespace Graph.Sets
+namespace Graph.Indexes
 {
     public sealed class UnDirectedAdjacencyList
         : AdjacencyList
     {
-        public static IGraph Empty { get; } = new UnDirectedAdjacencyList();
+        public static IAdjacencyIndex Empty { get; } = new UnDirectedAdjacencyList();
 
         public override GraphType Type => GraphType.Undirected;
 
@@ -37,7 +37,7 @@ namespace Graph.Sets
             this.Index[vertex2].Remove(vertex1);
         }
 
-        public override IGraph Resize(int size)
+        public override IAdjacencyIndex Resize(int size)
         {
             return new UnDirectedAdjacencyList(this, size);
         }

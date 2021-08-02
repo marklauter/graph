@@ -1,15 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using Graph.Sets;
+using System.Collections.Generic;
 
-namespace Graph.Sets
+namespace Graph.Indexes
 {
-    public interface IGraph
+    public interface IAdjacencyIndex
         : IEnumerable<int>
     {
         public bool Adjacent(int vertex1, int vertex2);
 
         public IEnumerable<int> BreadthFirstSearch(int vertex);
 
-        public IGraph Clone();
+        public IAdjacencyIndex Clone();
 
         public void Connect(int vertex1, int vertex2);
 
@@ -23,7 +24,7 @@ namespace Graph.Sets
 
         public IEnumerable<int> Neighbors(int vertex);
 
-        public IGraph Resize(int size);
+        public IAdjacencyIndex Resize(int size);
 
         public int Size { get; }
 
