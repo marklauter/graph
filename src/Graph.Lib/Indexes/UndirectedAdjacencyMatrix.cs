@@ -1,9 +1,11 @@
-﻿namespace Graph.Sets
+﻿using Graph.Sets;
+
+namespace Graph.Indexes
 {
     public sealed class UndirectedAdjacencyMatrix
         : AdjacencyMatrix
     {
-        public static IGraph Empty { get; } = new UndirectedAdjacencyMatrix();
+        public static IAdjacencyIndex Empty { get; } = new UndirectedAdjacencyMatrix();
 
         public override GraphType Type => GraphType.Undirected;
 
@@ -35,7 +37,7 @@
             this.Matrix[vertex2, vertex1] = 0;
         }
 
-        public override IGraph Resize(int size)
+        public override IAdjacencyIndex Resize(int size)
         {
             return new UndirectedAdjacencyMatrix(this, size);
         }

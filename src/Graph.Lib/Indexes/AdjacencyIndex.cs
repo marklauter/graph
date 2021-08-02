@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using Graph.Sets;
+using System.Collections;
 using System.Collections.Generic;
 
-namespace Graph.Sets
+namespace Graph.Indexes
 {
-    public abstract class Graph
-        : IGraph
+    public abstract class AdjacencyIndex
+        : IAdjacencyIndex
     {
         public IEnumerable<int> DepthFirstSearchPostOrder(int vertex)
         {
@@ -73,7 +74,7 @@ namespace Graph.Sets
             throw new System.NotImplementedException();
         }
 
-        public IGraph Clone()
+        public IAdjacencyIndex Clone()
         {
             return this.Resize(this.Size);
         }
@@ -96,7 +97,7 @@ namespace Graph.Sets
 
         public abstract IEnumerable<int> Neighbors(int vertex);
 
-        public abstract IGraph Resize(int size);
+        public abstract IAdjacencyIndex Resize(int size);
 
         public int Size { get; protected set; }
 
