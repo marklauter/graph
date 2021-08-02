@@ -1,11 +1,11 @@
-﻿using Graph.Sets;
+﻿using Graph.Indexes;
 
 namespace Graph.Test
 {
     public class DirectedAdjacencyMatrixTests
-        : GraphTests
+        : AdjacencyIndexTests
     {
-        protected override IGraph EmptyGraph()
+        protected override IAdjacencyIndex EmptyGraph()
         {
             return DirectedAdjacencyMatrix.Empty;
         }

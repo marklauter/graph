@@ -1,11 +1,11 @@
-﻿using Graph.Sets;
+﻿using Graph.Indexes;
 
 namespace Graph.Test
 {
     public class UndirectedAdjacencyListTests
-        : GraphTests
+        : AdjacencyIndexTests
     {
-        protected override IGraph EmptyGraph()
+        protected override IAdjacencyIndex EmptyGraph()
         {
             return UnDirectedAdjacencyList.Empty;
         }

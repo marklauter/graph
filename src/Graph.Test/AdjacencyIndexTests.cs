@@ -1,12 +1,12 @@
-﻿using Graph.Sets;
-using System.Linq;
+﻿using Graph.Indexes;
+using Graph.Sets;
 using Xunit;
 
 namespace Graph.Test
 {
-    public abstract class GraphTests
+    public abstract class AdjacencyIndexTests
     {
-        protected abstract IGraph EmptyGraph();
+        protected abstract IAdjacencyIndex EmptyGraph();
 
         [Fact]
         public void Graph_Empty_Succeeds()

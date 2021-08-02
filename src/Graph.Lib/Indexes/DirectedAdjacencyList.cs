@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Graph.Sets;
 
-namespace Graph.Sets
+namespace Graph.Indexes
 {
     public sealed class DirectedAdjacencyList
     : AdjacencyList
     {
-        public static IGraph Empty { get; } = new DirectedAdjacencyList();
+        public static IAdjacencyIndex Empty { get; } = new DirectedAdjacencyList();
 
         public override GraphType Type => GraphType.Directed;
 
@@ -34,7 +34,7 @@ namespace Graph.Sets
             this.Index[vertex1].Remove(vertex2);
         }
 
-        public override IGraph Resize(int size)
+        public override IAdjacencyIndex Resize(int size)
         {
             return new DirectedAdjacencyList(this, size);
         }
