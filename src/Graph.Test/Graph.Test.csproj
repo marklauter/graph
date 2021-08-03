@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Graph.DB\Graph.DB.csproj" />
     <ProjectReference Include="..\graph.lib\Graph.Lib.csproj" />
   </ItemGroup>
 

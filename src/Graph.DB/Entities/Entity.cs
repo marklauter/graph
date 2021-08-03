@@ -1,9 +1,11 @@
-﻿using Graph.Elements;
+﻿using Graph.DB.Elements;
+using Newtonsoft.Json;
 using System;
 
-namespace Graph.Storage
+namespace Graph.DB.Entities
 {
-    public sealed class Entity<T> where T : Element
+    public sealed class Entity<T>
+        where T : IElement
     {
         private Entity() { }
 
@@ -13,12 +15,13 @@ namespace Graph.Storage
             this.ETag = etag;
         }
 
-        public Guid Id => this.member.Id;
+        [JsonIgnore]
+        public Guid Id => member.Id;
 
-        // todo: decorate with json att so it gets stored
+        [JsonProperty]
         private readonly T member;
 
-        public int ETag { get; }
+        public int ETag { get; private set; }
 
         public static explicit operator T(Entity<T> entity)
         {
@@ -31,3 +34,5 @@ namespace Graph.Storage
         }
     }
 }
+
+

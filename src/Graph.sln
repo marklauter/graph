@@ -10,9 +10,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Graph.IO", "Graph.IO\Graph.IO.csproj", "{1A1A1F2A-1330-4BB6-B8E5-A2EFA833217E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Graph.Test", "Graph.Test\Graph.Test.csproj", "{5FF66DFA-8539-40F8-AFBA-626BC8E8227A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graph.DB", "Graph.DB\Graph.DB.csproj", "{5456F1BB-02C2-414C-B5CA-8EBBAB778AC2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,14 +24,14 @@ Global
 		{5FD338E4-8D5C-4F6D-B802-A93F4729C70C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FD338E4-8D5C-4F6D-B802-A93F4729C70C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FD338E4-8D5C-4F6D-B802-A93F4729C70C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1A1A1F2A-1330-4BB6-B8E5-A2EFA833217E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1A1A1F2A-1330-4BB6-B8E5-A2EFA833217E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1A1A1F2A-1330-4BB6-B8E5-A2EFA833217E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1A1A1F2A-1330-4BB6-B8E5-A2EFA833217E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5FF66DFA-8539-40F8-AFBA-626BC8E8227A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5FF66DFA-8539-40F8-AFBA-626BC8E8227A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FF66DFA-8539-40F8-AFBA-626BC8E8227A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FF66DFA-8539-40F8-AFBA-626BC8E8227A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5456F1BB-02C2-414C-B5CA-8EBBAB778AC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5456F1BB-02C2-414C-B5CA-8EBBAB778AC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5456F1BB-02C2-414C-B5CA-8EBBAB778AC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5456F1BB-02C2-414C-B5CA-8EBBAB778AC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-namespace Graph.Elements
+namespace Graph.DB.Elements
 {
     public interface IElement
     {
-        public Guid Id { get; }
+        Guid Id { get; }
 
         public ImmutableHashSet<string> Labels { get; }
         public void Classify(string label);
@@ -14,9 +14,9 @@ namespace Graph.Elements
         public void Declassify(string label);
         public bool Is(string label);
 
-        public IImmutableDictionary<string, object> Attributes { get; }
+        public IImmutableDictionary<string, string> Attributes { get; }
         public void Qualify(string key, object value);
-        public void Qualify(IDictionary<string, object> attributes);
+        public void Qualify(IDictionary<string, string> attributes);
         public object Attribute(string key);
     }
 }
