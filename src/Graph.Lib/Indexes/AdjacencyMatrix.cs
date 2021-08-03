@@ -44,7 +44,7 @@ namespace Graph.Indexes
             return degree;
         }
 
-        public override IEnumerable<int> Neighbors(int vertex)
+        public override int[] Neighbors(int vertex)
         {
             var neighbors = new List<int>();
             for (var i = this.Size - 1; i >= 0; --i)
@@ -55,7 +55,7 @@ namespace Graph.Indexes
                 }
             }
 
-            return neighbors;
+            return neighbors.ToArray();
         }
 
         public override string ToString()

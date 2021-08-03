@@ -1,4 +1,4 @@
-﻿namespace Graph.Sets
+﻿namespace Graph.Graphs
 {
     public enum GraphType
     {
