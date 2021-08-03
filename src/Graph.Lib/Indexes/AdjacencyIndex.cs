@@ -1,4 +1,4 @@
-﻿using Graph.Sets;
+﻿using Graph.Graphs;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -7,7 +7,7 @@ namespace Graph.Indexes
     public abstract class AdjacencyIndex
         : IAdjacencyIndex
     {
-        public IEnumerable<int> DepthFirstSearchPostOrder(int vertex)
+        public int[] DepthFirstSearchPostOrder(int vertex)
         {
             var vertices = new int[this.Size];
             var visitStack = new Stack<int>();
@@ -39,7 +39,7 @@ namespace Graph.Indexes
             return vertices;
         }
 
-        public IEnumerable<int> DepthFirstSearchPreOrder(int vertex)
+        public int[] DepthFirstSearchPreOrder(int vertex)
         {
             var vertices = new int[this.Size];
             var visited = new bool[this.Size];
@@ -69,7 +69,7 @@ namespace Graph.Indexes
 
         public abstract bool Adjacent(int vertex1, int vertex2);
 
-        public IEnumerable<int> BreadthFirstSearch(int vertex)
+        public int[] BreadthFirstSearch(int vertex)
         {
             throw new System.NotImplementedException();
         }
@@ -95,7 +95,7 @@ namespace Graph.Indexes
             throw new System.NotImplementedException();
         }
 
-        public abstract IEnumerable<int> Neighbors(int vertex);
+        public abstract int[] Neighbors(int vertex);
 
         public abstract IAdjacencyIndex Resize(int size);
 

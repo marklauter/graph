@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Graph.Indexes
 {
@@ -36,9 +37,9 @@ namespace Graph.Indexes
             return this.Index[vertex].Count;
         }
 
-        public override IEnumerable<int> Neighbors(int vertex)
+        public override int[] Neighbors(int vertex)
         {
-            return this.Index[vertex];
+            return this.Index[vertex].ToArray();
         }
     }
 }

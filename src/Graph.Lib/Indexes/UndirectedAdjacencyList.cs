@@ -1,20 +1,20 @@
-﻿using Graph.Sets;
+﻿using Graph.Graphs;
 
 namespace Graph.Indexes
 {
-    public sealed class UnDirectedAdjacencyList
+    public sealed class UndirectedAdjacencyList
         : AdjacencyList
     {
-        public static IAdjacencyIndex Empty { get; } = new UnDirectedAdjacencyList();
+        public static IAdjacencyIndex Empty { get; } = new UndirectedAdjacencyList();
 
         public override GraphType Type => GraphType.Undirected;
 
-        private UnDirectedAdjacencyList()
+        private UndirectedAdjacencyList()
             : base()
         {
         }
 
-        private UnDirectedAdjacencyList(AdjacencyList other, int size)
+        private UndirectedAdjacencyList(AdjacencyList other, int size)
             : base(other, size)
         {
         }
@@ -39,7 +39,7 @@ namespace Graph.Indexes
 
         public override IAdjacencyIndex Resize(int size)
         {
-            return new UnDirectedAdjacencyList(this, size);
+            return new UndirectedAdjacencyList(this, size);
         }
     }
 

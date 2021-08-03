@@ -1,4 +1,4 @@
-﻿using Graph.Sets;
+﻿using Graph.Graphs;
 using System.Collections.Generic;
 
 namespace Graph.Indexes
@@ -8,7 +8,7 @@ namespace Graph.Indexes
     {
         public bool Adjacent(int vertex1, int vertex2);
 
-        public IEnumerable<int> BreadthFirstSearch(int vertex);
+        public int[] BreadthFirstSearch(int vertex);
 
         public IAdjacencyIndex Clone();
 
@@ -16,13 +16,13 @@ namespace Graph.Indexes
 
         public int Degree(int vertex);
 
-        public IEnumerable<int> DepthFirstSearchPostOrder(int vertex);
+        public int[] DepthFirstSearchPostOrder(int vertex);
 
-        public IEnumerable<int> DepthFirstSearchPreOrder(int vertex);
+        public int[] DepthFirstSearchPreOrder(int vertex);
 
         public void Disconnect(int vertex1, int vertex2);
 
-        public IEnumerable<int> Neighbors(int vertex);
+        public int[] Neighbors(int vertex);
 
         public IAdjacencyIndex Resize(int size);
 
