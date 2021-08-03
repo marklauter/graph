@@ -1,5 +1,5 @@
 ﻿using Graph.Indexes;
-using Graph.Sets;
+using Graph.Graphs;
 using Xunit;
 
 namespace Graph.Test
