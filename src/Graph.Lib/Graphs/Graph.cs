@@ -9,13 +9,23 @@ namespace Graph.Graphs
         : IGraph<TKey>
         where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
     {
-        private readonly IAdjacencyIndex index;
+        private IAdjacencyIndex index;
         private readonly ConcurrentDictionary<TKey, int> keyToVertex = new();
         private readonly ConcurrentDictionary<int, TKey> vertexToKey = new();
 
         public Graph(IAdjacencyIndex index)
         {
             this.index = index;
+        }
+
+        private Graph(
+            IAdjacencyIndex index,
+            ConcurrentDictionary<TKey, int> keyToVertex,
+            ConcurrentDictionary<int, TKey> vertexToKey)
+        {
+            this.index = index;
+            this.keyToVertex = keyToVertex;
+            this.vertexToKey = vertexToKey;
         }
 
         public int Size => this.index.Size;
@@ -29,7 +39,7 @@ namespace Graph.Graphs
             if (this.keyToVertex.TryAdd(vertex, size))
             {
                 this.vertexToKey.TryAdd(size, vertex);
-                this.index.Resize(size + 1);
+                this.index = this.index.Resize(size + 1);
             }
 
             return size;
@@ -48,16 +58,18 @@ namespace Graph.Graphs
                 }
             }
 
-            this.index.Resize(size);
+            this.index = this.index.Resize(size);
         }
 
         public bool Adjacent(TKey vertex1, TKey vertex2)
         {
+#pragma warning disable S3358 // Ternary operators should not be nested
             return !this.keyToVertex.TryGetValue(vertex1, out var v1)
                 ? throw new KeyNotFoundException(nameof(vertex1))
                 : !this.keyToVertex.TryGetValue(vertex2, out var v2)
                     ? throw new KeyNotFoundException(nameof(vertex2))
                     : this.index.Adjacent(v1, v2);
+#pragma warning restore S3358 // Ternary operators should not be nested
         }
 
         public IEnumerable<TKey> BreadthFirstSearch(TKey vertex)
@@ -69,7 +81,10 @@ namespace Graph.Graphs
 
         public IGraph<TKey> Clone()
         {
-            return new Graph<TKey>(this.index.Clone());
+            return new Graph<TKey>(
+                this.index.Clone(),
+                new ConcurrentDictionary<TKey, int>(this.keyToVertex),
+                new ConcurrentDictionary<int, TKey>(this.vertexToKey));
         }
 
         public void Connect(TKey vertex1, TKey vertex2)
@@ -89,8 +104,8 @@ namespace Graph.Graphs
 
         public int Degree(TKey vertex)
         {
-            return !this.keyToVertex.TryGetValue(vertex, out var v) 
-                ? throw new KeyNotFoundException(nameof(vertex)) 
+            return !this.keyToVertex.TryGetValue(vertex, out var v)
+                ? throw new KeyNotFoundException(nameof(vertex))
                 : this.index.Degree(v);
         }
 
