@@ -5,7 +5,7 @@ namespace Graph.Indexes
     public sealed class DirectedAdjacencyMatrix
         : AdjacencyMatrix
     {
-        public static IAdjacencyIndex Empty { get; } = new DirectedAdjacencyMatrix();
+        public static IAdjacencyIndex<int> Empty { get; } = new DirectedAdjacencyMatrix();
 
         public override GraphType Type => GraphType.Directed;
 
@@ -34,7 +34,7 @@ namespace Graph.Indexes
             this.Matrix[vertex1, vertex2] = 0;
         }
 
-        public override IAdjacencyIndex Resize(int size)
+        public override IAdjacencyIndex<int> Resize(int size)
         {
             return new DirectedAdjacencyMatrix(this, size);
         }

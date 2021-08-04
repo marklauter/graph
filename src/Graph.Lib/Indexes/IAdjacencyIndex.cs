@@ -3,30 +3,30 @@ using System.Collections.Generic;
 
 namespace Graph.Indexes
 {
-    public interface IAdjacencyIndex
-        : IEnumerable<int>
+    public interface IAdjacencyIndex<TKey>
+        : IEnumerable<TKey>
     {
-        public bool Adjacent(int vertex1, int vertex2);
+        public bool Adjacent(TKey vertex1, TKey vertex2);
 
-        public int[] BreadthFirstSearch(int vertex);
+        public TKey[] BreadthFirstSearch(TKey vertex);
 
-        public IAdjacencyIndex Clone();
+        public IAdjacencyIndex<TKey> Clone();
 
-        public void Connect(int vertex1, int vertex2);
+        public void Connect(TKey vertex1, TKey vertex2);
 
-        public int Degree(int vertex);
+        public int Degree(TKey vertex);
 
-        public int[] DepthFirstSearchPostOrder(int vertex);
+        public TKey[] DepthFirstSearchPostOrder(TKey vertex);
 
-        public int[] DepthFirstSearchPreOrder(int vertex);
+        public TKey[] DepthFirstSearchPreOrder(TKey vertex);
 
-        public void Disconnect(int vertex1, int vertex2);
+        public void Disconnect(TKey vertex1, TKey vertex2);
 
-        public int[] Neighbors(int vertex);
+        public TKey[] Neighbors(TKey vertex);
 
-        public IAdjacencyIndex Resize(int size);
+        public IAdjacencyIndex<TKey> Resize(TKey size);
 
-        public int Size { get; }
+        public TKey Size { get; }
 
         public GraphType Type { get; }
     }

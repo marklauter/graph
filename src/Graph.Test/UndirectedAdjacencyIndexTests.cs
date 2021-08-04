@@ -5,7 +5,7 @@ namespace Graph.Test
     public class UndirectedAdjacencyListTests
         : AdjacencyIndexTests
     {
-        protected override IAdjacencyIndex EmptyIndex()
+        protected override IAdjacencyIndex<int> EmptyIndex()
         {
             return UndirectedAdjacencyList.Empty;
         }

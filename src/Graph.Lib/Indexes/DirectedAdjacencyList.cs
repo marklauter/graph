@@ -3,9 +3,9 @@
 namespace Graph.Indexes
 {
     public sealed class DirectedAdjacencyList
-    : AdjacencyList
+        : AdjacencyList
     {
-        public static IAdjacencyIndex Empty { get; } = new DirectedAdjacencyList();
+        public static IAdjacencyIndex<int> Empty { get; } = new DirectedAdjacencyList();
 
         public override GraphType Type => GraphType.Directed;
 
@@ -34,7 +34,7 @@ namespace Graph.Indexes
             this.Index[vertex1].Remove(vertex2);
         }
 
-        public override IAdjacencyIndex Resize(int size)
+        public override IAdjacencyIndex<int> Resize(int size)
         {
             return new DirectedAdjacencyList(this, size);
         }

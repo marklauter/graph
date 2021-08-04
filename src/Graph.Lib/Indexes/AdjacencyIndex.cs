@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Graph.Indexes
 {
     public abstract class AdjacencyIndex
-        : IAdjacencyIndex
+        : IAdjacencyIndex<int>
     {
         public int[] DepthFirstSearchPostOrder(int vertex)
         {
@@ -74,7 +74,7 @@ namespace Graph.Indexes
             throw new System.NotImplementedException();
         }
 
-        public IAdjacencyIndex Clone()
+        public IAdjacencyIndex<int> Clone()
         {
             return this.Resize(this.Size);
         }
@@ -97,7 +97,7 @@ namespace Graph.Indexes
 
         public abstract int[] Neighbors(int vertex);
 
-        public abstract IAdjacencyIndex Resize(int size);
+        public abstract IAdjacencyIndex<int> Resize(int size);
 
         public int Size { get; protected set; }
 

@@ -5,21 +5,21 @@ using System.Collections.Generic;
 
 namespace Graph.Graphs
 {
-    public class Graph<TKey>
+    public class MemoryGraph<TKey>
         : IGraph<TKey>
         where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
     {
-        private IAdjacencyIndex index;
+        private IAdjacencyIndex<int> index;
         private readonly ConcurrentDictionary<TKey, int> keyToVertex = new();
         private readonly ConcurrentDictionary<int, TKey> vertexToKey = new();
 
-        public Graph(IAdjacencyIndex index)
+        public MemoryGraph(IAdjacencyIndex<int> index)
         {
             this.index = index;
         }
 
-        private Graph(
-            IAdjacencyIndex index,
+        private MemoryGraph(
+            IAdjacencyIndex<int> index,
             ConcurrentDictionary<TKey, int> keyToVertex,
             ConcurrentDictionary<int, TKey> vertexToKey)
         {
@@ -81,7 +81,7 @@ namespace Graph.Graphs
 
         public IGraph<TKey> Clone()
         {
-            return new Graph<TKey>(
+            return new MemoryGraph<TKey>(
                 this.index.Clone(),
                 new ConcurrentDictionary<TKey, int>(this.keyToVertex),
                 new ConcurrentDictionary<int, TKey>(this.vertexToKey));

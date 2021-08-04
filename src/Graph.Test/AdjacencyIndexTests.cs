@@ -6,7 +6,7 @@ namespace Graph.Test
 {
     public abstract class AdjacencyIndexTests
     {
-        protected abstract IAdjacencyIndex EmptyIndex();
+        protected abstract IAdjacencyIndex<int> EmptyIndex();
 
         [Fact]
         public void Graph_Empty_Succeeds()

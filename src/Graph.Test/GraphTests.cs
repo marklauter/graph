@@ -10,7 +10,7 @@ namespace Graph.Test
     {
         protected override IGraph<Guid> CreateGraph(Guid[] vertices)
         {
-            var graph = new Graph<Guid>(UndirectedAdjacencyList.Empty);
+            var graph = new MemoryGraph<Guid>(UndirectedAdjacencyList.Empty);
             graph.AddRange(vertices);
             return graph;
         }
@@ -21,7 +21,7 @@ namespace Graph.Test
     {
         protected override IGraph<Guid> CreateGraph(Guid[] vertices)
         {
-            var graph = new Graph<Guid>(DirectedAdjacencyList.Empty);
+            var graph = new MemoryGraph<Guid>(DirectedAdjacencyList.Empty);
             graph.AddRange(vertices);
             return graph;
         }
@@ -32,7 +32,7 @@ namespace Graph.Test
     {
         protected override IGraph<Guid> CreateGraph(Guid[] vertices)
         {
-            var graph = new Graph<Guid>(UndirectedAdjacencyMatrix.Empty);
+            var graph = new MemoryGraph<Guid>(UndirectedAdjacencyMatrix.Empty);
             graph.AddRange(vertices);
             return graph;
         }
@@ -43,7 +43,7 @@ namespace Graph.Test
     {
         protected override IGraph<Guid> CreateGraph(Guid[] vertices)
         {
-            var graph = new Graph<Guid>(DirectedAdjacencyMatrix.Empty);
+            var graph = new MemoryGraph<Guid>(DirectedAdjacencyMatrix.Empty);
             graph.AddRange(vertices);
             return graph;
         }

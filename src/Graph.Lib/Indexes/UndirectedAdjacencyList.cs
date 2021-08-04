@@ -5,7 +5,7 @@ namespace Graph.Indexes
     public sealed class UndirectedAdjacencyList
         : AdjacencyList
     {
-        public static IAdjacencyIndex Empty { get; } = new UndirectedAdjacencyList();
+        public static IAdjacencyIndex<int> Empty { get; } = new UndirectedAdjacencyList();
 
         public override GraphType Type => GraphType.Undirected;
 
@@ -37,7 +37,7 @@ namespace Graph.Indexes
             this.Index[vertex2].Remove(vertex1);
         }
 
-        public override IAdjacencyIndex Resize(int size)
+        public override IAdjacencyIndex<int> Resize(int size)
         {
             return new UndirectedAdjacencyList(this, size);
         }
