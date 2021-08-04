@@ -111,7 +111,7 @@ namespace Graph.DB.IO
 
             using var stream = new FileStream(this.GetFileName(entity.Id), FileMode.Open, FileAccess.Write);
             this.StreamWrite(entity, stream);
-            
+
             return 1;
         }
 

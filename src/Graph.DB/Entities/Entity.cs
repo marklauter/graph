@@ -16,7 +16,7 @@ namespace Graph.DB.Entities
         }
 
         [JsonIgnore]
-        public Guid Id => member.Id;
+        public Guid Id => this.member.Id;
 
         [JsonProperty]
         private readonly T member;
