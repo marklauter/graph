@@ -28,7 +28,7 @@ namespace Graph.Indexes
 
         public override IEnumerable<TKey> Neighbors(TKey vertex)
         {
-            if (this.Index.TryGetValue(vertex, out var neighbors))
+            if (this.Index.TryGetValue(vertex, out var neighbors) && neighbors != null)
             {
                 foreach (var neigbhor in neighbors)
                 {

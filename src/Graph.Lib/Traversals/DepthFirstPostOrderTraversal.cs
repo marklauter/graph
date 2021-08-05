@@ -15,7 +15,7 @@ namespace Graph.Traversals
         }
 
         public override IEnumerable<TKey> Traverse(TKey vertex)
-        {            
+        {
             // todo: MSL - make sure I don't have to call yield return to allow for the yields in the call to traverse
             return this.Traverse(vertex, -1);
         }

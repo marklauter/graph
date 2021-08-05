@@ -8,6 +8,11 @@ namespace Graph.Indexes
         : AdjacencyList<TKey>
         where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
     {
+        public static IAdjacencyIndex<TKey> Empty()
+        {
+            return new UndirectedAdjacencyList<TKey>();
+        }
+
         private UndirectedAdjacencyList()
             : base()
         {
@@ -31,7 +36,7 @@ namespace Graph.Indexes
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2234:Parameters should be passed in the correct order", Justification = "Recursing the call with the parameters reversed on purpose. Duh.")]
         public override bool Couple(TKey vertex1, TKey vertex2)
-        {   
+        {
             // todo: MSL - recursion is hard - make sure this doesn't always return false because of a third call to couple 
             if (!this.Index.TryGetValue(vertex1, out var neighbors))
             {
@@ -39,7 +44,7 @@ namespace Graph.Indexes
                 this.Index.Add(vertex1, neighbors);
             }
 
-            return neighbors.Add(vertex2) 
+            return neighbors.Add(vertex2)
                 && this.Couple(vertex2, vertex1);
         }
 

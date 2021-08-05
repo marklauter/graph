@@ -18,9 +18,9 @@ namespace Graph.Indexes
         protected AdjacencyMatrix(AdjacencyMatrix other)
         {
             this.Matrix = new bool[other.size, other.size];
-            for (var o = this.size - 1; o >= 0; --o)
+            for (var o = other.size - 1; o >= 0; --o)
             {
-                for (var i = this.size - 1; i >= 0; --i)
+                for (var i = other.size - 1; i >= 0; --i)
                 {
                     this.Matrix[o, i] = other.Matrix[o, i];
                 }
@@ -57,9 +57,14 @@ namespace Graph.Indexes
             return neighbors.ToArray();
         }
 
-        protected void Grow()
+        protected void Grow(int minSize)
         {
-            var newSize = (int)(this.size + this.size * 0.10);
+            if (minSize <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(minSize));
+            }
+
+            var newSize = (int)(minSize + 1 + minSize * 0.10);
             var matrix = new bool[newSize, newSize];
 
             for (var o = this.size - 1; o >= 0; --o)

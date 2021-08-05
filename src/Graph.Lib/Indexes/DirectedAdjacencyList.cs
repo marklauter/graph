@@ -5,9 +5,14 @@ using System.Collections.Generic;
 namespace Graph.Indexes
 {
     public sealed class DirectedAdjacencyList<TKey>
-    : AdjacencyList<TKey>
-    where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
+        : AdjacencyList<TKey>
+        where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
     {
+        public static IAdjacencyIndex<TKey> Empty()
+        {
+            return new DirectedAdjacencyList<TKey>();
+        }
+
         private DirectedAdjacencyList()
             : base()
         {
@@ -21,6 +26,7 @@ namespace Graph.Indexes
         public override bool Adjacent(TKey vertex1, TKey vertex2)
         {
             return this.Index.TryGetValue(vertex1, out var neighbors)
+                && neighbors != null
                 && neighbors.Contains(vertex2);
         }
 

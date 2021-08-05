@@ -1,11 +1,15 @@
 ﻿using Graph.Graphs;
+using System;
 
 namespace Graph.Indexes
 {
     public sealed class UndirectedAdjacencyMatrix
         : AdjacencyMatrix
     {
-        public static IAdjacencyIndex<int> Empty { get; } = new UndirectedAdjacencyMatrix();
+        public static IAdjacencyIndex<int> Empty()
+        {
+            return new UndirectedAdjacencyMatrix();
+        }
 
         private UndirectedAdjacencyMatrix()
             : base()
@@ -19,7 +23,9 @@ namespace Graph.Indexes
 
         public override bool Adjacent(int vertex1, int vertex2)
         {
-            return this.Matrix[vertex1, vertex2]
+            return vertex1 < this.Size
+                && vertex2 < this.Size
+                && this.Matrix[vertex1, vertex2]
                 && this.Matrix[vertex2, vertex1];
         }
 
@@ -32,7 +38,7 @@ namespace Graph.Indexes
         {
             if (vertex1 >= this.Size || vertex2 >= this.Size)
             {
-                this.Grow();
+                this.Grow(Math.Max(vertex1, vertex2));
             }
 
             if (!this.Matrix[vertex1, vertex2])
@@ -47,7 +53,7 @@ namespace Graph.Indexes
 
         public override bool Decouple(int vertex1, int vertex2)
         {
-            if (this.Matrix[vertex1, vertex2])
+            if (this.Adjacent(vertex1, vertex2))
             {
                 this.Matrix[vertex1, vertex2] = false;
                 this.Matrix[vertex2, vertex1] = false;
