@@ -30,7 +30,7 @@ namespace Graph.Test
             var index = this.EmptyIndex().Resize(size);
             Assert.Equal(size, index.Size);
 
-            index.Connect(0, 1);
+            index.Couple(0, 1);
 
             if (index.Type == GraphType.Undirected)
             {
@@ -55,8 +55,8 @@ namespace Graph.Test
             var index = this.EmptyIndex().Resize(size);
             Assert.Equal(size, index.Size);
 
-            index.Connect(0, 1);
-            index.Connect(0, 1);
+            index.Couple(0, 1);
+            index.Couple(0, 1);
 
             if (index.Type == GraphType.Undirected)
             {
@@ -83,7 +83,7 @@ namespace Graph.Test
             var index = this.EmptyIndex().Resize(size);
             Assert.Equal(size, index.Size);
 
-            index.Connect(0, 1);
+            index.Couple(0, 1);
 
             if (index.Type == GraphType.Undirected)
             {
@@ -96,12 +96,12 @@ namespace Graph.Test
                 Assert.False(index.Adjacent(1, 0));
             }
 
-            index.Disconnect(0, 1);
+            index.Decouple(0, 1);
             Assert.False(index.Adjacent(0, 1));
             Assert.False(index.Adjacent(1, 0));
 
-            index.Connect(0, 1);
-            index.Disconnect(1, 0);
+            index.Couple(0, 1);
+            index.Decouple(1, 0);
 
             if (index.Type == GraphType.Undirected)
             {
@@ -121,7 +121,7 @@ namespace Graph.Test
             var size = 2;
             var index = this.EmptyIndex().Resize(size);
             Assert.Equal(size, index.Size);
-            index.Connect(0, 1);
+            index.Couple(0, 1);
             if (index.Type == GraphType.Undirected)
             {
                 Assert.False(index.Adjacent(0, 0));
@@ -171,12 +171,12 @@ namespace Graph.Test
             var size = 5;
             var index = this.EmptyIndex().Resize(size);
             Assert.Equal(size, index.Size);
-            index.Connect(0, 1);
-            index.Connect(0, 2);
-            index.Connect(0, 3);
-            index.Connect(1, 3);
-            index.Connect(2, 3);
-            index.Connect(3, 4);
+            index.Couple(0, 1);
+            index.Couple(0, 2);
+            index.Couple(0, 3);
+            index.Couple(1, 3);
+            index.Couple(2, 3);
+            index.Couple(3, 4);
 
             var vertices = index.DepthFirstSearchPreOrder(0);
             Assert.NotEmpty(vertices);
@@ -193,12 +193,12 @@ namespace Graph.Test
             var index = this.EmptyIndex().Resize(size);
             Assert.Equal(size, index.Size);
 
-            index.Connect(0, 1);
-            index.Connect(0, 2);
-            index.Connect(0, 3);
-            index.Connect(1, 3);
-            index.Connect(2, 3);
-            index.Connect(3, 4);
+            index.Couple(0, 1);
+            index.Couple(0, 2);
+            index.Couple(0, 3);
+            index.Couple(1, 3);
+            index.Couple(2, 3);
+            index.Couple(3, 4);
 
             var vertices = index.DepthFirstSearchPostOrder(0);
             Assert.NotEmpty(vertices);
@@ -215,8 +215,8 @@ namespace Graph.Test
             var index = this.EmptyIndex().Resize(size);
             Assert.Equal(size, index.Size);
 
-            index.Connect(0, 1);
-            index.Connect(1, 2);
+            index.Couple(0, 1);
+            index.Couple(1, 2);
 
             if (index.Type == GraphType.Undirected)
             {
@@ -239,8 +239,8 @@ namespace Graph.Test
             var index = this.EmptyIndex().Resize(size);
             Assert.Equal(size, index.Size);
 
-            index.Connect(0, 1);
-            index.Connect(1, 2);
+            index.Couple(0, 1);
+            index.Couple(1, 2);
 
             var neighbors = index.Neighbors(1);
             if (index.Type == GraphType.Undirected)
@@ -261,8 +261,8 @@ namespace Graph.Test
             var size = 3;
             var index = this.EmptyIndex().Resize(size);
             Assert.Equal(size, index.Size);
-            index.Connect(0, 1);
-            index.Connect(1, 2);
+            index.Couple(0, 1);
+            index.Couple(1, 2);
 
             if (index.Type == GraphType.Undirected)
             {

@@ -1,45 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Graph.Indexes
 {
-    public abstract class AdjacencyList
-        : AdjacencyIndex
+    public abstract class AdjacencyList<TKey>
+        : AdjacencyIndex<TKey>
+        where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
     {
-        protected readonly HashSet<int>[] Index;
+        protected readonly Dictionary<TKey, HashSet<TKey>> Index;
 
         protected AdjacencyList()
         {
-            this.Index = Array.Empty<HashSet<int>>();
-            this.Size = 0;
+            this.Index = new();
         }
 
-        protected AdjacencyList(AdjacencyList other, int size)
+        protected AdjacencyList(AdjacencyList<TKey> other)
         {
-            this.Index = new HashSet<int>[size];
+            this.Index = new Dictionary<TKey, HashSet<TKey>>(other.Index);
+        }
 
-            for (var i = size - 1; i >= other.Size; --i)
+        public override int Degree(TKey vertex)
+        {
+            return this.Index.TryGetValue(vertex, out var neighbors) && neighbors != null
+                ? neighbors.Count
+                : 0;
+        }
+
+        public override IEnumerable<TKey> Neighbors(TKey vertex)
+        {
+            if (this.Index.TryGetValue(vertex, out var neighbors))
             {
-                this.Index[i] = new HashSet<int>();
+                foreach (var neigbhor in neighbors)
+                {
+                    yield return neigbhor;
+                }
             }
-
-            for (var i = other.Size - 1; i >= 0; --i)
-            {
-                this.Index[i] = other.Index[i];
-            }
-
-            this.Size = size;
         }
 
-        public override int Degree(int vertex)
-        {
-            return this.Index[vertex].Count;
-        }
-
-        public override int[] Neighbors(int vertex)
-        {
-            return this.Index[vertex].ToArray();
-        }
+        public override int Size => this.Index.Count;
     }
 }

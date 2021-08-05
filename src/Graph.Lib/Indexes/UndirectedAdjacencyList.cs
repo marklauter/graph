@@ -1,46 +1,57 @@
 ﻿using Graph.Graphs;
+using System;
+using System.Collections.Generic;
 
 namespace Graph.Indexes
 {
-    public sealed class UndirectedAdjacencyList
-        : AdjacencyList
+    public sealed class UndirectedAdjacencyList<TKey>
+        : AdjacencyList<TKey>
+        where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
     {
-        public static IAdjacencyIndex<int> Empty { get; } = new UndirectedAdjacencyList();
-
-        public override GraphType Type => GraphType.Undirected;
-
         private UndirectedAdjacencyList()
             : base()
         {
         }
 
-        private UndirectedAdjacencyList(AdjacencyList other, int size)
-            : base(other, size)
+        private UndirectedAdjacencyList(UndirectedAdjacencyList<TKey> other)
+            : base(other)
         {
         }
 
-        public override bool Adjacent(int vertex1, int vertex2)
+        public override bool Adjacent(TKey vertex1, TKey vertex2)
         {
-            return this.Index[vertex1].Contains(vertex2)
-                && this.Index[vertex2].Contains(vertex1);
+            return this.Index.TryGetValue(vertex1, out var neighbors)
+                && neighbors.Contains(vertex2);
         }
 
-        public override void Connect(int vertex1, int vertex2)
+        public override object Clone()
         {
-            this.Index[vertex1].Add(vertex2);
-            this.Index[vertex2].Add(vertex1);
+            return new UndirectedAdjacencyList<TKey>(this);
         }
 
-        public override void Disconnect(int vertex1, int vertex2)
-        {
-            this.Index[vertex1].Remove(vertex2);
-            this.Index[vertex2].Remove(vertex1);
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2234:Parameters should be passed in the correct order", Justification = "Recursing the call with the parameters reversed on purpose. Duh.")]
+        public override bool Couple(TKey vertex1, TKey vertex2)
+        {   
+            // todo: MSL - recursion is hard - make sure this doesn't always return false because of a third call to couple 
+            if (!this.Index.TryGetValue(vertex1, out var neighbors))
+            {
+                neighbors = new HashSet<TKey>();
+                this.Index.Add(vertex1, neighbors);
+            }
+
+            return neighbors.Add(vertex2) 
+                && this.Couple(vertex2, vertex1);
         }
 
-        public override IAdjacencyIndex<int> Resize(int size)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2234:Parameters should be passed in the correct order", Justification = "Recursing the call with the parameters reversed on purpose. Duh.")]
+        public override bool Decouple(TKey vertex1, TKey vertex2)
         {
-            return new UndirectedAdjacencyList(this, size);
+            // todo: MSL - recursion is hard - make sure this doesn't always return false because of a third call to decouple 
+            return this.Index.TryGetValue(vertex1, out var neighbors)
+                && neighbors.Remove(vertex2)
+                && this.Decouple(vertex2, vertex1);
         }
+
+        public override GraphType Type => GraphType.Undirected;
     }
-
 }

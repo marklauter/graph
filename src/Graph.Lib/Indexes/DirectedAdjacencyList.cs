@@ -1,43 +1,51 @@
 ﻿using Graph.Graphs;
+using System;
+using System.Collections.Generic;
 
 namespace Graph.Indexes
 {
-    public sealed class DirectedAdjacencyList
-        : AdjacencyList
+    public sealed class DirectedAdjacencyList<TKey>
+    : AdjacencyList<TKey>
+    where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
     {
-        public static IAdjacencyIndex<int> Empty { get; } = new DirectedAdjacencyList();
-
-        public override GraphType Type => GraphType.Directed;
-
         private DirectedAdjacencyList()
             : base()
         {
         }
 
-        private DirectedAdjacencyList(AdjacencyList other, int size)
-            : base(other, size)
+        private DirectedAdjacencyList(DirectedAdjacencyList<TKey> other)
+            : base(other)
         {
         }
 
-        public override bool Adjacent(int vertex1, int vertex2)
+        public override bool Adjacent(TKey vertex1, TKey vertex2)
         {
-            return this.Index[vertex1].Contains(vertex2);
+            return this.Index.TryGetValue(vertex1, out var neighbors)
+                && neighbors.Contains(vertex2);
         }
 
-        public override void Connect(int vertex1, int vertex2)
+        public override object Clone()
         {
-            this.Index[vertex1].Add(vertex2);
+            return new DirectedAdjacencyList<TKey>(this);
         }
 
-        public override void Disconnect(int vertex1, int vertex2)
+        public override bool Couple(TKey vertex1, TKey vertex2)
         {
-            this.Index[vertex1].Remove(vertex2);
+            if (!this.Index.TryGetValue(vertex1, out var neighbors))
+            {
+                neighbors = new HashSet<TKey>();
+                this.Index.Add(vertex1, neighbors);
+            }
+
+            return neighbors.Add(vertex2);
         }
 
-        public override IAdjacencyIndex<int> Resize(int size)
+        public override bool Decouple(TKey vertex1, TKey vertex2)
         {
-            return new DirectedAdjacencyList(this, size);
+            return this.Index.TryGetValue(vertex1, out var neighbors)
+                && neighbors.Remove(vertex2);
         }
+
+        public override GraphType Type => GraphType.Directed;
     }
-
 }

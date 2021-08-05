@@ -24,12 +24,12 @@ namespace Graph.Indexes
             return this.Matrix[vertex1, vertex2] > 0;
         }
 
-        public override void Connect(int vertex1, int vertex2)
+        public override void Couple(int vertex1, int vertex2)
         {
             this.Matrix[vertex1, vertex2] = 1;
         }
 
-        public override void Disconnect(int vertex1, int vertex2)
+        public override void Decouple(int vertex1, int vertex2)
         {
             this.Matrix[vertex1, vertex2] = 0;
         }

@@ -1,105 +1,26 @@
 ﻿using Graph.Graphs;
-using System.Collections;
+using System;
 using System.Collections.Generic;
 
 namespace Graph.Indexes
 {
-    public abstract class AdjacencyIndex
-        : IAdjacencyIndex<int>
+    public abstract class AdjacencyIndex<TKey>
+        : IAdjacencyIndex<TKey>
+        where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
     {
-        public int[] DepthFirstSearchPostOrder(int vertex)
-        {
-            var vertices = new int[this.Size];
-            var visitStack = new Stack<int>();
-            var visited = new bool[this.Size];
-            var neighbors = new Stack<int>(new int[] { vertex });
+        public abstract bool Adjacent(TKey vertex1, TKey vertex2);
 
-            while (neighbors.Count > 0)
-            {
-                var v = neighbors.Pop();
-                if (!visited[v])
-                {
-                    visitStack.Push(v);
-                    visited[v] = true;
-                    for (var i = this.Size - 1; i >= 0; --i)
-                    {
-                        if (i != v && this.Adjacent(v, i) && !visited[i])
-                        {
-                            neighbors.Push(i);
-                        }
-                    }
-                }
-            }
+        public abstract bool Couple(TKey vertex1, TKey vertex2);
 
-            for (var i = 0; i < vertices.Length; ++i)
-            {
-                vertices[i] = visitStack.Pop();
-            }
+        public abstract object Clone();
 
-            return vertices;
-        }
+        public abstract bool Decouple(TKey vertex1, TKey vertex2);
 
-        public int[] DepthFirstSearchPreOrder(int vertex)
-        {
-            var vertices = new int[this.Size];
-            var visited = new bool[this.Size];
-            var neighbors = new Stack<int>(new int[] { vertex });
-            var vi = 0;
+        public abstract int Degree(TKey vertex);
 
-            while (neighbors.Count > 0)
-            {
-                var v = neighbors.Pop();
-                if (!visited[v])
-                {
-                    vertices[vi] = v;
-                    ++vi;
-                    visited[v] = true;
-                    for (var i = this.Size - 1; i >= 0; --i)
-                    {
-                        if (i != v && this.Adjacent(v, i) && !visited[i])
-                        {
-                            neighbors.Push(i);
-                        }
-                    }
-                }
-            }
+        public abstract IEnumerable<TKey> Neighbors(TKey vertex);
 
-            return vertices;
-        }
-
-        public abstract bool Adjacent(int vertex1, int vertex2);
-
-        public int[] BreadthFirstSearch(int vertex)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public IAdjacencyIndex<int> Clone()
-        {
-            return this.Resize(this.Size);
-        }
-
-        public abstract void Connect(int vertex1, int vertex2);
-
-        public abstract int Degree(int vertex);
-
-        public abstract void Disconnect(int vertex1, int vertex2);
-
-        public IEnumerator<int> GetEnumerator()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public abstract int[] Neighbors(int vertex);
-
-        public abstract IAdjacencyIndex<int> Resize(int size);
-
-        public int Size { get; protected set; }
+        public abstract int Size { get; }
 
         public abstract GraphType Type { get; }
     }
