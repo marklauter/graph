@@ -8,11 +8,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{713B991B-9264-447C-B5E5-A31D73B99A9C}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		Graph.CodeMap.dgml = Graph.CodeMap.dgml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Graph.Test", "Graph.Test\Graph.Test.csproj", "{5FF66DFA-8539-40F8-AFBA-626BC8E8227A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graph.DB", "Graph.DB\Graph.DB.csproj", "{5456F1BB-02C2-414C-B5CA-8EBBAB778AC2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Graph.DB", "Graph.DB\Graph.DB.csproj", "{5456F1BB-02C2-414C-B5CA-8EBBAB778AC2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

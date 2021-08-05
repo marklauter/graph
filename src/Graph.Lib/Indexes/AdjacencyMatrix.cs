@@ -4,6 +4,8 @@ using System.Text;
 
 namespace Graph.Indexes
 {
+
+
     public abstract class AdjacencyMatrix
         : AdjacencyIndex<int>
     {
