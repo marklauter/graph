@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Graph.Indexes
+namespace Graph.Traversals
 {
     public interface ITraversal<TKey>
         where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
