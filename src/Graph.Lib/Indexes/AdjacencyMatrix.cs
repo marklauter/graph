@@ -5,35 +5,34 @@ using System.Text;
 namespace Graph.Indexes
 {
     public abstract class AdjacencyMatrix
-        : AdjacencyIndex
+        : AdjacencyIndex<int>
     {
-        protected readonly byte[,] Matrix;
+        protected bool[,] Matrix { get; private set; }
 
         protected AdjacencyMatrix()
         {
-            this.Matrix = new byte[0, 0];
-            this.Size = 0;
+            this.Matrix = new bool[0, 0];
+            this.size = 0;
         }
 
-        protected AdjacencyMatrix(AdjacencyMatrix other, int size)
+        protected AdjacencyMatrix(AdjacencyMatrix other)
         {
-            this.Matrix = new byte[size, size];
-
-            for (var o = other.Size - 1; o >= 0; --o)
+            this.Matrix = new bool[other.size, other.size];
+            for (var o = this.size - 1; o >= 0; --o)
             {
-                for (var i = other.Size - 1; i >= 0; --i)
+                for (var i = this.size - 1; i >= 0; --i)
                 {
                     this.Matrix[o, i] = other.Matrix[o, i];
                 }
             }
 
-            this.Size = (int)Math.Pow(this.Matrix.Length, 1 / (double)this.Matrix.Rank);
+            this.size = (int)Math.Pow(this.Matrix.Length, 1 / (double)this.Matrix.Rank);
         }
 
         public override int Degree(int vertex)
         {
             var degree = 0;
-            for (var i = this.Size - 1; i >= 0; --i)
+            for (var i = this.size - 1; i >= 0; --i)
             {
                 if (this.Adjacent(vertex, i))
                 {
@@ -47,7 +46,7 @@ namespace Graph.Indexes
         public override int[] Neighbors(int vertex)
         {
             var neighbors = new List<int>();
-            for (var i = this.Size - 1; i >= 0; --i)
+            for (var i = this.size - 1; i >= 0; --i)
             {
                 if (this.Adjacent(vertex, i))
                 {
@@ -57,6 +56,26 @@ namespace Graph.Indexes
 
             return neighbors.ToArray();
         }
+
+        protected void Grow()
+        {
+            var newSize = (int)(this.size + this.size * 0.10);
+            var matrix = new bool[newSize, newSize];
+
+            for (var o = this.size - 1; o >= 0; --o)
+            {
+                for (var i = this.size - 1; i >= 0; --i)
+                {
+                    matrix[o, i] = this.Matrix[o, i];
+                }
+            }
+
+            this.Matrix = matrix;
+            this.size = (int)Math.Pow(this.Matrix.Length, 1 / (double)this.Matrix.Rank);
+        }
+
+        private int size;
+        public override int Size => this.size;
 
         public override string ToString()
         {
