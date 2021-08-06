@@ -63,6 +63,7 @@ namespace Graph.Test.Indexes
 
             Assert.False(index.Adjacent(0, 1));
             Assert.False(index.Adjacent(1, 0));
+            Assert.False(index.Decouple(1, 0));
         }
 
         [Fact]

@@ -26,7 +26,7 @@ namespace Graph.Test.Indexes
 
             Assert.False(index.Adjacent(0, 0));
             Assert.True(index.Adjacent(0, 1));
-            Assert.True(index.Adjacent(1, 0));
+            Assert.False(index.Adjacent(1, 0));
             Assert.False(index.Adjacent(1, 1));
         }
 
@@ -39,13 +39,13 @@ namespace Graph.Test.Indexes
 
             Assert.False(index.Adjacent(0, 0));
             Assert.True(index.Adjacent(0, 1));
-            Assert.True(index.Adjacent(1, 0));
+            Assert.False(index.Adjacent(1, 0));
             Assert.False(index.Adjacent(1, 1));
 
             Assert.Single(index.Neighbors(0));
         }
 
-                [Fact]
+        [Fact]
         public void AdjacencyIndex_Disconnect_Succeeds()
         {
             var index = EmptyIndex();
@@ -57,9 +57,10 @@ namespace Graph.Test.Indexes
             Assert.True(index.Decouple(0, 1));
             Assert.False(index.Adjacent(0, 1));
             Assert.False(index.Adjacent(1, 0));
+            Assert.False(index.Decouple(0, 1));
 
             Assert.True(index.Couple(0, 1));
-            Assert.True(index.Decouple(1, 0));
+            Assert.False(index.Decouple(1, 0));
 
             Assert.True(index.Adjacent(0, 1));
             Assert.False(index.Adjacent(1, 0));
