@@ -4,32 +4,32 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Graph.DB.Elements
+namespace Graph.Elements
 {
     [DebuggerDisplay("{Id}")]
-    [JsonObject("vertex")]
-    public sealed class Vertex
+    [JsonObject("node")]
+    public sealed class Node
         : Element
-        , IEquatable<Vertex>
-        , IEqualityComparer<Vertex>
+        , IEquatable<Node>
+        , IEqualityComparer<Node>
     {
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as Vertex);
+            return this.Equals(obj as Node);
         }
 
-        public bool Equals(Vertex other)
+        public bool Equals(Node other)
         {
             return other != null
                 && other.Id == this.Id;
         }
 
-        public bool Equals(Vertex x, Vertex y)
+        public bool Equals(Node x, Node y)
         {
             return x != null && x.Equals(y) || y == null;
         }
 
-        public int GetHashCode([DisallowNull] Vertex obj)
+        public int GetHashCode([DisallowNull] Node obj)
         {
             return obj.GetHashCode();
         }

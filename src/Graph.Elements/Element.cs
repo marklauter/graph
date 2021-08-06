@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Graph.DB.Elements
+namespace Graph.Elements
 {
     [DebuggerDisplay("{Id}")]
     public abstract class Element
@@ -21,6 +21,13 @@ namespace Graph.DB.Elements
 
         [JsonProperty("attributes")]
         public IImmutableDictionary<string, string> Attributes { get; private set; } = ImmutableDictionary<string, string>.Empty;
+
+        public object Attribute(string key)
+        {
+            return this.Attributes.TryGetValue(key, out var value)
+                ? value
+                : null;
+        }
 
         public void Classify(string label)
         {
@@ -53,6 +60,11 @@ namespace Graph.DB.Elements
             this.Labels = this.Labels.Remove(label);
         }
 
+        public bool Has(string attribute)
+        {
+            return this.Attributes.ContainsKey(attribute);
+        }
+
         public bool Is(string label)
         {
             return this.Labels.Contains(label);
@@ -83,13 +95,6 @@ namespace Graph.DB.Elements
             this.Attributes = this.Attributes
                 .Union(attributes)
                 .ToImmutableDictionary();
-        }
-
-        public object Attribute(string key)
-        {
-            return this.Attributes.TryGetValue(key, out var value)
-                ? value
-                : null;
         }
     }
 }

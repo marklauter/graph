@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Graph.DB.Elements
+namespace Graph.Elements
 {
     [DebuggerDisplay("{Id} {Source} {Target}")]
     [JsonObject("edge")]
@@ -18,8 +18,8 @@ namespace Graph.DB.Elements
         private Edge() { }
 
         public Edge(
-            Vertex source,
-            Vertex target)
+            Node source,
+            Node target)
             : base()
         {
             if (source is null)
