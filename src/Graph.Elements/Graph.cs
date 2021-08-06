@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace Graph.Elements
 {
@@ -11,14 +11,93 @@ namespace Graph.Elements
     [JsonObject("graph")]
     public sealed class Graph
         : Element
+        , IGraph
         , IEquatable<Graph>
         , IEqualityComparer<Graph>
     {
+        public static Graph Empty()
+        {
+            return new Graph();
+        }
+
+        private Graph()
+            : base()
+        {
+            this.edges = new();
+            this.nodes = new();
+        }
+
+        private Graph(Graph other)
+            : base(other)
+        {
+            this.edges = other.edges
+                .Select(e => e.Clone() as Edge)
+                .ToList();
+
+            this.nodes = other.nodes
+                .Select(n => n.Clone() as Node)
+                .ToList();
+        }
+
         [JsonProperty("edges")]
-        public IImmutableList<Edge> Edges { get; } = ImmutableList.Create<Edge>();
+        private readonly HashSet<Edge> edges;
 
         [JsonProperty("nodes")]
-        public IImmutableList<Node> Nodes { get; } = ImmutableList.Create<Node>();
+        private readonly HashSet<Node> nodes;
+
+        [JsonProperty("directed")]
+        public bool IsDirected { get; }
+
+        public bool Add(Node node)
+        {
+            return this.nodes.Add(node);
+        }
+
+        public int AddRange(IEnumerable<Node> nodes)
+        {
+            var added = 0;
+            foreach (var node in nodes)
+            {
+                added += this.nodes.Add(node)
+                    ? 1
+                    : 0;
+            }
+
+            return added;
+        }
+
+        public override object Clone()
+        {
+            return new Graph(this);
+        }
+
+        public Edge Couple(Guid sourceId, Guid targetId)
+        {
+            var edge = new Edge(sourceId, targetId);
+            return this.edges.Add(edge)
+                ? edge
+                : null;
+        }
+
+        public Edge Couple(Node source, Node target)
+        {
+            var edge = new Edge(source, target);
+            return this.edges.Add(edge)
+                ? edge
+                : null;
+        }
+
+        public bool TryDecouple(Guid sourceId, Guid targetId, out Edge edge)
+        {
+            edge = new Edge(sourceId, targetId);
+            return this.edges.Remove(edge);
+        }
+
+        public bool TryDecouple(Node source, Node target, out Edge edge)
+        {
+            edge = new Edge(source, target);
+            return this.edges.Remove(edge);
+        }
 
         public override bool Equals(object obj)
         {
@@ -44,6 +123,23 @@ namespace Graph.Elements
         public override int GetHashCode()
         {
             return HashCode.Combine(this.Id);
+        }
+
+        public bool Remove(Node node)
+        {
+            if (this.nodes.Remove(node))
+            {
+                var incidents = this.edges
+                    .Where(e => e.Source == node.Id || e.Target == node.Id);
+                foreach (var edge in incidents)
+                {
+                    _ = this.edges.Remove(edge);
+                }
+
+                return true;
+            }
+
+            return false;
         }
     }
 }

@@ -45,6 +45,13 @@ namespace Graph.Elements
             this.Target = target;
         }
 
+        private Edge(Edge other)
+        {
+            this.Source = other.Source;
+            this.Target = other.Target;
+            this.IsDirected = other.IsDirected;
+        }
+
         [JsonProperty("directed")]
         public bool IsDirected { get; private set; }
 
@@ -74,7 +81,8 @@ namespace Graph.Elements
         {
             return other != null
                 && other.Source == this.Source
-                && other.Target == this.Target;
+                && other.Target == this.Target
+                && other.IsDirected == this.IsDirected;
         }
 
         public bool Equals(Edge x, Edge y)
@@ -89,7 +97,12 @@ namespace Graph.Elements
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(this.Id, this.Source, this.Target);
+            return HashCode.Combine(this.Source, this.Target, this.IsDirected);
+        }
+
+        public override object Clone()
+        {
+            return new Edge(this);
         }
     }
 }

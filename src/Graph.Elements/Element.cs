@@ -13,6 +13,12 @@ namespace Graph.Elements
     {
         protected Element() { }
 
+        protected Element(Element other)
+        {
+            // copy labels
+            // copy attributes
+        }
+
         [JsonProperty("id")]
         public Guid Id { get; private set; } = Guid.NewGuid();
 
@@ -22,9 +28,9 @@ namespace Graph.Elements
         [JsonProperty("attributes")]
         public IImmutableDictionary<string, string> Attributes { get; private set; } = ImmutableDictionary<string, string>.Empty;
 
-        public object Attribute(string key)
+        public string Attribute(string attribute)
         {
-            return this.Attributes.TryGetValue(key, out var value)
+            return this.Attributes.TryGetValue(attribute, out var value)
                 ? value
                 : null;
         }
@@ -50,6 +56,8 @@ namespace Graph.Elements
                 .Union(labels);
         }
 
+        public abstract object Clone();
+
         public void Declassify(string label)
         {
             if (String.IsNullOrWhiteSpace(label))
@@ -70,19 +78,19 @@ namespace Graph.Elements
             return this.Labels.Contains(label);
         }
 
-        public void Qualify(string key, object value)
+        public void Qualify(string attribute, string value)
         {
-            if (String.IsNullOrWhiteSpace(key))
+            if (String.IsNullOrWhiteSpace(attribute))
             {
-                throw new ArgumentException($"'{nameof(key)}' cannot be null or whitespace.", nameof(key));
+                throw new ArgumentException($"'{nameof(attribute)}' cannot be null or whitespace.", nameof(attribute));
             }
 
-            if (value is null)
+            if (String.IsNullOrWhiteSpace(value))
             {
-                throw new ArgumentNullException(nameof(value));
+                throw new ArgumentException($"'{nameof(value)}' cannot be null or whitespace.", nameof(value));
             }
 
-            this.Attributes = this.Attributes.SetItem(key, value.ToString());
+            this.Attributes = this.Attributes.SetItem(attribute, value);
         }
 
         public void Qualify(IDictionary<string, string> attributes)
