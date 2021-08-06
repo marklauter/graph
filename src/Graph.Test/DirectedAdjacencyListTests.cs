@@ -3,7 +3,7 @@ using Graph.Traversals;
 using System.Linq;
 using Xunit;
 
-namespace Graph.Test
+namespace Graph.Test.Indexes
 {
     public class DirectedAdjacencyListTests
     {
@@ -13,21 +13,14 @@ namespace Graph.Test
         }
 
         [Fact]
-        public void AdjacencyIndex_Empty_Succeeds()
-        {
-            var index = EmptyIndex();
-            Assert.Equal(0, index.Size);
-        }
-
-        [Fact]
         public void AdjacencyIndex_Couple_Succeeds()
         {
             var index = EmptyIndex();
-            index.Couple(0, 1);
+            Assert.True(index.Couple(0, 1));
 
             Assert.False(index.Adjacent(0, 0));
             Assert.True(index.Adjacent(0, 1));
-            Assert.False(index.Adjacent(1, 0));
+            Assert.True(index.Adjacent(1, 0));
             Assert.False(index.Adjacent(1, 1));
         }
 
@@ -35,12 +28,12 @@ namespace Graph.Test
         public void AdjacencyIndex_Couple_Twice_Succeeds()
         {
             var index = EmptyIndex();
-            index.Couple(0, 1);
-            index.Couple(0, 1);
+            Assert.True(index.Couple(0, 1));
+            Assert.False(index.Couple(0, 1));
 
             Assert.False(index.Adjacent(0, 0));
             Assert.True(index.Adjacent(0, 1));
-            Assert.False(index.Adjacent(1, 0));
+            Assert.True(index.Adjacent(1, 0));
             Assert.False(index.Adjacent(1, 1));
 
             Assert.Single(index.Neighbors(0));
@@ -50,17 +43,17 @@ namespace Graph.Test
         public void AdjacencyIndex_Disconnect_Succeeds()
         {
             var index = EmptyIndex();
-            index.Couple(0, 1);
+            Assert.True(index.Couple(0, 1));
 
             Assert.True(index.Adjacent(0, 1));
             Assert.False(index.Adjacent(1, 0));
 
-            index.Decouple(0, 1);
+            Assert.True(index.Decouple(0, 1));
             Assert.False(index.Adjacent(0, 1));
             Assert.False(index.Adjacent(1, 0));
 
-            index.Couple(0, 1);
-            index.Decouple(1, 0);
+            Assert.True(index.Couple(0, 1));
+            Assert.True(index.Decouple(1, 0));
 
             Assert.True(index.Adjacent(0, 1));
             Assert.False(index.Adjacent(1, 0));

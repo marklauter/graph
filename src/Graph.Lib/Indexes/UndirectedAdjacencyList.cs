@@ -37,24 +37,31 @@ namespace Graph.Indexes
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2234:Parameters should be passed in the correct order", Justification = "Recursing the call with the parameters reversed on purpose. Duh.")]
         public override bool Couple(TKey source, TKey target)
         {
-            // todo: MSL - recursion is hard - make sure this doesn't always return false because of a third call to couple 
             if (!this.Index.TryGetValue(source, out var neighbors))
             {
                 neighbors = new HashSet<TKey>();
                 this.Index.Add(source, neighbors);
             }
 
-            return neighbors.Add(target)
-                && this.Couple(target, source);
+            if (neighbors.Add(target))
+            {
+                this.Couple(target, source);
+                return true;
+            }
+
+            return false;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2234:Parameters should be passed in the correct order", Justification = "Recursing the call with the parameters reversed on purpose. Duh.")]
         public override bool Decouple(TKey source, TKey target)
         {
-            // todo: MSL - recursion is hard - make sure this doesn't always return false because of a third call to decouple 
-            return this.Index.TryGetValue(source, out var neighbors)
-                && neighbors.Remove(target)
-                && this.Decouple(target, source);
+            if (this.Index.TryGetValue(source, out var neighbors) && neighbors.Remove(target))
+            {
+                this.Decouple(target, source);
+                return true;
+            }
+
+            return false;
         }
 
         public override GraphType Type => GraphType.Undirected;
