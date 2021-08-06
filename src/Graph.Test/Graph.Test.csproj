@@ -21,7 +21,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Graph.DB\Graph.DB.csproj" />
-    <ProjectReference Include="..\graph.lib\Graph.Lib.csproj" />
+    <ProjectReference Include="..\Graph.Indexes\Graph.Indexes.csproj" />
+    <ProjectReference Include="..\Graph.Traversals\Graph.Traversals.csproj" />
   </ItemGroup>
 
 </Project>

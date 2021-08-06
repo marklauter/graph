@@ -1,5 +1,4 @@
-﻿using Graph.Graphs;
-using System;
+﻿using System;
 
 namespace Graph.Indexes
 {
@@ -69,6 +68,6 @@ namespace Graph.Indexes
             return false;
         }
 
-        public override GraphType Type => GraphType.Undirected;
+        public override IndexType Type => IndexType.Undirected;
     }
 }

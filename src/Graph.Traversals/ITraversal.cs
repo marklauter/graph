@@ -1,4 +1,4 @@
-﻿using Graph.Graphs;
+﻿using Graph.Indexes;
 using System;
 using System.Collections.Generic;
 
@@ -9,6 +9,6 @@ namespace Graph.Traversals
     {
         public IEnumerable<TKey> Traverse(TKey vertex);
         public IEnumerable<TKey> Traverse(TKey vertex, int depth);
-        public GraphType Type { get; }
+        public IndexType Type { get; }
     }
 }

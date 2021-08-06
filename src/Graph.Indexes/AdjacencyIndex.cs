@@ -1,5 +1,4 @@
-﻿using Graph.Graphs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Graph.Indexes
@@ -22,6 +21,6 @@ namespace Graph.Indexes
 
         public abstract int Size { get; }
 
-        public abstract GraphType Type { get; }
+        public abstract IndexType Type { get; }
     }
 }

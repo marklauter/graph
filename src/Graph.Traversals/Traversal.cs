@@ -1,5 +1,4 @@
-﻿using Graph.Graphs;
-using Graph.Indexes;
+﻿using Graph.Indexes;
 using System;
 using System.Collections.Generic;
 
@@ -25,6 +24,6 @@ namespace Graph.Traversals
 
         public abstract IEnumerable<TKey> Traverse(TKey vertex, int depth);
 
-        public GraphType Type => this.AdjacencyIndex.Type;
+        public IndexType Type => this.AdjacencyIndex.Type;
     }
 }

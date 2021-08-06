@@ -12,17 +12,11 @@ namespace Graph.Graphs
 
         public void AddRange(IEnumerable<TKey> vertices);
 
-        public IEnumerable<TKey> BreadthFirstSearch(TKey vertex);
-
         public IGraph<TKey> Clone();
 
         public void Connect(TKey source, TKey target);
 
         public int Degree(TKey vertex);
-
-        public IEnumerable<TKey> DepthFirstSearchPostOrder(TKey vertex);
-
-        public IEnumerable<TKey> DepthFirstSearchPreOrder(TKey vertex);
 
         public void Disconnect(TKey source, TKey target);
 

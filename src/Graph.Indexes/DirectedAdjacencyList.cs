@@ -1,5 +1,4 @@
-﻿using Graph.Graphs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Graph.Indexes
@@ -52,6 +51,6 @@ namespace Graph.Indexes
                 && neighbors.Remove(target);
         }
 
-        public override GraphType Type => GraphType.Directed;
+        public override IndexType Type => IndexType.Directed;
     }
 }

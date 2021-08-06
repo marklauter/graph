@@ -1,5 +1,4 @@
-﻿using Graph.Graphs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Graph.Indexes
@@ -14,6 +13,6 @@ namespace Graph.Indexes
         public int Degree(TKey vertex);
         public IEnumerable<TKey> Neighbors(TKey vertex);
         public int Size { get; }
-        public GraphType Type { get; }
+        public IndexType Type { get; }
     }
 }
