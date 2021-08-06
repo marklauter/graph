@@ -4,8 +4,6 @@ using System.Text;
 
 namespace Graph.Indexes
 {
-
-
     public abstract class AdjacencyMatrix
         : AdjacencyIndex<int>
     {
@@ -45,18 +43,15 @@ namespace Graph.Indexes
             return degree;
         }
 
-        public override int[] Neighbors(int vertex)
+        public override IEnumerable<int> Neighbors(int vertex)
         {
-            var neighbors = new List<int>();
             for (var i = this.size - 1; i >= 0; --i)
             {
                 if (this.Adjacent(vertex, i))
                 {
-                    neighbors.Add(i);
+                    yield return i;
                 }
             }
-
-            return neighbors.ToArray();
         }
 
         protected void Grow(int minSize)

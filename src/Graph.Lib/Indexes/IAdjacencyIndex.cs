@@ -8,9 +8,9 @@ namespace Graph.Indexes
         : ICloneable
         where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
     {
-        public bool Adjacent(TKey vertex1, TKey vertex2);
-        public bool Couple(TKey vertex1, TKey vertex2);
-        public bool Decouple(TKey vertex1, TKey vertex2);
+        public bool Adjacent(TKey source, TKey target);
+        public bool Couple(TKey source, TKey target);
+        public bool Decouple(TKey source, TKey target);
         public int Degree(TKey vertex);
         public IEnumerable<TKey> Neighbors(TKey vertex);
         public int Size { get; }

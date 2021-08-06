@@ -23,10 +23,10 @@ namespace Graph.Indexes
         {
         }
 
-        public override bool Adjacent(TKey vertex1, TKey vertex2)
+        public override bool Adjacent(TKey source, TKey target)
         {
-            return this.Index.TryGetValue(vertex1, out var neighbors)
-                && neighbors.Contains(vertex2);
+            return this.Index.TryGetValue(source, out var neighbors)
+                && neighbors.Contains(target);
         }
 
         public override object Clone()
@@ -35,26 +35,26 @@ namespace Graph.Indexes
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2234:Parameters should be passed in the correct order", Justification = "Recursing the call with the parameters reversed on purpose. Duh.")]
-        public override bool Couple(TKey vertex1, TKey vertex2)
+        public override bool Couple(TKey source, TKey target)
         {
             // todo: MSL - recursion is hard - make sure this doesn't always return false because of a third call to couple 
-            if (!this.Index.TryGetValue(vertex1, out var neighbors))
+            if (!this.Index.TryGetValue(source, out var neighbors))
             {
                 neighbors = new HashSet<TKey>();
-                this.Index.Add(vertex1, neighbors);
+                this.Index.Add(source, neighbors);
             }
 
-            return neighbors.Add(vertex2)
-                && this.Couple(vertex2, vertex1);
+            return neighbors.Add(target)
+                && this.Couple(target, source);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2234:Parameters should be passed in the correct order", Justification = "Recursing the call with the parameters reversed on purpose. Duh.")]
-        public override bool Decouple(TKey vertex1, TKey vertex2)
+        public override bool Decouple(TKey source, TKey target)
         {
             // todo: MSL - recursion is hard - make sure this doesn't always return false because of a third call to decouple 
-            return this.Index.TryGetValue(vertex1, out var neighbors)
-                && neighbors.Remove(vertex2)
-                && this.Decouple(vertex2, vertex1);
+            return this.Index.TryGetValue(source, out var neighbors)
+                && neighbors.Remove(target)
+                && this.Decouple(target, source);
         }
 
         public override GraphType Type => GraphType.Undirected;

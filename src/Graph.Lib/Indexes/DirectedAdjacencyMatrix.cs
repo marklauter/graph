@@ -21,11 +21,11 @@ namespace Graph.Indexes
         {
         }
 
-        public override bool Adjacent(int vertex1, int vertex2)
+        public override bool Adjacent(int source, int target)
         {
-            return vertex1 < this.Size
-                && vertex2 < this.Size
-                && this.Matrix[vertex1, vertex2];
+            return source < this.Size
+                && target < this.Size
+                && this.Matrix[source, target];
         }
 
         public override object Clone()
@@ -33,27 +33,27 @@ namespace Graph.Indexes
             return new DirectedAdjacencyMatrix(this);
         }
 
-        public override bool Couple(int vertex1, int vertex2)
+        public override bool Couple(int source, int target)
         {
-            if (vertex1 >= this.Size || vertex2 >= this.Size)
+            if (!this.Adjacent(source, target))
             {
-                this.Grow(Math.Max(vertex1, vertex2));
-            }
+                if (source >= this.Size || target >= this.Size)
+                {
+                    this.Grow(Math.Max(source, target));
+                }
 
-            if (!this.Matrix[vertex1, vertex2])
-            {
-                this.Matrix[vertex1, vertex2] = true;
+                this.Matrix[source, target] = true;
                 return true;
             }
 
             return false;
         }
 
-        public override bool Decouple(int vertex1, int vertex2)
+        public override bool Decouple(int source, int target)
         {
-            if (this.Adjacent(vertex1, vertex2))
+            if (this.Adjacent(source, target))
             {
-                this.Matrix[vertex1, vertex2] = false;
+                this.Matrix[source, target] = false;
                 return true;
             }
 

@@ -23,11 +23,11 @@ namespace Graph.Indexes
         {
         }
 
-        public override bool Adjacent(TKey vertex1, TKey vertex2)
+        public override bool Adjacent(TKey source, TKey target)
         {
-            return this.Index.TryGetValue(vertex1, out var neighbors)
+            return this.Index.TryGetValue(source, out var neighbors)
                 && neighbors != null
-                && neighbors.Contains(vertex2);
+                && neighbors.Contains(target);
         }
 
         public override object Clone()
@@ -35,21 +35,21 @@ namespace Graph.Indexes
             return new DirectedAdjacencyList<TKey>(this);
         }
 
-        public override bool Couple(TKey vertex1, TKey vertex2)
+        public override bool Couple(TKey source, TKey target)
         {
-            if (!this.Index.TryGetValue(vertex1, out var neighbors))
+            if (!this.Index.TryGetValue(source, out var neighbors))
             {
                 neighbors = new HashSet<TKey>();
-                this.Index.Add(vertex1, neighbors);
+                this.Index.Add(source, neighbors);
             }
 
-            return neighbors.Add(vertex2);
+            return neighbors.Add(target);
         }
 
-        public override bool Decouple(TKey vertex1, TKey vertex2)
+        public override bool Decouple(TKey source, TKey target)
         {
-            return this.Index.TryGetValue(vertex1, out var neighbors)
-                && neighbors.Remove(vertex2);
+            return this.Index.TryGetValue(source, out var neighbors)
+                && neighbors.Remove(target);
         }
 
         public override GraphType Type => GraphType.Directed;
