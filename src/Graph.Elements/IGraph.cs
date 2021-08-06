@@ -5,6 +5,7 @@ namespace Graph.Elements
 {
     public interface IGraph
     {
+        public Node Add();
         public bool Add(Node node);
         public int AddRange(IEnumerable<Node> nodes);
         public Edge Couple(Guid sourceId, Guid targetId);

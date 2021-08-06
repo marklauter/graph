@@ -43,6 +43,13 @@ namespace Graph.Elements
         [JsonProperty("directed")]
         public bool IsDirected { get; }
 
+        public Node Add()
+        {
+            var node = new Node();
+            _ = this.Add(node);
+            return node;
+        }
+
         public bool Add(Node node)
         {
             return this.nodes.Add(node);
@@ -50,15 +57,7 @@ namespace Graph.Elements
 
         public int AddRange(IEnumerable<Node> nodes)
         {
-            var added = 0;
-            foreach (var node in nodes)
-            {
-                added += this.nodes.Add(node)
-                    ? 1
-                    : 0;
-            }
-
-            return added;
+            return nodes.Count(n => this.nodes.Add(n));
         }
 
         public override object Clone()
