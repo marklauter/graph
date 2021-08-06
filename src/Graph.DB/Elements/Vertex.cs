@@ -1,9 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Graph.DB.Elements
 {
+    [DebuggerDisplay("{Id}")]
+    [JsonObject("vertex")]
     public sealed class Vertex
         : Element
         , IEquatable<Vertex>
