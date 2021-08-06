@@ -73,9 +73,9 @@ namespace Graph.Test
         [Fact]
         public void Repository_Insert_Edge_Succeeds()
         {
-            var vertex1 = new Vertex();
-            var vertex2 = new Vertex();
-            var edge = new Edge(vertex1, vertex2);
+            var source = new Vertex();
+            var target = new Vertex();
+            var edge = new Edge(source, target);
 
             var label = nameof(Vertex).ToLowerInvariant();
             edge.Classify(label);
@@ -103,9 +103,9 @@ namespace Graph.Test
         [Fact]
         public void Repository_Read_Edge_Succeeds()
         {
-            var vertex1 = new Vertex();
-            var vertex2 = new Vertex();
-            var edge = new Edge(vertex1, vertex2);
+            var source = new Vertex();
+            var target = new Vertex();
+            var edge = new Edge(source, target);
 
             var label = nameof(Vertex).ToLowerInvariant();
             edge.Classify(label);
@@ -132,8 +132,8 @@ namespace Graph.Test
                 Assert.True(((Edge)entity).Is(label));
                 Assert.Equal(value.ToString(), ((Edge)entity).Attributes["value"]);
 
-                Assert.Equal(edge.Vertex1, ((Edge)entity).Vertex1);
-                Assert.Equal(edge.Vertex2, ((Edge)entity).Vertex2);
+                Assert.Equal(edge.Source, ((Edge)entity).Source);
+                Assert.Equal(edge.Target, ((Edge)entity).Target);
             }
             finally
             {
