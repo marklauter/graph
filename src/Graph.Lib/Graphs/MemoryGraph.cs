@@ -61,13 +61,13 @@
 //            this.index = this.index.Resize(size);
 //        }
 
-//        public bool Adjacent(TKey vertex1, TKey vertex2)
+//        public bool Adjacent(TKey source, TKey target)
 //        {
 //#pragma warning disable S3358 // Ternary operators should not be nested
-//            return !this.keyToVertex.TryGetValue(vertex1, out var v1)
-//                ? throw new KeyNotFoundException(nameof(vertex1))
-//                : !this.keyToVertex.TryGetValue(vertex2, out var v2)
-//                    ? throw new KeyNotFoundException(nameof(vertex2))
+//            return !this.keyToVertex.TryGetValue(source, out var v1)
+//                ? throw new KeyNotFoundException(nameof(source))
+//                : !this.keyToVertex.TryGetValue(target, out var v2)
+//                    ? throw new KeyNotFoundException(nameof(target))
 //                    : this.index.Adjacent(v1, v2);
 //#pragma warning restore S3358 // Ternary operators should not be nested
 //        }
@@ -87,16 +87,16 @@
 //                new ConcurrentDictionary<int, TKey>(this.vertexToKey));
 //        }
 
-//        public void Connect(TKey vertex1, TKey vertex2)
+//        public void Connect(TKey source, TKey target)
 //        {
-//            if (!this.keyToVertex.TryGetValue(vertex1, out var v1))
+//            if (!this.keyToVertex.TryGetValue(source, out var v1))
 //            {
-//                v1 = this.Add(vertex1);
+//                v1 = this.Add(source);
 //            }
 
-//            if (!this.keyToVertex.TryGetValue(vertex2, out var v2))
+//            if (!this.keyToVertex.TryGetValue(target, out var v2))
 //            {
-//                v2 = this.Add(vertex1);
+//                v2 = this.Add(source);
 //            }
 
 //            this.index.Couple(v1, v2);
@@ -123,16 +123,16 @@
 //                : this.VerticesToKeys(this.index.DepthFirstSearchPreOrder(v));
 //        }
 
-//        public void Disconnect(TKey vertex1, TKey vertex2)
+//        public void Disconnect(TKey source, TKey target)
 //        {
-//            if (!this.keyToVertex.TryGetValue(vertex1, out var v1))
+//            if (!this.keyToVertex.TryGetValue(source, out var v1))
 //            {
-//                throw new KeyNotFoundException(nameof(vertex1));
+//                throw new KeyNotFoundException(nameof(source));
 //            }
 
-//            if (!this.keyToVertex.TryGetValue(vertex2, out var v2))
+//            if (!this.keyToVertex.TryGetValue(target, out var v2))
 //            {
-//                throw new KeyNotFoundException(nameof(vertex2));
+//                throw new KeyNotFoundException(nameof(target));
 //            }
 
 //            this.index.Decouple(v1, v2);

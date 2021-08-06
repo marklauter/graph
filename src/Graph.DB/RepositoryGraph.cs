@@ -49,7 +49,7 @@
 //            throw new NotImplementedException();
 //        }
 
-//        public bool Adjacent(Vertex vertex1, Vertex vertex2)
+//        public bool Adjacent(Vertex source, Vertex target)
 //        {
 //            throw new NotImplementedException();
 //        }
@@ -64,7 +64,7 @@
 //            throw new NotImplementedException();
 //        }
 
-//        public void Connect(Vertex vertex1, Vertex vertex2)
+//        public void Connect(Vertex source, Vertex target)
 //        {
 //            throw new NotImplementedException();
 //        }
@@ -84,7 +84,7 @@
 //            throw new NotImplementedException();
 //        }
 
-//        public void Disconnect(Vertex vertex1, Vertex vertex2)
+//        public void Disconnect(Vertex source, Vertex target)
 //        {
 //            throw new NotImplementedException();
 //        }

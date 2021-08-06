@@ -8,7 +8,7 @@ namespace Graph.Graphs
     {
         public int Add(TKey vertex);
 
-        public bool Adjacent(TKey vertex1, TKey vertex2);
+        public bool Adjacent(TKey source, TKey target);
 
         public void AddRange(IEnumerable<TKey> vertices);
 
@@ -16,7 +16,7 @@ namespace Graph.Graphs
 
         public IGraph<TKey> Clone();
 
-        public void Connect(TKey vertex1, TKey vertex2);
+        public void Connect(TKey source, TKey target);
 
         public int Degree(TKey vertex);
 
@@ -24,7 +24,7 @@ namespace Graph.Graphs
 
         public IEnumerable<TKey> DepthFirstSearchPreOrder(TKey vertex);
 
-        public void Disconnect(TKey vertex1, TKey vertex2);
+        public void Disconnect(TKey source, TKey target);
 
         public IEnumerable<TKey> Neighbors(TKey vertex);
 
