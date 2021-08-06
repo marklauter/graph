@@ -6,7 +6,13 @@ namespace Graph.Test.Elements
 {
     public class ElementTests
     {
-        private class ConcreteElement : Element { }
+        private class ConcreteElement : Element
+        {
+            public override object Clone()
+            {
+                throw new NotImplementedException();
+            }
+        }
 
         [Fact]
         public void Element_Default_Constructor_Succeeds()

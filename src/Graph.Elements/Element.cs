@@ -15,8 +15,8 @@ namespace Graph.Elements
 
         protected Element(Element other)
         {
-            // copy labels
-            // copy attributes
+            // todo: copy labels
+            // todo: copy attributes
         }
 
         [JsonProperty("id")]

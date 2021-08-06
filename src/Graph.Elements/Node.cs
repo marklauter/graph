@@ -13,6 +13,21 @@ namespace Graph.Elements
         , IEquatable<Node>
         , IEqualityComparer<Node>
     {
+        public Node()
+            : base()
+        {
+        }
+
+        private Node(Node other)
+            : base(other)
+        {
+        }
+
+        public override object Clone()
+        {
+            return new Node(this);
+        }
+
         public override bool Equals(object obj)
         {
             return this.Equals(obj as Node);

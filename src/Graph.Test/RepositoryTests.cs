@@ -14,7 +14,7 @@ namespace Graph.Test.Repositories
             var vertex = new Node();
             var label = nameof(Node).ToLowerInvariant();
             vertex.Classify(label);
-            var value = Guid.NewGuid();
+            var value = Guid.NewGuid().ToString();
             vertex.Qualify("value", value);
 
             var repositoryName = "repositorytests" + Guid.NewGuid().ToString();
@@ -41,7 +41,7 @@ namespace Graph.Test.Repositories
             var vertex = new Node();
             var label = nameof(Node).ToLowerInvariant();
             vertex.Classify(label);
-            var value = Guid.NewGuid();
+            var value = Guid.NewGuid().ToString();
             vertex.Qualify("value", value);
 
             var repositoryName = "repositorytests" + Guid.NewGuid().ToString();
@@ -79,7 +79,7 @@ namespace Graph.Test.Repositories
 
             var label = nameof(Node).ToLowerInvariant();
             edge.Classify(label);
-            var value = Guid.NewGuid();
+            var value = Guid.NewGuid().ToString();
             edge.Qualify("value", value);
 
             var repositoryName = "repositorytests" + Guid.NewGuid().ToString();
@@ -109,7 +109,7 @@ namespace Graph.Test.Repositories
 
             var label = nameof(Node).ToLowerInvariant();
             edge.Classify(label);
-            var value = Guid.NewGuid();
+            var value = Guid.NewGuid().ToString();
             edge.Qualify("value", value);
 
             var repositoryName = "repositorytests" + Guid.NewGuid().ToString();

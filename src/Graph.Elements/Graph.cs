@@ -15,12 +15,7 @@ namespace Graph.Elements
         , IEquatable<Graph>
         , IEqualityComparer<Graph>
     {
-        public static Graph Empty()
-        {
-            return new Graph();
-        }
-
-        private Graph()
+        public Graph()
             : base()
         {
             this.edges = new();
@@ -32,11 +27,11 @@ namespace Graph.Elements
         {
             this.edges = other.edges
                 .Select(e => e.Clone() as Edge)
-                .ToList();
+                .ToHashSet();
 
             this.nodes = other.nodes
                 .Select(n => n.Clone() as Node)
-                .ToList();
+                .ToHashSet();
         }
 
         [JsonProperty("edges")]

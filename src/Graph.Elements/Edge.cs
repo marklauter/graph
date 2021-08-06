@@ -46,6 +46,7 @@ namespace Graph.Elements
         }
 
         private Edge(Edge other)
+            : base(other)
         {
             this.Source = other.Source;
             this.Target = other.Target;
