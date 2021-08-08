@@ -4,37 +4,31 @@ using System.Collections.Generic;
 namespace Graph.Traversals
 {
     public sealed class FastDepthFirstPostOrderTraversal
-    : Traversal<int>
+        : Traversal<int>
     {
         public FastDepthFirstPostOrderTraversal(IAdjacencyIndex<int> adjacencyIndex)
             : base(adjacencyIndex)
         {
         }
 
-        public override IEnumerable<int> Traverse(int vertex)
+        public override int Depth(int node)
         {
-            // todo: MSL - make sure I don't have to call yield return to allow for the yields in the call to traverse
-            return this.Traverse(vertex, -1);
-        }
-
-        public override IEnumerable<int> Traverse(int vertex, int depth)
-        {
-            var visitStack = new Stack<int>();
+            var depth = 0;
             var visited = new bool[this.AdjacencyIndex.Size];
-            var neighbors = new Stack<int>(new int[] { vertex });
+            var neighbors = new Stack<int>(new int[] { node });
 
             while (neighbors.Count > 0)
             {
-                var nextVertex = neighbors.Pop();
-                if (!visited[nextVertex])
+                var nextNode = neighbors.Pop();
+                if (!visited[nextNode])
                 {
-                    visitStack.Push(nextVertex);
-                    visited[nextVertex] = true;
+                    ++depth;
+                    visited[nextNode] = true;
                     for (var i = this.AdjacencyIndex.Size - 1; i >= 0; --i)
                     {
-                        if (nextVertex != i
+                        if (nextNode != i
                             && !visited[i]
-                            && this.AdjacencyIndex.Adjacent(nextVertex, i))
+                            && this.AdjacencyIndex.Adjacent(nextNode, i))
                         {
                             neighbors.Push(i);
                         }
@@ -42,9 +36,44 @@ namespace Graph.Traversals
                 }
             }
 
-            while (visitStack.Count > 0)
+            return depth;
+        }
+
+        public override IEnumerable<int> Traverse(int node)
+        {
+            return this.Traverse(node, -1);
+        }
+
+        public override IEnumerable<int> Traverse(int node, int maxDepth)
+        {
+            var depth = 0;
+            var traversal = new Stack<int>();
+            var visited = new bool[this.AdjacencyIndex.Size];
+            var neighbors = new Stack<int>(new int[] { node });
+
+            while (neighbors.Count > 0 && (maxDepth == -1 || depth < maxDepth))
             {
-                yield return visitStack.Pop();
+                var nextNode = neighbors.Pop();
+                if (!visited[nextNode])
+                {
+                    ++depth;
+                    traversal.Push(nextNode);
+                    visited[nextNode] = true;
+                    for (var i = this.AdjacencyIndex.Size - 1; i >= 0; --i)
+                    {
+                        if (nextNode != i
+                            && !visited[i]
+                            && this.AdjacencyIndex.Adjacent(nextNode, i))
+                        {
+                            neighbors.Push(i);
+                        }
+                    }
+                }
+            }
+
+            while (traversal.Count > 0)
+            {
+                yield return traversal.Pop();
             }
         }
     }

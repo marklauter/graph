@@ -38,12 +38,12 @@ namespace Graph.Indexes
             this.size = this.Matrix.Length;
         }
 
-        public override int Degree(int vertex)
+        public override int Degree(int node)
         {
             var degree = 0;
             for (var i = this.size - 1; i >= 0; --i)
             {
-                if (this.Adjacent(vertex, i))
+                if (this.Adjacent(node, i))
                 {
                     ++degree;
                 }
@@ -52,11 +52,18 @@ namespace Graph.Indexes
             return degree;
         }
 
-        public override IEnumerable<int> Neighbors(int vertex)
+        public override int First()
+        {
+            return this.size > 0
+                ? 0
+                : throw new InvalidOperationException("First is invalid on empty index.");
+        }
+
+        public override IEnumerable<int> Neighbors(int node)
         {
             for (var i = this.size - 1; i >= 0; --i)
             {
-                if (this.Adjacent(vertex, i))
+                if (this.Adjacent(node, i))
                 {
                     yield return i;
                 }

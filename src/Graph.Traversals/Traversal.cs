@@ -20,9 +20,11 @@ namespace Graph.Traversals
             this.AdjacencyIndex = adjacencyIndex;
         }
 
-        public abstract IEnumerable<TKey> Traverse(TKey vertex);
+        public abstract int Depth(TKey node);
 
-        public abstract IEnumerable<TKey> Traverse(TKey vertex, int depth);
+        public abstract IEnumerable<TKey> Traverse(TKey node);
+
+        public abstract IEnumerable<TKey> Traverse(TKey node, int maxDepth);
 
         public IndexType Type => this.AdjacencyIndex.Type;
     }

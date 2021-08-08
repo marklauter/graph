@@ -167,5 +167,22 @@ namespace Graph.Test.Indexes
             Assert.True(clone.Adjacent(2, 1));
             Assert.False(clone.Adjacent(2, 2));
         }
+
+        [Fact]
+        public void AdjacencyIndex_Depth_Succeeds()
+        {
+            var index = EmptyIndex();
+            index.Couple(0, 1);
+            index.Couple(1, 2);
+            index.Couple(1, 3);
+            index.Couple(2, 4);
+            index.Couple(2, 5);
+            index.Couple(3, 6);
+            index.Couple(3, 7);
+
+            var traversal = new DepthFirstPreOrderTraversal<int>(index);
+            var depth = traversal.Depth(0);
+            Assert.Equal(3, depth);
+        }
     }
 }

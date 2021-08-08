@@ -9,21 +9,21 @@ namespace Graph.Test.Repositories
     public class RepositoryTests
     {
         [Fact]
-        public void Repository_Insert_Vertex_Succeeds()
+        public void Repository_Insert_Node_Succeeds()
         {
-            var vertex = new Node();
+            var node = new Node();
             var label = nameof(Node).ToLowerInvariant();
-            vertex.Classify(label);
+            node.Classify(label);
             var value = Guid.NewGuid().ToString();
-            vertex.Qualify("value", value);
+            node.Qualify("value", value);
 
             var repositoryName = "repositorytests" + Guid.NewGuid().ToString();
             try
             {
                 var repository = new JsonRepository<Node>(repositoryName);
-                var entity = repository.Insert(vertex);
+                var entity = repository.Insert(node);
 
-                Assert.Equal(vertex.Id, entity.Id);
+                Assert.Equal(node.Id, entity.Id);
                 Assert.Equal(0, entity.ETag);
 
                 Assert.True(((Node)entity).Is(label));
@@ -36,21 +36,21 @@ namespace Graph.Test.Repositories
         }
 
         [Fact]
-        public void Repository_Read_Vertex_Succeeds()
+        public void Repository_Read_Node_Succeeds()
         {
-            var vertex = new Node();
+            var node = new Node();
             var label = nameof(Node).ToLowerInvariant();
-            vertex.Classify(label);
+            node.Classify(label);
             var value = Guid.NewGuid().ToString();
-            vertex.Qualify("value", value);
+            node.Qualify("value", value);
 
             var repositoryName = "repositorytests" + Guid.NewGuid().ToString();
             try
             {
                 var repository = new JsonRepository<Node>(repositoryName);
-                var entity = repository.Insert(vertex);
+                var entity = repository.Insert(node);
 
-                Assert.Equal(vertex.Id, entity.Id);
+                Assert.Equal(node.Id, entity.Id);
                 Assert.Equal(0, entity.ETag);
 
                 Assert.True(((Node)entity).Is(label));
@@ -58,7 +58,7 @@ namespace Graph.Test.Repositories
 
                 entity = repository.Read(entity.Id);
 
-                Assert.Equal(vertex.Id, entity.Id);
+                Assert.Equal(node.Id, entity.Id);
                 Assert.Equal(0, entity.ETag);
 
                 Assert.True(((Node)entity).Is(label));

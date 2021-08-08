@@ -15,9 +15,11 @@ namespace Graph.Indexes
 
         public abstract bool Decouple(TKey source, TKey target);
 
-        public abstract int Degree(TKey vertex);
+        public abstract int Degree(TKey node);
 
-        public abstract IEnumerable<TKey> Neighbors(TKey vertex);
+        public abstract TKey First();
+
+        public abstract IEnumerable<TKey> Neighbors(TKey node);
 
         public abstract int Size { get; }
 

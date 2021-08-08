@@ -14,24 +14,49 @@ namespace Graph.Traversals
         {
         }
 
-        public override IEnumerable<TKey> Traverse(TKey vertex)
+        public override int Depth(TKey node)
         {
-            return this.Traverse(vertex, -1);
-        }
-
-        public override IEnumerable<TKey> Traverse(TKey vertex, int depth)
-        {
+            var depth = 0;
             var visited = new HashSet<TKey>(this.AdjacencyIndex.Size);
-            var neighbors = new Stack<TKey>(new TKey[] { vertex });
+            var neighbors = new Stack<TKey>(new TKey[] { node });
 
             while (neighbors.Count > 0)
             {
-                var nextVertex = neighbors.Pop();
-                if (!visited.Contains(nextVertex))
+                var nextNode = neighbors.Pop();
+                if (!visited.Contains(nextNode))
                 {
-                    yield return nextVertex;
-                    visited.Add(nextVertex);
-                    foreach (var neighbor in this.AdjacencyIndex.Neighbors(nextVertex).Where(n => !visited.Contains(n)))
+                    ++depth;
+                    visited.Add(nextNode);
+                    foreach (var neighbor in this.AdjacencyIndex.Neighbors(nextNode).Where(n => !visited.Contains(n)))
+                    {
+                        neighbors.Push(neighbor);
+                    }
+                }
+            }
+
+            return depth;
+        }
+
+        public override IEnumerable<TKey> Traverse(TKey node)
+        {
+            return this.Traverse(node, -1);
+        }
+
+        public override IEnumerable<TKey> Traverse(TKey node, int maxDepth)
+        {
+            var depth = 0;
+            var visited = new HashSet<TKey>(this.AdjacencyIndex.Size);
+            var neighbors = new Stack<TKey>(new TKey[] { node });
+
+            while (neighbors.Count > 0 && (maxDepth == -1 || depth < maxDepth))
+            {
+                var nextNode = neighbors.Pop();
+                if (!visited.Contains(nextNode))
+                {
+                    ++depth;
+                    yield return nextNode;
+                    visited.Add(nextNode);
+                    foreach (var neighbor in this.AdjacencyIndex.Neighbors(nextNode).Where(n => !visited.Contains(n)))
                     {
                         neighbors.Push(neighbor);
                     }

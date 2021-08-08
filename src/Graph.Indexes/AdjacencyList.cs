@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Graph.Indexes
 {
@@ -19,16 +20,23 @@ namespace Graph.Indexes
             this.Index = new Dictionary<TKey, HashSet<TKey>>(other.Index);
         }
 
-        public override int Degree(TKey vertex)
+        public override int Degree(TKey node)
         {
-            return this.Index.TryGetValue(vertex, out var neighbors) && neighbors != null
+            return this.Index.TryGetValue(node, out var neighbors) && neighbors != null
                 ? neighbors.Count
                 : 0;
         }
 
-        public override IEnumerable<TKey> Neighbors(TKey vertex)
+        public override TKey First()
         {
-            if (this.Index.TryGetValue(vertex, out var neighbors) && neighbors != null)
+            return this.Size > 0
+                ? this.Index.Keys.First()
+                : throw new InvalidOperationException("First is invalid on empty index.");
+        }
+
+        public override IEnumerable<TKey> Neighbors(TKey node)
+        {
+            if (this.Index.TryGetValue(node, out var neighbors) && neighbors != null)
             {
                 foreach (var neigbhor in neighbors)
                 {
