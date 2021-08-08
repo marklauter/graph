@@ -11,11 +11,6 @@ namespace Graph.Traversals
         {
         }
 
-        public override int Depth(int node)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public override IEnumerable<int> Traverse(int node)
         {
             return this.Traverse(node, -1);
@@ -27,7 +22,7 @@ namespace Graph.Traversals
             var visited = new bool[this.AdjacencyIndex.Size];
             var neighbors = new Stack<int>(new int[] { node });
 
-            while (neighbors.Count > 0 && (maxDepth == -1 || depth < maxDepth))
+            while (neighbors.Count > 0)// && (maxDepth == -1 || depth < maxDepth))
             {
                 var nextNode = neighbors.Pop();
                 if (!visited[nextNode])

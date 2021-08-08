@@ -173,16 +173,31 @@ namespace Graph.Test.Indexes
         {
             var index = EmptyIndex();
             index.Couple(0, 1);
-            index.Couple(1, 2);
+            index.Couple(0, 2);
             index.Couple(1, 3);
-            index.Couple(2, 4);
+            index.Couple(1, 4);
             index.Couple(2, 5);
-            index.Couple(3, 6);
-            index.Couple(3, 7);
+            index.Couple(2, 6);
 
             var traversal = new DepthFirstPreOrderTraversal<int>(index);
             var depth = traversal.Depth(0);
             Assert.Equal(3, depth);
+
+            index.Couple(3, 7);
+            index.Couple(3, 8);
+
+            depth = traversal.Depth(0);
+            Assert.Equal(4, depth);
+
+            index.Couple(8, 9);
+            index.Couple(8, 10);
+
+            depth = traversal.Depth(0);
+            Assert.Equal(5, depth);
+
+            depth = traversal.Depth(1);
+            Assert.Equal(4, depth);
+
         }
     }
 }

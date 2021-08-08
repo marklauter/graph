@@ -14,29 +14,6 @@ namespace Graph.Traversals
         {
         }
 
-        public override int Depth(TKey node)
-        {
-            var depth = 0;
-            var visited = new HashSet<TKey>(this.AdjacencyIndex.Size);
-            var neighbors = new Stack<TKey>(new TKey[] { node });
-
-            while (neighbors.Count > 0)
-            {
-                var nextNode = neighbors.Pop();
-                if (!visited.Contains(nextNode))
-                {
-                    ++depth;
-                    visited.Add(nextNode);
-                    foreach (var neighbor in this.AdjacencyIndex.Neighbors(nextNode).Where(n => !visited.Contains(n)))
-                    {
-                        neighbors.Push(neighbor);
-                    }
-                }
-            }
-
-            return depth;
-        }
-
         public override IEnumerable<TKey> Traverse(TKey node)
         {
             return this.Traverse(node, -1);
@@ -48,7 +25,7 @@ namespace Graph.Traversals
             var visited = new HashSet<TKey>(this.AdjacencyIndex.Size);
             var neighbors = new Stack<TKey>(new TKey[] { node });
 
-            while (neighbors.Count > 0 && (maxDepth == -1 || depth < maxDepth))
+            while (neighbors.Count > 0)// && (maxDepth == -1 || depth < maxDepth))
             {
                 var nextNode = neighbors.Pop();
                 if (!visited.Contains(nextNode))
