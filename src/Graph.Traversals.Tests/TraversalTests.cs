@@ -4,42 +4,6 @@ using Xunit;
 
 namespace Graph.Traversals.Tests
 {
-    public sealed class DepthFirstPostOrderTraversalTests
-        : TraversalTests
-    {
-        protected override ITraversal<int> CreateTraversal(IAdjacencyIndex<int> index)
-        {
-            return new DepthFirstPostOrderTraversal<int>(index);
-        }
-    }
-
-    public sealed class DepthFirstPreOrderTraversalTests
-        : TraversalTests
-    {
-        protected override ITraversal<int> CreateTraversal(IAdjacencyIndex<int> index)
-        {
-            return new DepthFirstPreOrderTraversal<int>(index);
-        }
-    }
-
-    public sealed class FastDepthFirstPostOrderTraversalTests
-        : TraversalTests
-    {
-        protected override ITraversal<int> CreateTraversal(IAdjacencyIndex<int> index)
-        {
-            return new FastDepthFirstPostOrderTraversal(index);
-        }
-    }
-
-    public sealed class FastDepthFirstPreOrderTraversalTests
-        : TraversalTests
-    {
-        protected override ITraversal<int> CreateTraversal(IAdjacencyIndex<int> index)
-        {
-            return new FastDepthFirstPreOrderTraversal(index);
-        }
-    }
-
     public abstract class TraversalTests
     {
         protected abstract ITraversal<int> CreateTraversal(IAdjacencyIndex<int> index);
