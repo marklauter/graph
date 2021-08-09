@@ -17,6 +17,8 @@ namespace Graph.Elements
     {
         private Edge() { }
 
+        public Edge(Guid id) : base(id) { }
+
         public Edge(
             Node source,
             Node target)
@@ -40,6 +42,16 @@ namespace Graph.Elements
             Guid source,
             Guid target)
             : base()
+        {
+            this.Source = source;
+            this.Target = target;
+        }
+
+        public Edge(
+            Guid id,
+            Guid source,
+            Guid target)
+            : base(id)
         {
             this.Source = source;
             this.Target = target;

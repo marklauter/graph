@@ -18,6 +18,8 @@ namespace Graph.Elements
         {
         }
 
+        public Node(Guid id) : base(id) { }
+
         private Node(Node other)
             : base(other)
         {

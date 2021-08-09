@@ -19,4 +19,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Graph.Elements\Graph.Elements.csproj" />
+    <ProjectReference Include="..\Graph.IO\Graph.IO.csproj" />
+  </ItemGroup>
+
 </Project>

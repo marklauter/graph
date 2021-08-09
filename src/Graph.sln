@@ -25,13 +25,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Graph.Elements", "Graph.Ele
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Graph.IO", "Graph.IO\Graph.IO.csproj", "{365B5D0D-93D7-4E59-B248-8A4FAEE0B251}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graph.Indexes.Tests", "Graph.Indexes.Tests\Graph.Indexes.Tests.csproj", "{D29D2DCC-08A0-4095-9C5F-9D4A04D92965}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Graph.Indexes.Tests", "Graph.Indexes.Tests\Graph.Indexes.Tests.csproj", "{D29D2DCC-08A0-4095-9C5F-9D4A04D92965}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graph.Traversals.Tests", "Graph.Traversals.Tests\Graph.Traversals.Tests.csproj", "{24F0C966-6262-4B1C-B6E2-0350D97ED00A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Graph.Traversals.Tests", "Graph.Traversals.Tests\Graph.Traversals.Tests.csproj", "{24F0C966-6262-4B1C-B6E2-0350D97ED00A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graph.Elements.Tests", "Graph.Elements.Tests\Graph.Elements.Tests.csproj", "{5E46D03B-9E70-449A-8C5B-9E4214CE8176}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Graph.Elements.Tests", "Graph.Elements.Tests\Graph.Elements.Tests.csproj", "{5E46D03B-9E70-449A-8C5B-9E4214CE8176}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graph.IO.Tests", "Graph.IO.Tests\Graph.IO.Tests.csproj", "{48B89DE6-110E-46D6-9C26-2B3E413EC032}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Graph.IO.Tests", "Graph.IO.Tests\Graph.IO.Tests.csproj", "{48B89DE6-110E-46D6-9C26-2B3E413EC032}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

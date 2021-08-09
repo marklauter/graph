@@ -13,6 +13,16 @@ namespace Graph.Elements
     {
         protected Element() { }
 
+        protected Element(Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                throw new ArgumentOutOfRangeException(nameof(id));
+            }
+
+            this.Id = id;
+        }
+
         protected Element(Element other)
         {
             // todo: copy labels

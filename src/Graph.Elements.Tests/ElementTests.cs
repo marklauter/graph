@@ -1,8 +1,8 @@
-﻿using Graph.Elements;
 using System;
 using Xunit;
 
-namespace Graph.Test.Elements
+
+namespace Graph.Elements.Tests
 {
     public class ElementTests
     {
@@ -115,4 +115,5 @@ namespace Graph.Test.Elements
             Assert.True(element.Is(labels[0]));
         }
     }
+
 }
