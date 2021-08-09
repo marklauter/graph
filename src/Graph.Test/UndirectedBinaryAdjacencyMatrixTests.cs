@@ -4,11 +4,11 @@ using Xunit;
 
 namespace Graph.Test.Indexes
 {
-    public class UndirectedAdjacencyMatrixTests
+    public class UndirectedBinaryAdjacencyMatrixTests
     {
         protected static IAdjacencyIndex<int> EmptyIndex()
         {
-            return UndirectedAdjacencyMatrix.Empty();
+            return UndirectedBinaryAdjacencyMatrix.Empty();
         }
 
         [Fact]

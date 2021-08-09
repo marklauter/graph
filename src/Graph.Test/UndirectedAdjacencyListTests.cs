@@ -4,11 +4,11 @@ using Xunit;
 
 namespace Graph.Test.Indexes
 {
-    public class UndirectedAdjacencyMatrixTests
+    public class UndirectedAdjacencyListTests
     {
         protected static IAdjacencyIndex<int> EmptyIndex()
         {
-            return UndirectedAdjacencyMatrix.Empty();
+            return UndirectedAdjacencyList<int>.Empty();
         }
 
         [Fact]
@@ -60,6 +60,7 @@ namespace Graph.Test.Indexes
 
             Assert.True(index.Couple(0, 1));
             Assert.True(index.Decouple(1, 0));
+            Assert.False(index.Decouple(1, 0));
 
             Assert.False(index.Adjacent(0, 1));
             Assert.False(index.Adjacent(1, 0));
@@ -69,7 +70,7 @@ namespace Graph.Test.Indexes
         [Fact]
         public void AdjacencyIndex_DepthFirstSearchPreOrder_Succeeds()
         {
-            var size = 5;
+            var size = 4;
             var index = EmptyIndex();
             index.Couple(0, 1);
             index.Couple(0, 2);
@@ -90,7 +91,7 @@ namespace Graph.Test.Indexes
         [Fact]
         public void AdjacencyIndex_DepthFirstSearchPostOrder_Succeeds()
         {
-            var size = 5;
+            var size = 4;
             var index = EmptyIndex();
             index.Couple(0, 1);
             index.Couple(0, 2);
@@ -128,6 +129,7 @@ namespace Graph.Test.Indexes
             index.Couple(1, 2);
 
             var neighbors = index.Neighbors(1);
+
             Assert.Contains(0, neighbors);
             Assert.Contains(2, neighbors);
         }
@@ -164,6 +166,38 @@ namespace Graph.Test.Indexes
             Assert.False(clone.Adjacent(2, 0));
             Assert.True(clone.Adjacent(2, 1));
             Assert.False(clone.Adjacent(2, 2));
+        }
+
+        [Fact]
+        public void AdjacencyIndex_Depth_Succeeds()
+        {
+            var index = EmptyIndex();
+            index.Couple(0, 1);
+            index.Couple(0, 2);
+            index.Couple(1, 3);
+            index.Couple(1, 4);
+            index.Couple(2, 5);
+            index.Couple(2, 6);
+
+            var traversal = new DepthFirstPreOrderTraversal<int>(index);
+            var depth = traversal.Depth(0);
+            Assert.Equal(3, depth);
+
+            index.Couple(3, 7);
+            index.Couple(3, 8);
+
+            depth = traversal.Depth(0);
+            Assert.Equal(4, depth);
+
+            index.Couple(8, 9);
+            index.Couple(8, 10);
+
+            depth = traversal.Depth(0);
+            Assert.Equal(5, depth);
+
+            depth = traversal.Depth(1);
+            Assert.Equal(4, depth);
+
         }
     }
 }

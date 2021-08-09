@@ -20,10 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Graph.DB\Graph.DB.csproj" />
-    <ProjectReference Include="..\Graph.Elements\Graph.Elements.csproj" />
-    <ProjectReference Include="..\Graph.Indexes\Graph.Indexes.csproj" />
-    <ProjectReference Include="..\Graph.IO\Graph.IO.csproj" />
     <ProjectReference Include="..\Graph.Traversals\Graph.Traversals.csproj" />
   </ItemGroup>
 
