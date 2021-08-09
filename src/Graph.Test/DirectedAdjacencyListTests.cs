@@ -1,6 +1,5 @@
 ﻿using Graph.Indexes;
 using Graph.Traversals;
-using System.Linq;
 using Xunit;
 
 namespace Graph.Test.Indexes
@@ -73,7 +72,7 @@ namespace Graph.Test.Indexes
             index.Couple(3, 4);
 
             var traversal = new FastDepthFirstPreOrderTraversal(index);
-            var vertices = traversal.Traverse(0).ToArray();
+            var vertices = traversal.Traverse(0);
             Assert.NotEmpty(vertices);
             for (var i = size - 1; i >= 0; --i)
             {

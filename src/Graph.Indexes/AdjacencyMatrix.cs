@@ -45,8 +45,8 @@ namespace Graph.Indexes
 
         public override int First()
         {
-            return this.size > 0 
-                ? 0 
+            return this.size > 0
+                ? 0
                 : throw new InvalidOperationException("First is invalid on empty index.");
         }
 
