@@ -15,7 +15,7 @@ namespace Graph.Indexes
         {
         }
 
-        public DirectedAdjacencyMatrix(AdjacencyMatrix other)
+        private DirectedAdjacencyMatrix(AdjacencyMatrix other)
             : base(other)
         {
         }
