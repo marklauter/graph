@@ -23,6 +23,12 @@ namespace Graph.Elements
             this.nodes = new();
         }
 
+        public Graph(Guid id) : base(id)
+        {
+            this.edges = new();
+            this.nodes = new();
+        }
+
         private Graph(Graph other)
             : base(other)
         {

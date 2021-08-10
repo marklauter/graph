@@ -19,7 +19,7 @@ namespace Graph.IO.GraphML
 
         private static Elements.Graph GmlGraphToGrah(GmlGraph gmlGraph)
         {
-            var graph = new Elements.Graph();
+            var graph = new Elements.Graph(gmlGraph.Id);
             var nodes = gmlGraph.Nodes
                 .Select(n => new Node(n.Id));
             graph.AddRange(nodes);

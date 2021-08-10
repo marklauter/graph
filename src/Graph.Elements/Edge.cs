@@ -17,8 +17,6 @@ namespace Graph.Elements
     {
         private Edge() { }
 
-        public Edge(Guid id) : base(id) { }
-
         public Edge(
             Node source,
             Node target)

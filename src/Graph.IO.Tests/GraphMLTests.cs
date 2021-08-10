@@ -35,6 +35,8 @@ namespace Graph.IO.Tests
                 var graph2 = GmlReader.Read(readStream).Single();
                 readStream.Close();
 
+                Assert.Equal(graph1.Id, graph2.Id);
+
                 var nodes1 = graph1.Nodes;
                 var nodes2 = graph2.Nodes;
                 foreach (var node in nodes2)
