@@ -15,7 +15,10 @@ namespace Graph.Elements
         , IEquatable<Edge>
         , IEqualityComparer<Edge>
     {
-        private Edge() { }
+        private Edge() 
+            : base() 
+        { 
+        }
 
         public Edge(
             Node source,
