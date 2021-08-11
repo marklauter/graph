@@ -12,9 +12,21 @@ namespace Graph.IO.Tests
         public void GmlWriter_Write_Read_Succeeds()
         {
             var graph1 = new Elements.Graph();
-            var source = graph1.Add();
-            var target = graph1.Add();
-            graph1.Couple(source, target);
+            graph1.Classify("testgraphclass");
+            graph1.Qualify("attribute", "testgraphvalue");
+
+            var source1 = graph1.Add();
+            source1.Classify("sourceclass");
+            source1.Qualify("attribute", "sourcevalue");
+
+            var target1 = graph1.Add();
+            target1.Classify("targetclass");
+            target1.Qualify("attribute", "targetvalue");
+
+            var edge1 = graph1.Couple(source1, target1);
+            edge1.Classify("edgeclass");
+            edge1.Qualify("attribute", "edgevalue");
+
             Assert.Equal(2, graph1.Nodes.Count);
             Assert.Single(graph1.Edges);
 

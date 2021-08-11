@@ -1,4 +1,6 @@
 ﻿using Graph.Elements;
+using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace Graph.IO.GraphML
@@ -9,8 +11,10 @@ namespace Graph.IO.GraphML
     {
         internal GmlNode() : base() { }
 
-        internal GmlNode(Node node)
-            : base(node)
+        internal GmlNode(
+            Node node,
+            Dictionary<string, GmlKey> keys)
+            : base(node, keys)
         {
         }
     }

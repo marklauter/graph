@@ -10,16 +10,24 @@ namespace Graph.IO.GraphML
     {
         internal GmlGraph() : base() { }
 
-        internal GmlGraph(Elements.Graph graph)
-            : base(graph)
+        internal GmlGraph(
+            Elements.Graph graph,
+            Dictionary<string, GmlKey> graphKeys,
+            Dictionary<string, GmlKey> nodeKeys,
+            Dictionary<string, GmlKey> edgeKeys)
+            : base(graph, graphKeys)
         {
             this.Nodes = graph.Nodes
-                .Select(n => new GmlNode(n))
+                .Select(n => new GmlNode(n, nodeKeys))
                 .ToList();
 
             this.Edges = graph.Edges
-                .Select(e => new GmlEdge(e))
+                .Select(e => new GmlEdge(e, edgeKeys))
                 .ToList();
+
+            this.EdgeDefault = graph.IsDirected
+                ? GmlEdgeType.Directed
+                : GmlEdgeType.Undirected;
         }
 
         [XmlElement("node")]
@@ -27,5 +35,8 @@ namespace Graph.IO.GraphML
 
         [XmlElement("edge")]
         public List<GmlEdge> Edges { get; set; }
+
+        [XmlAttribute("edgedefault")]
+        public GmlEdgeType EdgeDefault { get; set; }
     }
 }

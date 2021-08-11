@@ -1,5 +1,6 @@
 ﻿using Graph.Elements;
 using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace Graph.IO.GraphML
@@ -10,8 +11,9 @@ namespace Graph.IO.GraphML
     {
         internal GmlEdge() { }
 
-        internal GmlEdge(Edge edge)
-            : base(edge)
+        internal GmlEdge(Edge edge,
+            Dictionary<string, GmlKey> keys)
+            : base(edge, keys)
         {
             this.Source = edge.Source;
             this.Target = edge.Target;
