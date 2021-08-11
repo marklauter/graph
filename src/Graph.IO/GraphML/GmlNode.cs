@@ -1,6 +1,5 @@
 ﻿using Graph.Elements;
 using System.Collections.Generic;
-using System.Linq;
 using System.Xml.Serialization;
 
 namespace Graph.IO.GraphML

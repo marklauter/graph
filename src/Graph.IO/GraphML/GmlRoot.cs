@@ -10,7 +10,7 @@ namespace Graph.IO.GraphML
         internal GmlRoot() : base() { }
 
         internal GmlRoot(IEnumerable<Elements.Graph> graphs)
-        {            
+        {
             var graphAttributeKeys = graphs
                 .SelectMany(g => g.Attributes.Keys)
                 .Distinct()
@@ -41,7 +41,7 @@ namespace Graph.IO.GraphML
 
             this.Graphs = graphs
                 .Select(g => new GmlGraph(
-                    g, 
+                    g,
                     graphAttributeKeys,
                     nodeAttributeKeys,
                     edgeAttributeKeys))

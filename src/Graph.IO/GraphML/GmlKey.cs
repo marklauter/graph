@@ -10,9 +10,9 @@ namespace Graph.IO.GraphML
         internal GmlKey() : base() { }
 
         internal GmlKey(
-            GmlKeyTarget target, 
-            string name, 
-            string type, 
+            GmlKeyTarget target,
+            string name,
+            string type,
             string defaultValue)
         {
             this.Target = target;

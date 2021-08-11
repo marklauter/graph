@@ -6,7 +6,7 @@ namespace Graph.IO.GraphML
     {
         [XmlEnum("directed")]
         Directed,
-        
+
         [XmlEnum("undirected")]
         Undirected,
     }
