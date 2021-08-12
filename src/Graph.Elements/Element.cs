@@ -25,8 +25,8 @@ namespace Graph.Elements
 
         protected Element(Element other)
         {
-            // todo: copy labels
-            // todo: copy attributes
+            this.Classes = ImmutableHashSet.Create(other.Classes.ToArray());
+            this.Attributes = ImmutableDictionary.CreateRange(other.Attributes);
         }
 
         [JsonProperty("id")]
@@ -37,6 +37,8 @@ namespace Graph.Elements
 
         [JsonProperty("attributes")]
         public IImmutableDictionary<string, string> Attributes { get; private set; } = ImmutableDictionary<string, string>.Empty;
+
+        public string this[string key] => this.Attribute(key);
 
         public string Attribute(string attribute)
         {
@@ -78,7 +80,7 @@ namespace Graph.Elements
             this.Classes = this.Classes.Remove(label);
         }
 
-        public bool Has(string attribute)
+        public bool HasAttribute(string attribute)
         {
             return this.Attributes.ContainsKey(attribute);
         }
