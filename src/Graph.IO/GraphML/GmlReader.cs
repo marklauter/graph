@@ -15,30 +15,30 @@ namespace Graph.IO.GraphML
             var serializer = new XmlSerializer(typeof(GmlRoot));
             var root = serializer.Deserialize(reader) as GmlRoot;
             return root.Graphs
-                .Select(g => GmlGraphToGrah(root, g));
+                .Select(g => g.ToGrah(root));
         }
 
-        private static Elements.Graph GmlGraphToGrah(GmlRoot root, GmlGraph gmlGraph)
+        private static Elements.Graph ToGrah(this GmlGraph gmlGraph, GmlRoot root)
         {
             var graphAttributeKeys = root.Keys
-                .Where(k => k.Target == GmlKeyTarget.Graph && String.Compare(k.Name, "class", true) != 0 )
+                .Where(k => k.Target == GmlKeyTarget.Graph && String.Compare(k.Name, "class", true) != 0)
                 .ToDictionary(k => k.Id);
 
             var graphClassKey = root.Keys
                 .Single(k => k.Target == GmlKeyTarget.Graph && String.Compare(k.Name, "class", true) == 0);
 
             var graph = new Elements.Graph(gmlGraph.Id);
-            
-            QualifyElement(gmlGraph, graph, graphAttributeKeys, graphClassKey);
-            ClassifyElement(gmlGraph, graph, graphClassKey);
-            
-            AddNodes(root, gmlGraph, graph);
-            AddEdges(root, gmlGraph, graph);
+
+            graph.Qualify(gmlGraph, graphAttributeKeys, graphClassKey);
+            graph.Classify(gmlGraph, graphClassKey);
+
+            graph.AddNodes(root, gmlGraph);
+            graph.AddEdges(root, gmlGraph);
 
             return graph;
         }
 
-        private static void AddEdges(GmlRoot root, GmlGraph gmlGraph, Elements.Graph graph)
+        private static void AddEdges(this Elements.Graph graph, GmlRoot root, GmlGraph gmlGraph)
         {
             var edgeAttributeKeys = root.Keys
                 .Where(k => k.Target == GmlKeyTarget.Edge && String.Compare(k.Name, "class", true) != 0)
@@ -54,13 +54,13 @@ namespace Graph.IO.GraphML
                     gmlEdge.Source,
                     gmlEdge.Target);
 
-                QualifyElement(gmlEdge, edge, edgeAttributeKeys, edgeClassKey);
-                ClassifyElement(gmlEdge, edge, edgeClassKey);
+                edge.Qualify(gmlEdge, edgeAttributeKeys, edgeClassKey);
+                edge.Classify(gmlEdge, edgeClassKey);
                 graph.Couple(edge);
             }
         }
 
-        private static void AddNodes(GmlRoot root, GmlGraph gmlGraph, Elements.Graph graph)
+        private static void AddNodes(this Elements.Graph graph, GmlRoot root, GmlGraph gmlGraph)
         {
             var nodeAttributeKeys = root.Keys
                 .Where(k => k.Target == GmlKeyTarget.Node && String.Compare(k.Name, "class", true) != 0)
@@ -74,23 +74,23 @@ namespace Graph.IO.GraphML
             {
                 var node = new Node(gmlNode.Id);
 
-                QualifyElement(gmlNode, node, nodeAttributeKeys, nodeClassKey);
-                ClassifyElement(gmlNode, node, nodeClassKey);
+                node.Qualify(gmlNode, nodeAttributeKeys, nodeClassKey);
+                node.Classify(gmlNode, nodeClassKey);
                 nodes.Add(node);
             }
 
             graph.AddRange(nodes);
         }
 
-        private static void QualifyElement(GmlElement source, Element target, Dictionary<Guid, GmlKey> attributeKeys, GmlKey classKey)
+        private static void Qualify(this Element target, GmlElement source, Dictionary<Guid, GmlKey> attributeKeys, GmlKey classKey)
         {
             var attributes = source.Data
-                .Where(d=> d.Key != classKey.Id)
+                .Where(d => d.Key != classKey.Id)
                 .ToDictionary(d => attributeKeys[d.Key].Name, d => d.Value);
             target.Qualify(attributes);
         }
 
-        private static void ClassifyElement(GmlElement source, Element target, GmlKey classKey)
+        private static void Classify(this Element target, GmlElement source, GmlKey classKey)
         {
             var classes = source.Data
                 .Where(d => d.Key == classKey.Id)
