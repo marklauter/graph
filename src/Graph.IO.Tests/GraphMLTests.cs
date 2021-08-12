@@ -51,17 +51,92 @@ namespace Graph.IO.Tests
 
                 var nodes1 = graph1.Nodes;
                 var nodes2 = graph2.Nodes;
-                foreach (var node in nodes2)
+
+                Assert.Equal(nodes1.Count, nodes2.Count);
+
+                foreach (var node1 in nodes1)
                 {
-                    Assert.Contains(node, nodes1);
+                    Assert.Contains(node1, nodes2);
+                }
+
+                foreach (var node2 in nodes2)
+                {
+                    Assert.Contains(node2, nodes1);
+                }
+
+                foreach (var node1 in nodes1)
+                {
+                    var node2 = nodes2.Single(n => n == node1);
+                    foreach(var @class in node1.Classes)
+                    {
+                        Assert.True(node2.Is(@class));
+                    }
+
+                    foreach (var @class in node2.Classes)
+                    {
+                        Assert.True(node1.Is(@class));
+                    }
+                }
+
+                foreach (var node1 in nodes1)
+                {
+                    var node2 = nodes2.Single(n => n == node1);
+                    foreach (var attribute in node1.Attributes.Keys)
+                    {
+                        Assert.True(node2.HasAttribute(attribute));
+                        Assert.Equal(node1[attribute], node2[attribute]);
+                    }
+
+                    foreach (var attribute in node2.Attributes.Keys)
+                    {
+                        Assert.True(node1.HasAttribute(attribute));
+                        Assert.Equal(node2[attribute], node1[attribute]);
+                    }
                 }
 
                 var edges1 = graph1.Edges;
                 var edges2 = graph2.Edges;
 
-                foreach (var edge in edges2)
+                Assert.Equal(edges1.Count, edges2.Count);
+
+                foreach (var e1 in edges1)
                 {
-                    Assert.Contains(edge, edges1);
+                    Assert.Contains(e1, edges2);
+                }
+
+                foreach (var e2 in edges2)
+                {
+                    Assert.Contains(e2, edges1);
+                }
+
+                foreach (var e1 in edges1)
+                {
+                    var e2 = edges2.Single(e => e == e1);
+                    foreach (var @class in e1.Classes)
+                    {
+                        Assert.True(e2.Is(@class));
+                    }
+
+                    foreach (var @class in e2.Classes)
+                    {
+                        Assert.True(e1.Is(@class));
+                    }
+                }
+
+                foreach (var e1 in edges1)
+                {
+                    var e2 = edges2.Single(e => e == e1);
+                    foreach (var attribute in e1.Attributes.Keys)
+                    {
+                        Assert.True(e2.HasAttribute(attribute));
+                        Assert.Equal(e1[attribute], e2[attribute]);
+                    }
+
+                    foreach (var attribute in e2.Attributes.Keys)
+                    {
+                        Assert.True(e1.HasAttribute(attribute));
+                        Assert.Equal(e2[attribute], e1[attribute]);
+                    }
                 }
             }
             finally
