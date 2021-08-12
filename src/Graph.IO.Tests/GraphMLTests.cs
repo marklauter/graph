@@ -67,7 +67,7 @@ namespace Graph.IO.Tests
                 foreach (var node1 in nodes1)
                 {
                     var node2 = nodes2.Single(n => n.Equals(node1));
-                    foreach(var @class in node1.Classes)
+                    foreach (var @class in node1.Classes)
                     {
                         Assert.True(node2.Is(@class));
                     }
