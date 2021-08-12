@@ -12,12 +12,12 @@ namespace Graph.IO.GraphML
         internal GmlKey(
             GmlKeyTarget target,
             string name,
-            string type,
+            string dataType,
             string defaultValue)
         {
             this.Target = target;
             this.Name = name;
-            this.Type = type;
+            this.DataType = dataType;
             this.DefaultValue = defaultValue;
             this.Id = Guid.NewGuid();
         }
@@ -29,7 +29,7 @@ namespace Graph.IO.GraphML
         public string Name { get; set; }
 
         [XmlAttribute("attr.type")]
-        public string Type { get; set; }
+        public string DataType { get; set; }
 
         [XmlText]
         public string DefaultValue { get; set; }

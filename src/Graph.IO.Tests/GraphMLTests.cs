@@ -13,19 +13,19 @@ namespace Graph.IO.Tests
         {
             var graph1 = new Elements.Graph();
             graph1.Classify("testgraphclass");
-            graph1.Qualify("attribute", "testgraphvalue");
+            graph1.Qualify("graphAttribute", "testgraphvalue");
 
             var source1 = graph1.Add();
             source1.Classify("sourceclass");
-            source1.Qualify("attribute", "sourcevalue");
+            source1.Qualify("nodeAttribute", "sourcevalue");
 
             var target1 = graph1.Add();
             target1.Classify("targetclass");
-            target1.Qualify("attribute", "targetvalue");
+            target1.Qualify("nodeAttribute", "targetvalue");
 
             var edge1 = graph1.Couple(source1, target1);
             edge1.Classify("edgeclass");
-            edge1.Qualify("attribute", "edgevalue");
+            edge1.Qualify("edgeAttribute", "edgevalue");
 
             Assert.Equal(2, graph1.Nodes.Count);
             Assert.Single(graph1.Edges);
@@ -66,7 +66,7 @@ namespace Graph.IO.Tests
 
                 foreach (var node1 in nodes1)
                 {
-                    var node2 = nodes2.Single(n => n == node1);
+                    var node2 = nodes2.Single(n => n.Equals(node1));
                     foreach(var @class in node1.Classes)
                     {
                         Assert.True(node2.Is(@class));
@@ -80,7 +80,7 @@ namespace Graph.IO.Tests
 
                 foreach (var node1 in nodes1)
                 {
-                    var node2 = nodes2.Single(n => n == node1);
+                    var node2 = nodes2.Single(n => n.Equals(node1));
                     foreach (var attribute in node1.Attributes.Keys)
                     {
                         Assert.True(node2.HasAttribute(attribute));
@@ -111,7 +111,7 @@ namespace Graph.IO.Tests
 
                 foreach (var e1 in edges1)
                 {
-                    var e2 = edges2.Single(e => e == e1);
+                    var e2 = edges2.Single(e => e.Equals(e1));
                     foreach (var @class in e1.Classes)
                     {
                         Assert.True(e2.Is(@class));
@@ -125,7 +125,7 @@ namespace Graph.IO.Tests
 
                 foreach (var e1 in edges1)
                 {
-                    var e2 = edges2.Single(e => e == e1);
+                    var e2 = edges2.Single(e => e.Equals(e1));
                     foreach (var attribute in e1.Attributes.Keys)
                     {
                         Assert.True(e2.HasAttribute(attribute));
