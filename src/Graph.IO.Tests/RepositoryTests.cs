@@ -1,10 +1,9 @@
-﻿using Graph.Elements;
-using Graph.IO;
+using Graph.Elements;
 using System;
 using System.IO;
 using Xunit;
 
-namespace Graph.Test.Repositories
+namespace Graph.IO.Tests
 {
     public class RepositoryTests
     {
@@ -141,4 +140,5 @@ namespace Graph.Test.Repositories
             }
         }
     }
+
 }

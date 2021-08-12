@@ -13,20 +13,32 @@ namespace Graph.Elements
     {
         protected Element() { }
 
+        protected Element(Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                throw new ArgumentOutOfRangeException(nameof(id));
+            }
+
+            this.Id = id;
+        }
+
         protected Element(Element other)
         {
-            // todo: copy labels
-            // todo: copy attributes
+            this.Classes = ImmutableHashSet.Create(other.Classes.ToArray());
+            this.Attributes = ImmutableDictionary.CreateRange(other.Attributes);
         }
 
         [JsonProperty("id")]
         public Guid Id { get; private set; } = Guid.NewGuid();
 
         [JsonProperty("labels")]
-        public ImmutableHashSet<string> Labels { get; private set; } = ImmutableHashSet<string>.Empty;
+        public ImmutableHashSet<string> Classes { get; private set; } = ImmutableHashSet<string>.Empty;
 
         [JsonProperty("attributes")]
         public IImmutableDictionary<string, string> Attributes { get; private set; } = ImmutableDictionary<string, string>.Empty;
+
+        public string this[string key] => this.Attribute(key);
 
         public string Attribute(string attribute)
         {
@@ -42,7 +54,7 @@ namespace Graph.Elements
                 throw new ArgumentException($"'{nameof(label)}' cannot be null or whitespace.", nameof(label));
             }
 
-            this.Labels = this.Labels.Add(label);
+            this.Classes = this.Classes.Add(label);
         }
 
         public void Classify(IEnumerable<string> labels)
@@ -52,7 +64,7 @@ namespace Graph.Elements
                 throw new ArgumentNullException(nameof(labels));
             }
 
-            this.Labels = this.Labels
+            this.Classes = this.Classes
                 .Union(labels);
         }
 
@@ -65,17 +77,17 @@ namespace Graph.Elements
                 throw new ArgumentException($"'{nameof(label)}' cannot be null or whitespace.", nameof(label));
             }
 
-            this.Labels = this.Labels.Remove(label);
+            this.Classes = this.Classes.Remove(label);
         }
 
-        public bool Has(string attribute)
+        public bool HasAttribute(string attribute)
         {
             return this.Attributes.ContainsKey(attribute);
         }
 
         public bool Is(string label)
         {
-            return this.Labels.Contains(label);
+            return this.Classes.Contains(label);
         }
 
         public void Qualify(string attribute, string value)

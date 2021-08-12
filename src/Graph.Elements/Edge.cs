@@ -15,7 +15,10 @@ namespace Graph.Elements
         , IEquatable<Edge>
         , IEqualityComparer<Edge>
     {
-        private Edge() { }
+        private Edge()
+            : base()
+        {
+        }
 
         public Edge(
             Node source,
@@ -40,6 +43,16 @@ namespace Graph.Elements
             Guid source,
             Guid target)
             : base()
+        {
+            this.Source = source;
+            this.Target = target;
+        }
+
+        public Edge(
+            Guid id,
+            Guid source,
+            Guid target)
+            : base(id)
         {
             this.Source = source;
             this.Target = target;
