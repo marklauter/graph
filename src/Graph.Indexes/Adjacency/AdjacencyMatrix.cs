@@ -6,8 +6,12 @@ namespace Graph.Indexes
 {
     public abstract class AdjacencyMatrix
         : GraphIndex<int>
+        , IAdjacencyIndex<int>
     {
         protected bool[,] Matrix { get; private set; }
+
+        private int size;
+        public override int Size => this.size;
 
         protected AdjacencyMatrix()
         {
@@ -43,22 +47,13 @@ namespace Graph.Indexes
             return degree;
         }
 
+        public abstract IIncidenceIndex<int> ExtractIncidenceIndex();
+
         public override int First()
         {
             return this.size > 0
                 ? 0
                 : throw new InvalidOperationException("First is invalid on empty index.");
-        }
-
-        public override IEnumerable<int> Neighbors(int node)
-        {
-            for (var i = this.size - 1; i >= 0; --i)
-            {
-                if (this.Adjacent(node, i))
-                {
-                    yield return i;
-                }
-            }
         }
 
         protected void Grow(int minSize)
@@ -83,8 +78,16 @@ namespace Graph.Indexes
             this.size = (int)Math.Pow(this.Matrix.Length, 1 / (double)this.Matrix.Rank);
         }
 
-        private int size;
-        public override int Size => this.size;
+        public override IEnumerable<int> Neighbors(int node)
+        {
+            for (var i = this.size - 1; i >= 0; --i)
+            {
+                if (this.Adjacent(node, i))
+                {
+                    yield return i;
+                }
+            }
+        }
 
         public override string ToString()
         {
@@ -95,6 +98,7 @@ namespace Graph.Indexes
                 {
                     builder.Append(this.Matrix[o, i] ? 1 : 0);
                 }
+
                 builder.AppendLine();
             }
 

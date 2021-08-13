@@ -6,8 +6,11 @@ namespace Graph.Indexes
 {
     public abstract class AdjacencyList<TKey>
         : GraphIndex<TKey>
+        , IAdjacencyIndex<TKey>
         where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
     {
+        public override int Size => this.Index.Count;
+
         protected readonly Dictionary<TKey, HashSet<TKey>> Index;
 
         protected AdjacencyList()
@@ -27,6 +30,8 @@ namespace Graph.Indexes
                 : 0;
         }
 
+        public abstract IIncidenceIndex<TKey> ExtractIncidenceIndex();
+
         public override TKey First()
         {
             return this.Size > 0
@@ -44,7 +49,5 @@ namespace Graph.Indexes
                 }
             }
         }
-
-        public override int Size => this.Index.Count;
     }
 }
