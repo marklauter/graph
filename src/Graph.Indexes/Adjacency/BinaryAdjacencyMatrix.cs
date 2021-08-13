@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Graph.Indexes
 {
     public abstract class BinaryAdjacencyMatrix
-        : AdjacencyIndex<int>
+        : GraphIndex<int>
     {
         protected ulong[][] Matrix { get; private set; }
 

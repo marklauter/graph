@@ -7,7 +7,7 @@ namespace Graph.Indexes
         : AdjacencyList<TKey>
         where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
     {
-        public static IAdjacencyIndex<TKey> Empty()
+        public static IGraphIndex<TKey> Empty()
         {
             return new DirectedAdjacencyList<TKey>();
         }

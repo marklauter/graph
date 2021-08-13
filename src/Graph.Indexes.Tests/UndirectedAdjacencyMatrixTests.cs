@@ -3,7 +3,7 @@
     public class UndirectedAdjacencyMatrixTests
         : UndirectedAdjacencyIndexTests
     {
-        protected override IAdjacencyIndex<int> EmptyIndex()
+        protected override IGraphIndex<int> EmptyIndex()
         {
             return UndirectedAdjacencyMatrix.Empty();
         }

@@ -5,7 +5,7 @@ namespace Graph.Indexes
     public sealed class UndirectedAdjacencyMatrix
         : AdjacencyMatrix
     {
-        public static IAdjacencyIndex<int> Empty()
+        public static IGraphIndex<int> Empty()
         {
             return new UndirectedAdjacencyMatrix();
         }

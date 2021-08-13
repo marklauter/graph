@@ -6,14 +6,14 @@ namespace Graph.Traversals.Tests
 {
     public abstract class TraversalTests
     {
-        protected abstract ITraversal<int> CreateTraversal(IAdjacencyIndex<int> index);
+        protected abstract ITraversal<int> CreateTraversal(IGraphIndex<int> index);
 
-        protected static IAdjacencyIndex<int> CreateDirectedAdjacencyList()
+        protected static IGraphIndex<int> CreateDirectedAdjacencyList()
         {
             return DirectedAdjacencyList<int>.Empty();
         }
 
-        protected static IAdjacencyIndex<int> CreateUndirectedAdjacencyList()
+        protected static IGraphIndex<int> CreateUndirectedAdjacencyList()
         {
             return UndirectedAdjacencyList<int>.Empty();
         }

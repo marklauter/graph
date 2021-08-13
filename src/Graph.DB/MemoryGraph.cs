@@ -9,17 +9,17 @@
 //        : IGraph<TKey>
 //        where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
 //    {
-//        private IAdjacencyIndex<int> index;
+//        private IGraphIndex<int> index;
 //        private readonly ConcurrentDictionary<TKey, int> keyToVertex = new();
 //        private readonly ConcurrentDictionary<int, TKey> vertexToKey = new();
 
-//        public MemoryGraph(IAdjacencyIndex<int> index)
+//        public MemoryGraph(IGraphIndex<int> index)
 //        {
 //            this.index = index;
 //        }
 
 //        private MemoryGraph(
-//            IAdjacencyIndex<int> index,
+//            IGraphIndex<int> index,
 //            ConcurrentDictionary<TKey, int> keyToVertex,
 //            ConcurrentDictionary<int, TKey> vertexToKey)
 //        {

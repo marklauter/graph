@@ -5,7 +5,7 @@ using System.Text;
 namespace Graph.Indexes
 {
     public abstract class AdjacencyMatrix
-        : AdjacencyIndex<int>
+        : GraphIndex<int>
     {
         protected bool[,] Matrix { get; private set; }
 
@@ -93,7 +93,7 @@ namespace Graph.Indexes
             {
                 for (var i = this.Size - 1; i >= 0; --i)
                 {
-                    builder.Append(this.Matrix[o, i]);
+                    builder.Append(this.Matrix[o, i] ? 1 : 0);
                 }
                 builder.AppendLine();
             }

@@ -9,7 +9,7 @@ namespace Graph.Traversals
         : Traversal<TKey>
         where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
     {
-        public DepthFirstPreOrderTraversal(IAdjacencyIndex<TKey> adjacencyIndex)
+        public DepthFirstPreOrderTraversal(IGraphIndex<TKey> adjacencyIndex)
             : base(adjacencyIndex)
         {
         }

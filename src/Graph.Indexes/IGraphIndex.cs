@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Graph.Indexes
 {
-    public interface IAdjacencyIndex<TKey>
+    public interface IGraphIndex<TKey>
         : ICloneable
         where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
     {

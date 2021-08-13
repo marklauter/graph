@@ -6,7 +6,7 @@ namespace Graph.Traversals
     public sealed class FastDepthFirstPostOrderTraversal
         : Traversal<int>
     {
-        public FastDepthFirstPostOrderTraversal(IAdjacencyIndex<int> adjacencyIndex)
+        public FastDepthFirstPostOrderTraversal(IGraphIndex<int> adjacencyIndex)
             : base(adjacencyIndex)
         {
         }

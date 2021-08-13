@@ -5,7 +5,7 @@ using System.Linq;
 namespace Graph.Indexes
 {
     public abstract class AdjacencyList<TKey>
-        : AdjacencyIndex<TKey>
+        : GraphIndex<TKey>
         where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
     {
         protected readonly Dictionary<TKey, HashSet<TKey>> Index;

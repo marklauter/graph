@@ -9,9 +9,9 @@ namespace Graph.Traversals
         : ITraversal<TKey>
         where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
     {
-        protected readonly IAdjacencyIndex<TKey> AdjacencyIndex;
+        protected readonly IGraphIndex<TKey> AdjacencyIndex;
 
-        protected Traversal(IAdjacencyIndex<TKey> adjacencyIndex)
+        protected Traversal(IGraphIndex<TKey> adjacencyIndex)
         {
             if (adjacencyIndex is null)
             {

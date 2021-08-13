@@ -24,7 +24,7 @@ namespace Graph.Indexes.Tests
             Assert.True(index.Adjacent(2, 1));
             Assert.False(index.Adjacent(2, 2));
 
-            var clone = (IAdjacencyIndex<int>)index.Clone();
+            var clone = (IGraphIndex<int>)index.Clone();
 
             Assert.False(clone.Adjacent(0, 0));
             Assert.True(clone.Adjacent(0, 1));
