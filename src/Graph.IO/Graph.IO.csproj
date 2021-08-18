@@ -8,4 +8,8 @@
     <ProjectReference Include="..\Graph.Elements\Graph.Elements.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Indexes\" />
+  </ItemGroup>
+
 </Project>

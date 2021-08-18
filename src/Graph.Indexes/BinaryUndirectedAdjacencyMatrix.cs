@@ -2,20 +2,20 @@
 
 namespace Graph.Indexes
 {
-    public sealed class UndirectedBinaryAdjacencyMatrix
+    public sealed class BinaryUndirectedAdjacencyMatrix
         : BinaryAdjacencyMatrix
     {
         public static IAdjacencyIndex<int> Empty()
         {
-            return new UndirectedBinaryAdjacencyMatrix();
+            return new BinaryUndirectedAdjacencyMatrix();
         }
 
-        private UndirectedBinaryAdjacencyMatrix()
+        private BinaryUndirectedAdjacencyMatrix()
             : base()
         {
         }
 
-        private UndirectedBinaryAdjacencyMatrix(BinaryAdjacencyMatrix other)
+        private BinaryUndirectedAdjacencyMatrix(BinaryAdjacencyMatrix other)
             : base(other)
         {
         }
@@ -32,7 +32,7 @@ namespace Graph.Indexes
 
         public override object Clone()
         {
-            return new UndirectedBinaryAdjacencyMatrix(this);
+            return new BinaryUndirectedAdjacencyMatrix(this);
         }
 
         public override bool Couple(int source, int target)

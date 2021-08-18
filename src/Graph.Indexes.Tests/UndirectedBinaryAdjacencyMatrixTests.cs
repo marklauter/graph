@@ -5,7 +5,7 @@
     {
         protected override IAdjacencyIndex<int> EmptyIndex()
         {
-            return UndirectedBinaryAdjacencyMatrix.Empty();
+            return BinaryUndirectedAdjacencyMatrix.Empty();
         }
     }
 }

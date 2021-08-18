@@ -13,15 +13,15 @@ namespace Graph.IO
     {
         protected FileRepository(string path)
         {
-            this.Path = System.IO.Path.Combine(!String.IsNullOrEmpty(path) ? path : "data", typeof(T).Name);
+            this.path = Path.Combine(!String.IsNullOrEmpty(path) ? path : "data", typeof(T).Name);
 
-            if (!Directory.Exists(this.Path))
+            if (!Directory.Exists(this.path))
             {
-                Directory.CreateDirectory(this.Path);
+                Directory.CreateDirectory(this.path);
             }
         }
 
-        public string Path { get; }
+        private readonly string path;
 
         public int Delete(Guid id)
         {
@@ -123,7 +123,7 @@ namespace Graph.IO
 
         private string GetFileName(Guid id)
         {
-            return System.IO.Path.Combine(this.Path, $"{typeof(T).Name}.{id}.gdb");
+            return System.IO.Path.Combine(this.path, $"{typeof(T).Name}.{id}.gdb");
         }
     }
 }

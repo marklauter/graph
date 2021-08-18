@@ -67,8 +67,8 @@ namespace Graph.Indexes
             {
                 throw new ArgumentOutOfRangeException(nameof(minSize));
             }
-
-            var newSize = (int)(minSize + 1 + minSize * 0.10);
+            
+            var newSize = Math.Max(this.size, minSize) * 2;
             var matrix = new bool[newSize, newSize];
 
             for (var o = this.size - 1; o >= 0; --o)

@@ -52,6 +52,7 @@ namespace Graph.Indexes.Tests
 
             Assert.False(index.Couple(0, 1));
             Assert.Single(index.Neighbors(0));
+            Assert.Single(index.Neighbors(1));
         }
 
         [Fact]
