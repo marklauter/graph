@@ -25,7 +25,7 @@ namespace Graph.Elements
 
         protected Element(Element other)
         {
-            this.Classes = ImmutableHashSet.Create(other.Classes.ToArray());
+            this.Labels = ImmutableHashSet.Create(other.Labels.ToArray());
             this.Attributes = ImmutableDictionary.CreateRange(other.Attributes);
         }
 
@@ -33,12 +33,10 @@ namespace Graph.Elements
         public Guid Id { get; private set; } = Guid.NewGuid();
 
         [JsonProperty("labels")]
-        public ImmutableHashSet<string> Classes { get; private set; } = ImmutableHashSet<string>.Empty;
+        public ImmutableHashSet<string> Labels { get; private set; } = ImmutableHashSet<string>.Empty;
 
         [JsonProperty("attributes")]
         public IImmutableDictionary<string, string> Attributes { get; private set; } = ImmutableDictionary<string, string>.Empty;
-
-        public string this[string key] => this.Attribute(key);
 
         public string Attribute(string attribute)
         {
@@ -54,7 +52,7 @@ namespace Graph.Elements
                 throw new ArgumentException($"'{nameof(label)}' cannot be null or whitespace.", nameof(label));
             }
 
-            this.Classes = this.Classes.Add(label);
+            this.Labels = this.Labels.Add(label);
         }
 
         public void Classify(IEnumerable<string> labels)
@@ -64,7 +62,7 @@ namespace Graph.Elements
                 throw new ArgumentNullException(nameof(labels));
             }
 
-            this.Classes = this.Classes
+            this.Labels = this.Labels
                 .Union(labels);
         }
 
@@ -77,7 +75,7 @@ namespace Graph.Elements
                 throw new ArgumentException($"'{nameof(label)}' cannot be null or whitespace.", nameof(label));
             }
 
-            this.Classes = this.Classes.Remove(label);
+            this.Labels = this.Labels.Remove(label);
         }
 
         public bool HasAttribute(string attribute)
@@ -87,7 +85,7 @@ namespace Graph.Elements
 
         public bool Is(string label)
         {
-            return this.Classes.Contains(label);
+            return this.Labels.Contains(label);
         }
 
         public void Qualify(string attribute, string value)

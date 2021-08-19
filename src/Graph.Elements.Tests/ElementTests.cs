@@ -20,7 +20,7 @@ namespace Graph.Elements.Tests
             var element = new ConcreteElement();
             Assert.NotNull(element);
             Assert.NotEqual(Guid.Empty, element.Id);
-            Assert.Empty(element.Classes);
+            Assert.Empty(element.Labels);
             Assert.Empty(element.Attributes);
         }
 
@@ -32,7 +32,7 @@ namespace Graph.Elements.Tests
 
             var label = "class";
             element.Classify(label);
-            Assert.NotEmpty(element.Classes);
+            Assert.NotEmpty(element.Labels);
             Assert.True(element.Is(label));
         }
 
@@ -45,8 +45,8 @@ namespace Graph.Elements.Tests
             var label = "class";
             element.Classify(label);
             element.Classify(label);
-            Assert.NotEmpty(element.Classes);
-            Assert.Single(element.Classes);
+            Assert.NotEmpty(element.Labels);
+            Assert.Single(element.Labels);
             Assert.True(element.Is(label));
         }
 
@@ -68,7 +68,7 @@ namespace Graph.Elements.Tests
 
             var labels = new string[] { "class1", "class2" };
             element.Classify(labels);
-            Assert.NotEmpty(element.Classes);
+            Assert.NotEmpty(element.Labels);
             Assert.True(element.Is(labels[0]));
             Assert.True(element.Is(labels[1]));
         }
@@ -81,7 +81,7 @@ namespace Graph.Elements.Tests
 
             var label = "class";
             element.Classify(label);
-            Assert.NotEmpty(element.Classes);
+            Assert.NotEmpty(element.Labels);
             Assert.True(element.Is(label));
             element.Declassify(label);
             Assert.False(element.Is(label));
@@ -95,7 +95,7 @@ namespace Graph.Elements.Tests
 
             var label = "class";
             element.Classify(label);
-            Assert.NotEmpty(element.Classes);
+            Assert.NotEmpty(element.Labels);
             Assert.True(element.Is(label));
             element.Declassify(label);
             element.Declassify(label);
@@ -110,8 +110,8 @@ namespace Graph.Elements.Tests
 
             var labels = new string[] { "class1", "class1" };
             element.Classify(labels);
-            Assert.NotEmpty(element.Classes);
-            Assert.Single(element.Classes);
+            Assert.NotEmpty(element.Labels);
+            Assert.Single(element.Labels);
             Assert.True(element.Is(labels[0]));
         }
     }

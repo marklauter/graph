@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace Graph.Elements
 {
@@ -7,8 +8,11 @@ namespace Graph.Elements
         : ICloneable
     {
         Guid Id { get; }
+        
+        ImmutableHashSet<string> Labels { get; }
 
-        string this[string key] { get; }
+        public IImmutableDictionary<string, string> Attributes { get; }
+
         public string Attribute(string attribute);
         public void Classify(string label);
         public void Classify(IEnumerable<string> labels);

@@ -19,7 +19,7 @@ namespace Graph.IO.GraphML
             this.Element = element;
             this.Id = element.Id;
 
-            var classData = element.Classes
+            var classData = element.Labels
                 .Select(c => new GmlData(keys["class"].Id, c));
 
             var attributeData = element.Attributes
