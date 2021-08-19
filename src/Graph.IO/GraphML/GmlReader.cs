@@ -27,7 +27,7 @@ namespace Graph.IO.GraphML
             var graphClassKey = root.Keys
                 .Single(k => k.Target == GmlKeyTarget.Graph && String.Compare(k.Name, "class", true) == 0);
 
-            var graph = new Elements.Graph(gmlGraph.Id);
+            var graph = new Elements.Graph(gmlGraph.Id, gmlGraph.EdgeDefault == GmlEdgeType.Directed);
 
             graph.Qualify(gmlGraph, graphAttributeKeys, graphClassKey);
             graph.Classify(gmlGraph, graphClassKey);

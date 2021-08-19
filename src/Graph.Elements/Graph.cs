@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Graph.Indexes;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -21,12 +22,28 @@ namespace Graph.Elements
         {
             this.edges = new();
             this.nodes = new();
+            this.adjacencyIndex = UndirectedAdjacencyList<Guid>.Empty();
         }
 
-        public Graph(Guid id) : base(id)
+        public Graph(IAdjacencyIndex<Guid> adjacencyIndex)
+            : base()
         {
             this.edges = new();
             this.nodes = new();
+            this.adjacencyIndex = adjacencyIndex ?? throw new ArgumentNullException(nameof(adjacencyIndex));
+            this.IsDirected = adjacencyIndex.Type == IndexType.Directed;
+        }
+
+        public Graph(Guid id, bool isDirected)
+            : base(id)
+        {
+            this.edges = new();
+            this.nodes = new();
+            this.IsDirected = isDirected;
+
+            this.adjacencyIndex = this.IsDirected
+                ? DirectedAdjacencyList<Guid>.Empty()
+                : UndirectedAdjacencyList<Guid>.Empty();
         }
 
         private Graph(Graph other)
@@ -39,7 +56,12 @@ namespace Graph.Elements
             this.nodes = other.nodes.Values
                 .Select(n => n.Clone() as Node)
                 .ToDictionary(clone => clone.Id, clone => clone);
+
+            this.IsDirected = other.IsDirected;
+            this.adjacencyIndex = other.adjacencyIndex.Clone() as IAdjacencyIndex<Guid>;
         }
+
+        private readonly IAdjacencyIndex<Guid> adjacencyIndex;
 
         [JsonProperty("edges")]
         private readonly HashSet<Edge> edges;
@@ -90,7 +112,9 @@ namespace Graph.Elements
                 throw new KeyNotFoundException(nameof(targetId));
             }
 
-            var edge = new Edge(sourceId, targetId);
+            _ = this.adjacencyIndex.Couple(sourceId, targetId);
+
+            var edge = new Edge(sourceId, targetId, this.IsDirected);
             return this.edges.Add(edge)
                 ? edge
                 : null;
@@ -98,24 +122,16 @@ namespace Graph.Elements
 
         public Edge Couple(Node source, Node target)
         {
-            if (!this.nodes.ContainsKey(source.Id))
-            {
-                throw new KeyNotFoundException(nameof(source));
-            }
-
-            if (!this.nodes.ContainsKey(target.Id))
-            {
-                throw new KeyNotFoundException(nameof(target));
-            }
-
-            var edge = new Edge(source, target);
-            return this.edges.Add(edge)
-                ? edge
-                : null;
+            return this.Couple(source.Id, target.Id);
         }
 
         public bool Couple(Edge edge)
         {
+            if (edge is null)
+            {
+                throw new ArgumentNullException(nameof(edge));
+            }
+
             if (!this.nodes.ContainsKey(edge.Source))
             {
                 throw new KeyNotFoundException(nameof(edge.Source));
@@ -125,6 +141,8 @@ namespace Graph.Elements
             {
                 throw new KeyNotFoundException(nameof(edge.Target));
             }
+
+            _ = this.adjacencyIndex.Couple(edge.Source, edge.Target);
 
             return this.edges.Add(edge);
         }
@@ -141,24 +159,15 @@ namespace Graph.Elements
                 throw new KeyNotFoundException(nameof(targetId));
             }
 
-            edge = new Edge(sourceId, targetId);
+            _ = this.adjacencyIndex.Decouple(sourceId, targetId);
+
+            edge = new Edge(sourceId, targetId, this.IsDirected);
             return this.edges.Remove(edge);
         }
 
         public bool TryDecouple(Node source, Node target, out Edge edge)
         {
-            if (!this.nodes.ContainsKey(source.Id))
-            {
-                throw new KeyNotFoundException(nameof(source));
-            }
-
-            if (!this.nodes.ContainsKey(target.Id))
-            {
-                throw new KeyNotFoundException(nameof(target));
-            }
-
-            edge = new Edge(source, target);
-            return this.edges.Remove(edge);
+            return this.TryDecouple(source.Id, target.Id, out edge);
         }
 
         public override bool Equals(object obj)
@@ -196,6 +205,7 @@ namespace Graph.Elements
 
                 foreach (var edge in incidents)
                 {
+                    _ = this.adjacencyIndex.Decouple(edge.Source, edge.Target);
                     _ = this.edges.Remove(edge);
                 }
 
