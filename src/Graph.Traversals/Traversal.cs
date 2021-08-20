@@ -42,9 +42,9 @@ namespace Graph.Traversals
             var localDepth = nodes.Max(n =>
                 this.LocalDepth(this.AdjacencyIndex.Neighbors(n)
                     .Where(neighbor => !visited.Contains(neighbor))
-                    .ToArray(),
-                    visited,
-                    depth));
+                    .ToArray()
+                    ,visited
+                    ,depth));
 
             return Math.Max(depth, localDepth) + 1;
         }
