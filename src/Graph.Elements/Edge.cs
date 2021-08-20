@@ -113,7 +113,7 @@ namespace Graphs.Elements
         [JsonProperty("directed")]
         public bool IsDirected { get; private set; }
 
-        [JsonProperty("souce")]
+        [JsonProperty("source")]
         public Guid Source { get; private set; }
 
         [JsonProperty("target")]
