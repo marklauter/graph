@@ -27,7 +27,7 @@ namespace Graphs.Indexes
         IEnumerable<TKey> Neighbors(TKey node);
 
         void Parse(string matrix);
-        
+
         int Size { get; }
       
         IndexType Type { get; }

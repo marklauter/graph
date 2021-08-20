@@ -1,4 +1,5 @@
-﻿using Graphs.IO.GraphML;
+﻿using Graphs.Indexes;
+using Graphs.IO.GraphML;
 using System;
 using System.IO;
 using System.Linq;
@@ -11,7 +12,8 @@ namespace Graphs.IO.Tests
         [Fact]
         public void GmlWriter_Write_Read_Succeeds()
         {
-            var graph1 = new Elements.Graph();
+            var index = UndirectedAdjacencyList<Guid>.Empty();
+            var graph1 = new Elements.Graph(index);
             graph1.Classify("testgraphclass");
             graph1.Qualify("graphAttribute", "testgraphvalue");
 

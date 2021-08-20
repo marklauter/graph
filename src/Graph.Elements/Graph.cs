@@ -17,13 +17,15 @@ namespace Graphs.Elements
         , IEquatable<Graph>
         , IEqualityComparer<Graph>
     {
-        public Graph()
+#pragma warning disable S1144 // Unused private types or members should be removed
+        // default constructor is required by serializer
+        private Graph()
             : base()
         {
             this.edges = new();
             this.nodes = new();
-            this.adjacencyIndex = UndirectedAdjacencyList<Guid>.Empty();
         }
+#pragma warning restore S1144 // Unused private types or members should be removed
 
         public Graph(IAdjacencyIndex<Guid> adjacencyIndex)
             : base()
@@ -31,7 +33,6 @@ namespace Graphs.Elements
             this.edges = new();
             this.nodes = new();
             this.adjacencyIndex = adjacencyIndex ?? throw new ArgumentNullException(nameof(adjacencyIndex));
-            this.IsDirected = adjacencyIndex.Type == IndexType.Directed;
         }
 
         public Graph(Guid id, bool isDirected)
@@ -39,9 +40,7 @@ namespace Graphs.Elements
         {
             this.edges = new();
             this.nodes = new();
-            this.IsDirected = isDirected;
-
-            this.adjacencyIndex = this.IsDirected
+            this.adjacencyIndex = isDirected
                 ? DirectedAdjacencyList<Guid>.Empty()
                 : UndirectedAdjacencyList<Guid>.Empty();
         }
@@ -73,6 +72,11 @@ namespace Graphs.Elements
             {
                 if (!String.IsNullOrWhiteSpace(value))
                 {
+                    var type = AdjacencyIndex.ParseType(value);
+                    this.adjacencyIndex = type == IndexType.Directed
+                        ? DirectedAdjacencyList<Guid>.Empty()
+                        : UndirectedAdjacencyList<Guid>.Empty();
+
                     this.adjacencyIndex.Parse(value);
                 }
             }
@@ -94,17 +98,7 @@ namespace Graphs.Elements
         public bool IsDirected
         {
             get => this.adjacencyIndex.Type == IndexType.Directed;
-            set
-            {
-                this.adjacencyIndex = value
-                   ? DirectedAdjacencyList<Guid>.Empty()
-                   : UndirectedAdjacencyList<Guid>.Empty();
-
-                if(!String.IsNullOrEmpty(this.Matrix))
-                {
-                    this.adjacencyIndex.Parse(this.Matrix);
-                }
-            }
+            private set => _ = value;  // makes serialization possible
         }
 
         public Node Add()

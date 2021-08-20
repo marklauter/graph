@@ -1,12 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Text;
 
 namespace Graphs.Indexes
 {
+    public abstract class AdjacencyIndex
+    {
+        public static IndexType ParseType(string matrix)
+        {
+            if (String.IsNullOrWhiteSpace(matrix))
+            {
+                throw new ArgumentException($"'{nameof(matrix)}' cannot be null or whitespace.", nameof(matrix));
+            }
+
+            var reader = new StringReader(matrix);
+            var line = reader.ReadLine();
+
+            return (IndexType)Enum.Parse(typeof(IndexType), line);
+        }
+    }
+
     public abstract class AdjacencyIndex<TKey>
-        : IAdjacencyIndex<TKey>
+        : AdjacencyIndex
+        , IAdjacencyIndex<TKey>
         where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
     {
         public abstract bool Adjacent(TKey source, TKey target);
@@ -33,8 +51,10 @@ namespace Graphs.Indexes
             }
 
             var reader = new StringReader(matrix);
-            var line = reader.ReadLine();
+            _ = reader.ReadLine(); // discard type
+
             var lines = new Dictionary<TKey, string>();
+            var line = reader.ReadLine();
             while (!String.IsNullOrEmpty(line))
             {
                 var parts = line.Split(':');
@@ -43,7 +63,8 @@ namespace Graphs.Indexes
                     throw new FormatException(line);
                 }
 
-                var key = (TKey)Convert.ChangeType(parts[0], typeof(TKey));
+                var key = (TKey)TypeDescriptor.GetConverter(typeof(TKey)).ConvertFromInvariantString(parts[0]);
+                // var key = (TKey)Convert.ChangeType(parts[0], typeof(TKey));
                 lines.Add(key, parts[1]);
                 line = reader.ReadLine();
             }
@@ -63,12 +84,14 @@ namespace Graphs.Indexes
                 }
             }
         }
-
+        
         public abstract int Size { get; }
 
         public override string ToString()
         {
             var builder = new StringBuilder();
+            builder.Append(this.Type);
+            builder.AppendLine();
             foreach (var outerkey in this.Keys())
             {
                 builder.Append(outerkey);
