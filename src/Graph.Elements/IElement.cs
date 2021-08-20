@@ -14,12 +14,12 @@ namespace Graphs.Elements
         public IImmutableDictionary<string, string> Attributes { get; }
 
         public string Attribute(string attribute);
-        public void Classify(string label);
-        public void Classify(IEnumerable<string> labels);
-        public void Declassify(string label);
+        public IElement Classify(string label);
+        public IElement Classify(IEnumerable<string> labels);
+        public IElement Declassify(string label);
         public bool HasAttribute(string attribute);
         public bool Is(string label);
-        public void Qualify(string attribute, string value);
-        public void Qualify(IDictionary<string, string> attributes);
+        public IElement Qualify(string attribute, string value);
+        public IElement Qualify(IDictionary<string, string> attributes);
     }
 }

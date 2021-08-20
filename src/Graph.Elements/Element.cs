@@ -45,7 +45,7 @@ namespace Graphs.Elements
                 : null;
         }
 
-        public void Classify(string label)
+        public IElement Classify(string label)
         {
             if (String.IsNullOrWhiteSpace(label))
             {
@@ -53,9 +53,11 @@ namespace Graphs.Elements
             }
 
             this.Labels = this.Labels.Add(label);
+
+            return this;
         }
 
-        public void Classify(IEnumerable<string> labels)
+        public IElement Classify(IEnumerable<string> labels)
         {
             if (labels is null)
             {
@@ -64,11 +66,13 @@ namespace Graphs.Elements
 
             this.Labels = this.Labels
                 .Union(labels);
+
+            return this;
         }
 
         public abstract object Clone();
 
-        public void Declassify(string label)
+        public IElement Declassify(string label)
         {
             if (String.IsNullOrWhiteSpace(label))
             {
@@ -76,6 +80,8 @@ namespace Graphs.Elements
             }
 
             this.Labels = this.Labels.Remove(label);
+
+            return this;
         }
 
         public bool HasAttribute(string attribute)
@@ -88,7 +94,7 @@ namespace Graphs.Elements
             return this.Labels.Contains(label);
         }
 
-        public void Qualify(string attribute, string value)
+        public IElement Qualify(string attribute, string value)
         {
             if (String.IsNullOrWhiteSpace(attribute))
             {
@@ -101,9 +107,11 @@ namespace Graphs.Elements
             }
 
             this.Attributes = this.Attributes.SetItem(attribute, value);
+
+            return this;
         }
 
-        public void Qualify(IDictionary<string, string> attributes)
+        public IElement Qualify(IDictionary<string, string> attributes)
         {
             if (attributes is null)
             {
@@ -113,6 +121,8 @@ namespace Graphs.Elements
             this.Attributes = this.Attributes
                 .Union(attributes)
                 .ToImmutableDictionary();
+
+            return this;
         }
     }
 }
