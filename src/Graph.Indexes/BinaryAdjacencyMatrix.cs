@@ -60,17 +60,6 @@ namespace Graph.Indexes
                 : throw new InvalidOperationException("First is invalid on empty index.");
         }
 
-        public override IEnumerable<int> Neighbors(int node)
-        {
-            for (var i = this.size - 1; i >= 0; --i)
-            {
-                if (this.Adjacent(node, i))
-                {
-                    yield return i;
-                }
-            }
-        }
-
         protected void Grow(int minSize)
         {
             if (minSize <= 0)
@@ -98,22 +87,26 @@ namespace Graph.Indexes
             this.size = newRowSize;
         }
 
+        public override IEnumerable<int> Keys()
+        {
+            for(var i = 0; i < this.Size; ++i)
+            {
+                yield return i;
+            }
+        }
+
+        public override IEnumerable<int> Neighbors(int node)
+        {
+            for (var i = this.size - 1; i >= 0; --i)
+            {
+                if (this.Adjacent(node, i))
+                {
+                    yield return i;
+                }
+            }
+        }
+
         private int size;
         public override int Size => this.size;
-
-        public override string ToMatrix()
-        {
-            var builder = new StringBuilder();
-            for (var o = this.Size - 1; o >= 0; --o)
-            {
-                for (var i = this.Size - 1; i >= 0; --i)
-                {                    
-                    builder.Append(this.Adjacent(o, i) ? 1 : 0);
-                }
-                builder.AppendLine();
-            }
-
-            return builder.ToString();
-        }
     }
 }

@@ -35,6 +35,11 @@ namespace Graph.Indexes
                 : throw new InvalidOperationException("First is invalid on empty index.");
         }
 
+        public override IEnumerable<TKey> Keys()
+        {
+            return this.Index.Keys;
+        }
+
         public override IEnumerable<TKey> Neighbors(TKey node)
         {
             if (this.Index.TryGetValue(node, out var neighbors) && neighbors != null)
@@ -47,21 +52,5 @@ namespace Graph.Indexes
         }
 
         public override int Size => this.Index.Count;
-
-        public override string ToMatrix()
-        {
-            var builder = new StringBuilder();
-            foreach(var outerkey in this.Index.Keys)
-            {
-                foreach (var innerkey in this.Index.Keys)
-                {
-                    builder.Append(this.Adjacent(outerkey, innerkey) ? 1 : 0);
-                }
-
-                builder.AppendLine();
-            }
-
-            return builder.ToString();
-        }
     }
 }

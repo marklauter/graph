@@ -67,6 +67,13 @@ namespace Graph.Indexes
                 : throw new InvalidOperationException("First is invalid on empty index.");
         }
 
+        public override IEnumerable<int> Keys()
+        {
+            return Directory
+                .EnumerateFiles(this.Path)
+                .Select(f => Int32.Parse(System.IO.Path.GetFileName(f)));
+        }
+
         public override IEnumerable<int> Neighbors(int node)
         {
             var fileName = System.IO.Path.Combine(this.Path, node.ToString());
