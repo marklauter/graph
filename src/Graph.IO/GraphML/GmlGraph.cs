@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Graphs.Elements;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace Graph.IO.GraphML
+namespace Graphs.IO.GraphML
 {
     [XmlRoot("graph")]
     public sealed class GmlGraph
@@ -11,7 +12,7 @@ namespace Graph.IO.GraphML
         internal GmlGraph() : base() { }
 
         internal GmlGraph(
-            Elements.Graph graph,
+            Graph graph,
             Dictionary<string, GmlKey> graphKeys,
             Dictionary<string, GmlKey> nodeKeys,
             Dictionary<string, GmlKey> edgeKeys)

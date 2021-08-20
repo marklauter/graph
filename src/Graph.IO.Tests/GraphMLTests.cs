@@ -1,17 +1,19 @@
-﻿using Graph.IO.GraphML;
+﻿using Graphs.Indexes;
+using Graphs.IO.GraphML;
 using System;
 using System.IO;
 using System.Linq;
 using Xunit;
 
-namespace Graph.IO.Tests
+namespace Graphs.IO.Tests
 {
     public sealed class GraphMLTests
     {
         [Fact]
         public void GmlWriter_Write_Read_Succeeds()
         {
-            var graph1 = new Elements.Graph();
+            var index = UndirectedAdjacencyList<Guid>.Empty();
+            var graph1 = new Elements.Graph(index);
             graph1.Classify("testgraphclass");
             graph1.Qualify("graphAttribute", "testgraphvalue");
 
@@ -67,12 +69,12 @@ namespace Graph.IO.Tests
                 foreach (var node1 in nodes1)
                 {
                     var node2 = nodes2.Single(n => n.Equals(node1));
-                    foreach (var @class in node1.Classes)
+                    foreach (var @class in node1.Labels)
                     {
                         Assert.True(node2.Is(@class));
                     }
 
-                    foreach (var @class in node2.Classes)
+                    foreach (var @class in node2.Labels)
                     {
                         Assert.True(node1.Is(@class));
                     }
@@ -84,13 +86,13 @@ namespace Graph.IO.Tests
                     foreach (var attribute in node1.Attributes.Keys)
                     {
                         Assert.True(node2.HasAttribute(attribute));
-                        Assert.Equal(node1[attribute], node2[attribute]);
+                        Assert.Equal(node1.Attributes[attribute], node2.Attributes[attribute]);
                     }
 
                     foreach (var attribute in node2.Attributes.Keys)
                     {
                         Assert.True(node1.HasAttribute(attribute));
-                        Assert.Equal(node2[attribute], node1[attribute]);
+                        Assert.Equal(node2.Attributes[attribute], node1.Attributes[attribute]);
                     }
                 }
 
@@ -112,12 +114,12 @@ namespace Graph.IO.Tests
                 foreach (var e1 in edges1)
                 {
                     var e2 = edges2.Single(e => e.Equals(e1));
-                    foreach (var @class in e1.Classes)
+                    foreach (var @class in e1.Labels)
                     {
                         Assert.True(e2.Is(@class));
                     }
 
-                    foreach (var @class in e2.Classes)
+                    foreach (var @class in e2.Labels)
                     {
                         Assert.True(e1.Is(@class));
                     }
@@ -129,13 +131,13 @@ namespace Graph.IO.Tests
                     foreach (var attribute in e1.Attributes.Keys)
                     {
                         Assert.True(e2.HasAttribute(attribute));
-                        Assert.Equal(e1[attribute], e2[attribute]);
+                        Assert.Equal(e1.Attributes[attribute], e2.Attributes[attribute]);
                     }
 
                     foreach (var attribute in e2.Attributes.Keys)
                     {
                         Assert.True(e1.HasAttribute(attribute));
-                        Assert.Equal(e2[attribute], e1[attribute]);
+                        Assert.Equal(e2.Attributes[attribute], e1.Attributes[attribute]);
                     }
                 }
             }

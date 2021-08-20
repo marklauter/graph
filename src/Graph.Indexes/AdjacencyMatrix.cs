@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Graph.Indexes
+namespace Graphs.Indexes
 {
     public abstract class AdjacencyMatrix
         : AdjacencyIndex<int>
@@ -50,6 +50,14 @@ namespace Graph.Indexes
                 : throw new InvalidOperationException("First is invalid on empty index.");
         }
 
+        public override IEnumerable<int> Keys()
+        {
+            for (var i = 0; i < this.Size; ++i)
+            {
+                yield return i;
+            }
+        }
+
         public override IEnumerable<int> Neighbors(int node)
         {
             for (var i = this.size - 1; i >= 0; --i)
@@ -67,8 +75,8 @@ namespace Graph.Indexes
             {
                 throw new ArgumentOutOfRangeException(nameof(minSize));
             }
-
-            var newSize = (int)(minSize + 1 + minSize * 0.10);
+            
+            var newSize = Math.Max(this.size, minSize) * 2;
             var matrix = new bool[newSize, newSize];
 
             for (var o = this.size - 1; o >= 0; --o)
@@ -85,20 +93,5 @@ namespace Graph.Indexes
 
         private int size;
         public override int Size => this.size;
-
-        public override string ToString()
-        {
-            var builder = new StringBuilder();
-            for (var o = this.Size - 1; o >= 0; --o)
-            {
-                for (var i = this.Size - 1; i >= 0; --i)
-                {
-                    builder.Append(this.Matrix[o, i]);
-                }
-                builder.AppendLine();
-            }
-
-            return builder.ToString();
-        }
     }
 }

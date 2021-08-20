@@ -1,8 +1,8 @@
-﻿using Graph.Indexes;
+﻿using Graphs.Indexes;
 using System;
 using System.Collections.Generic;
 
-namespace Graph.Traversals
+namespace Graphs.Traversals
 {
     public interface ITraversal<TKey>
         where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>

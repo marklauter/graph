@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Graph.Indexes
+namespace Graphs.Indexes
 {
     public sealed class DirectedAdjacencyMatrix
         : AdjacencyMatrix

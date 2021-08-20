@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Graph.Elements
+namespace Graphs.Elements
 {
     public interface IGraph
     {
+        public bool IsDirected { get; }
+
         public Node Add();
         public bool Add(Node node);
         public int AddRange(IEnumerable<Node> nodes);
@@ -14,6 +16,5 @@ namespace Graph.Elements
         public bool Remove(Node node);
         public bool TryDecouple(Guid sourceId, Guid targetId, out Edge edge);
         public bool TryDecouple(Node source, Node target, out Edge edge);
-        public bool IsDirected { get; }
     }
 }

@@ -1,11 +1,11 @@
-﻿namespace Graph.Indexes.Tests
+﻿namespace Graphs.Indexes.Tests
 {
     public class UndirectedBinaryAdjacencyMatrixTests
         : UndirectedAdjacencyIndexTests
     {
         protected override IAdjacencyIndex<int> EmptyIndex()
         {
-            return UndirectedBinaryAdjacencyMatrix.Empty();
+            return BinaryUndirectedAdjacencyMatrix.Empty();
         }
     }
 }

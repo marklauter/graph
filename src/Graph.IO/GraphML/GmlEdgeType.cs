@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace Graph.IO.GraphML
+namespace Graphs.IO.GraphML
 {
     public enum GmlEdgeType
     {

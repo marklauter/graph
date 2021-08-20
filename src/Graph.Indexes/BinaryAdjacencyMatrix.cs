@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace Graph.Indexes
+namespace Graphs.Indexes
 {
     public abstract class BinaryAdjacencyMatrix
         : AdjacencyIndex<int>
@@ -59,17 +60,6 @@ namespace Graph.Indexes
                 : throw new InvalidOperationException("First is invalid on empty index.");
         }
 
-        public override IEnumerable<int> Neighbors(int node)
-        {
-            for (var i = this.size - 1; i >= 0; --i)
-            {
-                if (this.Adjacent(node, i))
-                {
-                    yield return i;
-                }
-            }
-        }
-
         protected void Grow(int minSize)
         {
             if (minSize <= 0)
@@ -95,6 +85,25 @@ namespace Graph.Indexes
 
             this.Matrix = matrix;
             this.size = newRowSize;
+        }
+
+        public override IEnumerable<int> Keys()
+        {
+            for(var i = 0; i < this.Size; ++i)
+            {
+                yield return i;
+            }
+        }
+
+        public override IEnumerable<int> Neighbors(int node)
+        {
+            for (var i = this.size - 1; i >= 0; --i)
+            {
+                if (this.Adjacent(node, i))
+                {
+                    yield return i;
+                }
+            }
         }
 
         private int size;
