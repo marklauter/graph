@@ -23,6 +23,8 @@ namespace Graph.Indexes
 
         public abstract int Size { get; }
 
+        public abstract string ToMatrix();
+
         public abstract IndexType Type { get; }
     }
 }

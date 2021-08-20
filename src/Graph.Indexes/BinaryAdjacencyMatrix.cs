@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Graph.Indexes
 {
@@ -99,5 +100,20 @@ namespace Graph.Indexes
 
         private int size;
         public override int Size => this.size;
+
+        public override string ToMatrix()
+        {
+            var builder = new StringBuilder();
+            for (var o = this.Size - 1; o >= 0; --o)
+            {
+                for (var i = this.Size - 1; i >= 0; --i)
+                {                    
+                    builder.Append(this.Adjacent(o, i) ? 1 : 0);
+                }
+                builder.AppendLine();
+            }
+
+            return builder.ToString();
+        }
     }
 }

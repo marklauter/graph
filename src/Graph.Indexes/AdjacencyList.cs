@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Graph.Indexes
 {
@@ -46,5 +47,21 @@ namespace Graph.Indexes
         }
 
         public override int Size => this.Index.Count;
+
+        public override string ToMatrix()
+        {
+            var builder = new StringBuilder();
+            foreach(var outerkey in this.Index.Keys)
+            {
+                foreach (var innerkey in this.Index.Keys)
+                {
+                    builder.Append(this.Adjacent(outerkey, innerkey) ? 1 : 0);
+                }
+
+                builder.AppendLine();
+            }
+
+            return builder.ToString();
+        }
     }
 }

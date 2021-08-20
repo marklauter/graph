@@ -20,5 +20,7 @@ namespace Graph.Indexes
         public IEnumerable<TKey> Neighbors(TKey node);
         public int Size { get; }
         public IndexType Type { get; }
+
+        public string ToMatrix();
     }
 }
