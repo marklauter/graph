@@ -3,247 +3,333 @@
     "edges": [
       {
         "directed": false,
-        "souce": "daa8dd95-4b68-403e-893e-bb0692158ff6",
-        "target": "f735b8ff-398a-4891-aa61-54b996b66559",
-        "id": "af0194a9-9af0-404a-93c0-ec3ea8ad81af",
-        "labels": [ "action" ],
+        "source": "76230c5c-9f1f-4aa9-b6e7-dffe5ad8e05d",
+        "target": "700e1842-d2dc-4e0c-af64-f0dd13759b4c",
+        "id": "8f92bf79-e7a1-42e7-85e1-504e4c417c3b",
+        "labels": [
+          "action"
+        ],
         "attributes": {}
       },
       {
         "directed": false,
-        "souce": "daa8dd95-4b68-403e-893e-bb0692158ff6",
-        "target": "dfcccb60-5c77-4889-b348-3e49706c7af8",
-        "id": "860241b7-f70d-4bb5-ad62-04b6cf1dfb52",
-        "labels": [ "action" ],
+        "source": "76230c5c-9f1f-4aa9-b6e7-dffe5ad8e05d",
+        "target": "2e9bceea-38fa-4e2e-9eee-adfe1ab9b699",
+        "id": "14145e7c-b9cd-450e-88c6-f5cfbbdd0386",
+        "labels": [
+          "action"
+        ],
         "attributes": {}
       },
       {
         "directed": false,
-        "souce": "5e7494d1-3c0b-44b9-b140-a12956f2bff9",
-        "target": "f735b8ff-398a-4891-aa61-54b996b66559",
-        "id": "9ba7009f-0484-4363-a1e6-ca2593a6b5b4",
-        "labels": [ "action" ],
+        "source": "a2908ad1-3827-479d-b4bd-8eea22fbdbd1",
+        "target": "700e1842-d2dc-4e0c-af64-f0dd13759b4c",
+        "id": "a77c44df-53c0-4152-8e68-3640c4912b0b",
+        "labels": [
+          "action"
+        ],
         "attributes": {}
       },
       {
         "directed": false,
-        "souce": "5e7494d1-3c0b-44b9-b140-a12956f2bff9",
-        "target": "dfcccb60-5c77-4889-b348-3e49706c7af8",
-        "id": "70838026-1c4e-4e59-a0e5-cbe0553d57d4",
-        "labels": [ "action" ],
+        "source": "a2908ad1-3827-479d-b4bd-8eea22fbdbd1",
+        "target": "2e9bceea-38fa-4e2e-9eee-adfe1ab9b699",
+        "id": "e8dca093-c28b-4b23-a9c6-a8d48fb127bf",
+        "labels": [
+          "action"
+        ],
         "attributes": {}
       },
       {
         "directed": false,
-        "souce": "daa8dd95-4b68-403e-893e-bb0692158ff6",
-        "target": "5e7494d1-3c0b-44b9-b140-a12956f2bff9",
-        "id": "422f20ce-5f84-486e-a892-a028c6a2b2c3",
-        "labels": [ "road" ],
-        "attributes": { "length": "10" }
+        "source": "76230c5c-9f1f-4aa9-b6e7-dffe5ad8e05d",
+        "target": "a2908ad1-3827-479d-b4bd-8eea22fbdbd1",
+        "id": "ca9ec6e4-1380-4adb-9124-eb36610124ba",
+        "labels": [
+          "road"
+        ],
+        "attributes": {
+          "length": "10"
+        }
       },
       {
         "directed": false,
-        "souce": "628270d6-b7b5-46c0-9eba-c45a4295bdc0",
-        "target": "f735b8ff-398a-4891-aa61-54b996b66559",
-        "id": "7df32c61-f792-40cf-8194-151056bdc647",
-        "labels": [ "action" ],
+        "source": "a210c574-83f9-4d63-861b-da701494ede4",
+        "target": "700e1842-d2dc-4e0c-af64-f0dd13759b4c",
+        "id": "0095c8ba-a7e3-4851-80ba-73cb9e877f43",
+        "labels": [
+          "action"
+        ],
         "attributes": {}
       },
       {
         "directed": false,
-        "souce": "628270d6-b7b5-46c0-9eba-c45a4295bdc0",
-        "target": "d1d396e9-e185-4561-8980-3894ad8169e1",
-        "id": "64773095-4d8a-47ec-9984-9f99eb94ee25",
-        "labels": [ "action" ],
+        "source": "a210c574-83f9-4d63-861b-da701494ede4",
+        "target": "999feafa-80d7-46da-a09b-53a770465126",
+        "id": "ec90314f-762d-4675-9b69-48074a5eb65a",
+        "labels": [
+          "action"
+        ],
         "attributes": {}
       },
       {
         "directed": false,
-        "souce": "628270d6-b7b5-46c0-9eba-c45a4295bdc0",
-        "target": "515e5091-b222-4b9f-8f76-8f2724575344",
-        "id": "fffccfef-be15-4d49-8ab6-83a27cf5fc92",
-        "labels": [ "action" ],
+        "source": "a210c574-83f9-4d63-861b-da701494ede4",
+        "target": "c7ee028b-7e43-4966-a280-0a743629b7c5",
+        "id": "f3a742fa-929a-4c4d-9a41-54074509d2a7",
+        "labels": [
+          "action"
+        ],
         "attributes": {}
       },
       {
         "directed": false,
-        "souce": "628270d6-b7b5-46c0-9eba-c45a4295bdc0",
-        "target": "677d9dc1-a3eb-427d-882a-ce0a3c25ab9d",
-        "id": "8c886570-cb10-47a8-9453-0d8bcecfcc2b",
-        "labels": [ "action" ],
+        "source": "a210c574-83f9-4d63-861b-da701494ede4",
+        "target": "de1957ae-08ae-4857-af99-606a718a826b",
+        "id": "fc0aeed2-84ba-4a0b-86b6-176568b69e82",
+        "labels": [
+          "action"
+        ],
         "attributes": {}
       },
       {
         "directed": false,
-        "souce": "a8a240e4-fb32-4283-84f9-f017fcfee450",
-        "target": "f735b8ff-398a-4891-aa61-54b996b66559",
-        "id": "6bed01a6-1d26-4bfa-a45b-9571700d8fba",
-        "labels": [ "action" ],
+        "source": "29558f2e-b875-497a-8e7a-ee04352cdaca",
+        "target": "700e1842-d2dc-4e0c-af64-f0dd13759b4c",
+        "id": "3ad5d6ab-fb97-4b47-8fd5-75c913fc9ce3",
+        "labels": [
+          "action"
+        ],
         "attributes": {}
       },
       {
         "directed": false,
-        "souce": "a8a240e4-fb32-4283-84f9-f017fcfee450",
-        "target": "3818cedb-79d5-4911-b375-9b1ce52c2922",
-        "id": "4e9ff645-ed3d-499c-bec5-534c29c88059",
-        "labels": [ "action" ],
+        "source": "29558f2e-b875-497a-8e7a-ee04352cdaca",
+        "target": "8ead47c8-e6ef-4c5d-9c9a-c696b341ff84",
+        "id": "f9b66333-0938-450d-9026-c6cd51631b80",
+        "labels": [
+          "action"
+        ],
         "attributes": {}
       },
       {
         "directed": false,
-        "souce": "a8a240e4-fb32-4283-84f9-f017fcfee450",
-        "target": "2cb7c0cc-c756-464b-b738-cab165b40055",
-        "id": "54f50399-7ea7-4eb1-9124-5068c9f0fdcc",
-        "labels": [ "action" ],
+        "source": "29558f2e-b875-497a-8e7a-ee04352cdaca",
+        "target": "093c5751-1397-4bc3-8264-21003ee2f716",
+        "id": "968bb388-3d72-486c-a0f7-842ac7b55536",
+        "labels": [
+          "action"
+        ],
         "attributes": {}
       },
       {
         "directed": false,
-        "souce": "7f96c216-7b17-443f-bf84-2b1425af6e52",
-        "target": "f735b8ff-398a-4891-aa61-54b996b66559",
-        "id": "1a2e3a26-2e21-4f00-8a8b-888f299af35a",
-        "labels": [ "action" ],
+        "source": "38b8cf10-c9bd-4a5d-9683-12e98bbee131",
+        "target": "700e1842-d2dc-4e0c-af64-f0dd13759b4c",
+        "id": "4ed32bb2-e8a7-4647-b7af-cbd3b5515c9f",
+        "labels": [
+          "action"
+        ],
         "attributes": {}
       },
       {
         "directed": false,
-        "souce": "7f96c216-7b17-443f-bf84-2b1425af6e52",
-        "target": "d1d396e9-e185-4561-8980-3894ad8169e1",
-        "id": "5ade717e-b230-400f-bf2c-6a3058ccf306",
-        "labels": [ "action" ],
+        "source": "38b8cf10-c9bd-4a5d-9683-12e98bbee131",
+        "target": "999feafa-80d7-46da-a09b-53a770465126",
+        "id": "3fb7325b-88f0-42be-b45a-ee61af2f060c",
+        "labels": [
+          "action"
+        ],
         "attributes": {}
       },
       {
         "directed": false,
-        "souce": "7f96c216-7b17-443f-bf84-2b1425af6e52",
-        "target": "6d87c80c-ae87-484f-9fd1-86dc30bcc08e",
-        "id": "314fbaa8-df38-499c-843d-0d8de40f89f9",
-        "labels": [ "action" ],
+        "source": "38b8cf10-c9bd-4a5d-9683-12e98bbee131",
+        "target": "933f72cb-9ad8-4e76-8a33-99896e5a77ba",
+        "id": "f7c0d271-ccb9-4eb4-9828-ea6d4e55bc79",
+        "labels": [
+          "action"
+        ],
         "attributes": {}
       },
       {
         "directed": false,
-        "souce": "7f96c216-7b17-443f-bf84-2b1425af6e52",
-        "target": "677d9dc1-a3eb-427d-882a-ce0a3c25ab9d",
-        "id": "0e303064-8084-435b-856d-a16ad6f23479",
-        "labels": [ "action" ],
+        "source": "38b8cf10-c9bd-4a5d-9683-12e98bbee131",
+        "target": "de1957ae-08ae-4857-af99-606a718a826b",
+        "id": "25bac932-873a-4d86-a1b4-fdc71f3bf778",
+        "labels": [
+          "action"
+        ],
         "attributes": {}
       },
       {
         "directed": false,
-        "souce": "daa8dd95-4b68-403e-893e-bb0692158ff6",
-        "target": "628270d6-b7b5-46c0-9eba-c45a4295bdc0",
-        "id": "efd85f3b-323e-4b6c-9d4e-49db5cb5d296",
-        "labels": [ "contains" ],
+        "source": "76230c5c-9f1f-4aa9-b6e7-dffe5ad8e05d",
+        "target": "a210c574-83f9-4d63-861b-da701494ede4",
+        "id": "d0b78863-fa12-469d-812a-f81887cc785d",
+        "labels": [
+          "contains"
+        ],
         "attributes": {}
       },
       {
         "directed": false,
-        "souce": "5e7494d1-3c0b-44b9-b140-a12956f2bff9",
-        "target": "a8a240e4-fb32-4283-84f9-f017fcfee450",
-        "id": "c51c01e5-6ca6-4b11-892d-3a4dbad01510",
-        "labels": [ "contains" ],
+        "source": "a2908ad1-3827-479d-b4bd-8eea22fbdbd1",
+        "target": "29558f2e-b875-497a-8e7a-ee04352cdaca",
+        "id": "1bd0fa91-92e0-4d2b-a8d3-0380c353bad4",
+        "labels": [
+          "contains"
+        ],
         "attributes": {}
       },
       {
         "directed": false,
-        "souce": "a8a240e4-fb32-4283-84f9-f017fcfee450",
-        "target": "7f96c216-7b17-443f-bf84-2b1425af6e52",
-        "id": "f57a42f7-5bcd-407d-9a6e-a5f0fd6baedc",
-        "labels": [ "contains" ],
+        "source": "29558f2e-b875-497a-8e7a-ee04352cdaca",
+        "target": "38b8cf10-c9bd-4a5d-9683-12e98bbee131",
+        "id": "d78fed1c-27f4-427d-b1c6-ce8dcaa141a1",
+        "labels": [
+          "contains"
+        ],
         "attributes": {}
       }
     ],
     "nodes": {
-      "dfcccb60-5c77-4889-b348-3e49706c7af8": {
-        "id": "dfcccb60-5c77-4889-b348-3e49706c7af8",
-        "labels": [ "action" ],
-        "attributes": { "value": "go" }
-      },
-      "f735b8ff-398a-4891-aa61-54b996b66559": {
-        "id": "f735b8ff-398a-4891-aa61-54b996b66559",
-        "labels": [ "action" ],
-        "attributes": { "value": "look" }
-      },
-      "515e5091-b222-4b9f-8f76-8f2724575344": {
-        "id": "515e5091-b222-4b9f-8f76-8f2724575344",
-        "labels": [ "action" ],
-        "attributes": { "value": "use" }
-      },
-      "6d87c80c-ae87-484f-9fd1-86dc30bcc08e": {
-        "id": "6d87c80c-ae87-484f-9fd1-86dc30bcc08e",
-        "labels": [ "action" ],
-        "attributes": { "value": "read" }
-      },
-      "d1d396e9-e185-4561-8980-3894ad8169e1": {
-        "id": "d1d396e9-e185-4561-8980-3894ad8169e1",
-        "labels": [ "action" ],
-        "attributes": { "value": "take" }
-      },
-      "677d9dc1-a3eb-427d-882a-ce0a3c25ab9d": {
-        "id": "677d9dc1-a3eb-427d-882a-ce0a3c25ab9d",
-        "labels": [ "action" ],
-        "attributes": { "value": "drop" }
-      },
-      "3818cedb-79d5-4911-b375-9b1ce52c2922": {
-        "id": "3818cedb-79d5-4911-b375-9b1ce52c2922",
-        "labels": [ "action" ],
-        "attributes": { "value": "open" }
-      },
-      "2cb7c0cc-c756-464b-b738-cab165b40055": {
-        "id": "2cb7c0cc-c756-464b-b738-cab165b40055",
-        "labels": [ "action" ],
-        "attributes": { "value": "close" }
-      },
-      "daa8dd95-4b68-403e-893e-bb0692158ff6": {
-        "id": "daa8dd95-4b68-403e-893e-bb0692158ff6",
-        "labels": [ "cell" ],
+      "2e9bceea-38fa-4e2e-9eee-adfe1ab9b699": {
+        "id": "2e9bceea-38fa-4e2e-9eee-adfe1ab9b699",
+        "labels": [
+          "action"
+        ],
         "attributes": {
+          "value": "go"
+        }
+      },
+      "700e1842-d2dc-4e0c-af64-f0dd13759b4c": {
+        "id": "700e1842-d2dc-4e0c-af64-f0dd13759b4c",
+        "labels": [
+          "action"
+        ],
+        "attributes": {
+          "value": "look"
+        }
+      },
+      "c7ee028b-7e43-4966-a280-0a743629b7c5": {
+        "id": "c7ee028b-7e43-4966-a280-0a743629b7c5",
+        "labels": [
+          "action"
+        ],
+        "attributes": {
+          "value": "use"
+        }
+      },
+      "933f72cb-9ad8-4e76-8a33-99896e5a77ba": {
+        "id": "933f72cb-9ad8-4e76-8a33-99896e5a77ba",
+        "labels": [
+          "action"
+        ],
+        "attributes": {
+          "value": "read"
+        }
+      },
+      "999feafa-80d7-46da-a09b-53a770465126": {
+        "id": "999feafa-80d7-46da-a09b-53a770465126",
+        "labels": [
+          "action"
+        ],
+        "attributes": {
+          "value": "take"
+        }
+      },
+      "de1957ae-08ae-4857-af99-606a718a826b": {
+        "id": "de1957ae-08ae-4857-af99-606a718a826b",
+        "labels": [
+          "action"
+        ],
+        "attributes": {
+          "value": "drop"
+        }
+      },
+      "8ead47c8-e6ef-4c5d-9c9a-c696b341ff84": {
+        "id": "8ead47c8-e6ef-4c5d-9c9a-c696b341ff84",
+        "labels": [
+          "action"
+        ],
+        "attributes": {
+          "value": "open"
+        }
+      },
+      "093c5751-1397-4bc3-8264-21003ee2f716": {
+        "id": "093c5751-1397-4bc3-8264-21003ee2f716",
+        "labels": [
+          "action"
+        ],
+        "attributes": {
+          "value": "close"
+        }
+      },
+      "76230c5c-9f1f-4aa9-b6e7-dffe5ad8e05d": {
+        "id": "76230c5c-9f1f-4aa9-b6e7-dffe5ad8e05d",
+        "labels": [
+          "cell"
+        ],
+        "attributes": {
+          "name": "spawn point",
           "size": "10",
-          "description": "empty field",
           "actions": "look go",
-          "name": "spawn point"
+          "description": "empty field"
         }
       },
-      "5e7494d1-3c0b-44b9-b140-a12956f2bff9": {
-        "id": "5e7494d1-3c0b-44b9-b140-a12956f2bff9",
-        "labels": [ "cell" ],
+      "a2908ad1-3827-479d-b4bd-8eea22fbdbd1": {
+        "id": "a2908ad1-3827-479d-b4bd-8eea22fbdbd1",
+        "labels": [
+          "cell"
+        ],
         "attributes": {
+          "name": "castle",
           "size": "20",
-          "description": "crumbling castle",
-          "name": "castle"
+          "description": "crumbling castle"
         }
       },
-      "628270d6-b7b5-46c0-9eba-c45a4295bdc0": {
-        "id": "628270d6-b7b5-46c0-9eba-c45a4295bdc0",
-        "labels": [ "object" ],
+      "a210c574-83f9-4d63-861b-da701494ede4": {
+        "id": "a210c574-83f9-4d63-861b-da701494ede4",
+        "labels": [
+          "object"
+        ],
         "attributes": {
-          "description": "a sword with rust on it",
-          "name": "rusty sword"
+          "name": "rusty sword",
+          "description": "a sword with rust on it"
         }
       },
-      "a8a240e4-fb32-4283-84f9-f017fcfee450": {
-        "id": "a8a240e4-fb32-4283-84f9-f017fcfee450",
-        "labels": [ "object" ],
+      "29558f2e-b875-497a-8e7a-ee04352cdaca": {
+        "id": "29558f2e-b875-497a-8e7a-ee04352cdaca",
+        "labels": [
+          "object"
+        ],
         "attributes": {
-          "description": "a chest made of wood",
-          "name": "wooden chest"
+          "name": "wooden chest",
+          "description": "a chest made of wood"
         }
       },
-      "7f96c216-7b17-443f-bf84-2b1425af6e52": {
-        "id": "7f96c216-7b17-443f-bf84-2b1425af6e52",
-        "labels": [ "object" ],
+      "38b8cf10-c9bd-4a5d-9683-12e98bbee131": {
+        "id": "38b8cf10-c9bd-4a5d-9683-12e98bbee131",
+        "labels": [
+          "object"
+        ],
         "attributes": {
-          "description": "an ancient scroll containing magic spell",
-          "name": "magic scroll"
+          "name": "magic scroll",
+          "description": "an ancient scroll containing magic spell"
         }
       }
     },
-    "matrix": "Undirected\r\ndaa8dd95-4b68-403e-893e-bb0692158ff6:0111100000000\r\nf735b8ff-398a-4891-aa61-54b996b66559:1001100010010\r\ndfcccb60-5c77-4889-b348-3e49706c7af8:1001000000000\r\n5e7494d1-3c0b-44b9-b140-a12956f2bff9:1110000010000\r\n628270d6-b7b5-46c0-9eba-c45a4295bdc0:1100011100000\r\nd1d396e9-e185-4561-8980-3894ad8169e1:0000100000010\r\n515e5091-b222-4b9f-8f76-8f2724575344:0000100000000\r\n677d9dc1-a3eb-427d-882a-ce0a3c25ab9d:0000100000010\r\na8a240e4-fb32-4283-84f9-f017fcfee450:0101000001110\r\n3818cedb-79d5-4911-b375-9b1ce52c2922:0000000010000\r\n2cb7c0cc-c756-464b-b738-cab165b40055:0000000010000\r\n7f96c216-7b17-443f-bf84-2b1425af6e52:0100010110001\r\n6d87c80c-ae87-484f-9fd1-86dc30bcc08e:0000000000010\r\n",
+    "matrix": "Undirected\r\n76230c5c-9f1f-4aa9-b6e7-dffe5ad8e05d:0111100000000\r\n700e1842-d2dc-4e0c-af64-f0dd13759b4c:1001100010010\r\n2e9bceea-38fa-4e2e-9eee-adfe1ab9b699:1001000000000\r\na2908ad1-3827-479d-b4bd-8eea22fbdbd1:1110000010000\r\na210c574-83f9-4d63-861b-da701494ede4:1100011100000\r\n999feafa-80d7-46da-a09b-53a770465126:0000100000010\r\nc7ee028b-7e43-4966-a280-0a743629b7c5:0000100000000\r\nde1957ae-08ae-4857-af99-606a718a826b:0000100000010\r\n29558f2e-b875-497a-8e7a-ee04352cdaca:0101000001110\r\n8ead47c8-e6ef-4c5d-9c9a-c696b341ff84:0000000010000\r\n093c5751-1397-4bc3-8264-21003ee2f716:0000000010000\r\n38b8cf10-c9bd-4a5d-9683-12e98bbee131:0100010110001\r\n933f72cb-9ad8-4e76-8a33-99896e5a77ba:0000000000010\r\n",
     "directed": false,
-    "id": "31b0bb4b-6148-4c40-a47f-5fc0bd47f703",
-    "labels": [ "adventure" ],
-    "attributes": { "version": "0.0" }
+    "id": "12dafd57-ec1f-454c-b297-456f5119511f",
+    "labels": [
+      "adventure"
+    ],
+    "attributes": {
+      "version": "0.0"
+    }
   },
   "ETag": 0
 }
