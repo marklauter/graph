@@ -143,36 +143,40 @@ namespace Graphs.IO.Tests
         [Fact]
         public void Repository_Write_Read_Graph_Succeeds()
         {
-            //var graph = new Graph.Elements.Graph();
-            //var label = nameof(Node).ToLowerInvariant();
-            //node.Classify(label);
-            //var value = Guid.NewGuid().ToString();
-            //node.Qualify("value", value);
+            var index = new 
+            var graph = new Graph();
 
-            //var repositoryName = "repositorytests" + Guid.NewGuid().ToString();
-            //try
-            //{
-            //    var repository = new JsonRepository<Node>(repositoryName);
-            //    var entity = repository.Insert(node);
 
-            //    Assert.Equal(node.Id, entity.Id);
-            //    Assert.Equal(0, entity.ETag);
+            var node = new Node();
+            var label = nameof(Node).ToLowerInvariant();
+            node.Classify(label);
+            var value = Guid.NewGuid().ToString();
+            node.Qualify("value", value);
 
-            //    Assert.True(((Node)entity).Is(label));
-            //    Assert.Equal(value.ToString(), ((Node)entity).Attributes["value"]);
+            var repositoryName = "repositorytests" + Guid.NewGuid().ToString();
+            try
+            {
+                var repository = new JsonRepository<Node>(repositoryName);
+                var entity = repository.Insert(node);
 
-            //    entity = repository.Read(entity.Id);
+                Assert.Equal(node.Id, entity.Id);
+                Assert.Equal(0, entity.ETag);
 
-            //    Assert.Equal(node.Id, entity.Id);
-            //    Assert.Equal(0, entity.ETag);
+                Assert.True(((Node)entity).Is(label));
+                Assert.Equal(value.ToString(), ((Node)entity).Attributes["value"]);
 
-            //    Assert.True(((Node)entity).Is(label));
-            //    Assert.Equal(value.ToString(), ((Node)entity).Attributes["value"]);
-            //}
-            //finally
-            //{
-            //    Directory.Delete(repositoryName, true);
-            //}
+                entity = repository.Read(entity.Id);
+
+                Assert.Equal(node.Id, entity.Id);
+                Assert.Equal(0, entity.ETag);
+
+                Assert.True(((Node)entity).Is(label));
+                Assert.Equal(value.ToString(), ((Node)entity).Attributes["value"]);
+            }
+            finally
+            {
+                Directory.Delete(repositoryName, true);
+            }
         }
     }
 }
