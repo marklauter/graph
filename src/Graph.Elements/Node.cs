@@ -13,7 +13,7 @@ namespace Graphs.Elements
         , IEquatable<Node>
         , IEqualityComparer<Node>
     {
-        public Node()
+        internal Node()
             : base()
         {
         }
