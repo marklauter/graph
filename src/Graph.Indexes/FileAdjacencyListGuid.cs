@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Graph.Indexes
+namespace Graphs.Indexes
 {
     public abstract class FileAdjacencyListGuid
         : AdjacencyIndex<Guid>

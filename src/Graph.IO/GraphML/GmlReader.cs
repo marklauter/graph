@@ -1,11 +1,11 @@
-﻿using Graph.Elements;
+﻿using Graphs.Elements;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace Graph.IO.GraphML
+namespace Graphs.IO.GraphML
 {
     public static class GmlReader
     {

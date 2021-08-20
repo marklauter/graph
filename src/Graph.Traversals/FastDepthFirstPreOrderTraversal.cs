@@ -1,7 +1,7 @@
-﻿using Graph.Indexes;
+﻿using Graphs.Indexes;
 using System.Collections.Generic;
 
-namespace Graph.Traversals
+namespace Graphs.Traversals
 {
     public sealed class FastDepthFirstPreOrderTraversal
         : Traversal<int>

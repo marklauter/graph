@@ -2,7 +2,7 @@ using System;
 using Xunit;
 
 
-namespace Graph.Elements.Tests
+namespace Graphs.Elements.Tests
 {
     public class ElementTests
     {

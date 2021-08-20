@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-namespace Graph.Elements
+namespace Graphs.Elements
 {
     public interface IElement
         : ICloneable

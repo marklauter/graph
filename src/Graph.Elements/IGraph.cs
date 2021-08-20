@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Graph.Elements
+namespace Graphs.Elements
 {
     public interface IGraph
     {

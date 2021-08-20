@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Graph.Indexes
+namespace Graphs.Indexes
 {
     public interface IAdjacencyIndex<TKey>
         : ICloneable

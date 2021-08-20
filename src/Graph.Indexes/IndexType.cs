@@ -1,4 +1,4 @@
-﻿namespace Graph.Indexes
+﻿namespace Graphs.Indexes
 {
     public enum IndexType
     {

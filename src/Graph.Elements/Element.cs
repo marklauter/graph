@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Graph.Elements
+namespace Graphs.Elements
 {
     [DebuggerDisplay("{Id}")]
     public abstract class Element

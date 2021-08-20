@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Graph.Indexes
+namespace Graphs.Indexes
 {
     public abstract class AdjacencyIndex<TKey>
         : IAdjacencyIndex<TKey>

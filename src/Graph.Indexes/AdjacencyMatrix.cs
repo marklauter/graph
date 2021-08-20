@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Graph.Indexes
+namespace Graphs.Indexes
 {
     public abstract class AdjacencyMatrix
         : AdjacencyIndex<int>

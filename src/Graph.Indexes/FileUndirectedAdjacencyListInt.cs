@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Graph.Indexes
+namespace Graphs.Indexes
 {
     public sealed class FileUndirectedAdjacencyListInt
         : FileAdjacencyListInt

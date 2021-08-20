@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Graph.Indexes\Graph.Indexes.csproj" />
+    <ProjectReference Include="..\Graph.Indexes\Graphs.Indexes.csproj" />
   </ItemGroup>
 
 </Project>

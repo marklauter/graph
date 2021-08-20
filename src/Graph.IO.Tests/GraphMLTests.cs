@@ -1,10 +1,10 @@
-﻿using Graph.IO.GraphML;
+﻿using Graphs.IO.GraphML;
 using System;
 using System.IO;
 using System.Linq;
 using Xunit;
 
-namespace Graph.IO.Tests
+namespace Graphs.IO.Tests
 {
     public sealed class GraphMLTests
     {

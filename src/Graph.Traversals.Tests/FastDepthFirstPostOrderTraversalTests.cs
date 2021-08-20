@@ -1,6 +1,6 @@
-﻿using Graph.Indexes;
+﻿using Graphs.Indexes;
 
-namespace Graph.Traversals.Tests
+namespace Graphs.Traversals.Tests
 {
     public sealed class FastDepthFirstPostOrderTraversalTests
         : TraversalTests

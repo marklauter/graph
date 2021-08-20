@@ -1,8 +1,8 @@
-using Graph.Indexes;
+using Graphs.Indexes;
 using System;
 using Xunit;
 
-namespace Graph.Traversals.Tests
+namespace Graphs.Traversals.Tests
 {
     public abstract class TraversalTests
     {

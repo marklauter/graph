@@ -1,10 +1,10 @@
-﻿using Graph.Elements;
+﻿using Graphs.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace Graph.IO.GraphML
+namespace Graphs.IO.GraphML
 {
     public abstract class GmlElement
     {

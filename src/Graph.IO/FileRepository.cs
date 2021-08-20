@@ -1,11 +1,11 @@
-﻿using Graph.Elements;
+﻿using Graphs.Elements;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Graph.IO
+namespace Graphs.IO
 {
     public abstract class FileRepository<T>
         : IRepository<T>

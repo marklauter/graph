@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Graph.Indexes
+namespace Graphs.Indexes
 {
     public sealed class UndirectedAdjacencyList<TKey>
         : AdjacencyList<TKey>

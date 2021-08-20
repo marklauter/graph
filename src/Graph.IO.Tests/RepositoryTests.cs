@@ -1,9 +1,9 @@
-using Graph.Elements;
+using Graphs.Elements;
 using System;
 using System.IO;
 using Xunit;
 
-namespace Graph.IO.Tests
+namespace Graphs.IO.Tests
 {
     public class RepositoryTests
     {
@@ -138,6 +138,41 @@ namespace Graph.IO.Tests
             {
                 Directory.Delete(repositoryName, true);
             }
+        }
+
+        [Fact]
+        public void Repository_Write_Read_Graph_Succeeds()
+        {
+            //var graph = new Graph.Elements.Graph();
+            //var label = nameof(Node).ToLowerInvariant();
+            //node.Classify(label);
+            //var value = Guid.NewGuid().ToString();
+            //node.Qualify("value", value);
+
+            //var repositoryName = "repositorytests" + Guid.NewGuid().ToString();
+            //try
+            //{
+            //    var repository = new JsonRepository<Node>(repositoryName);
+            //    var entity = repository.Insert(node);
+
+            //    Assert.Equal(node.Id, entity.Id);
+            //    Assert.Equal(0, entity.ETag);
+
+            //    Assert.True(((Node)entity).Is(label));
+            //    Assert.Equal(value.ToString(), ((Node)entity).Attributes["value"]);
+
+            //    entity = repository.Read(entity.Id);
+
+            //    Assert.Equal(node.Id, entity.Id);
+            //    Assert.Equal(0, entity.ETag);
+
+            //    Assert.True(((Node)entity).Is(label));
+            //    Assert.Equal(value.ToString(), ((Node)entity).Attributes["value"]);
+            //}
+            //finally
+            //{
+            //    Directory.Delete(repositoryName, true);
+            //}
         }
     }
 }

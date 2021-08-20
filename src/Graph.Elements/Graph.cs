@@ -1,4 +1,4 @@
-﻿using Graph.Indexes;
+﻿using Graphs.Indexes;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace Graph.Elements
+namespace Graphs.Elements
 {
     [DebuggerDisplay("{Id}")]
     [JsonObject("graph")]

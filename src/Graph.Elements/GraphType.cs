@@ -1,4 +1,4 @@
-﻿namespace Graph.Graphs
+﻿namespace Graphs.Graphs
 {
     public enum GraphType
     {

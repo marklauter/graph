@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Graph.Indexes.Tests
+namespace Graphs.Indexes.Tests
 {
     public class FileDirectedAdjacencyListIntTests
         : DirectedAdjacencyIndexTests
