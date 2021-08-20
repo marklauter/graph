@@ -64,6 +64,7 @@ namespace Graphs.Elements
 
         [JsonProperty("matrix")]
 #pragma warning disable IDE0051 // Remove unused private members
+        // it's required for serialization
         private string Matrix
 #pragma warning restore IDE0051 // Remove unused private members
         {
@@ -223,10 +224,10 @@ namespace Graphs.Elements
         {
             if (this.nodes.Remove(node.Id))
             {
-                var incidents = this.edges
+                var incidentEdges = this.edges
                     .Where(e => e.Source == node.Id || e.Target == node.Id);
 
-                foreach (var edge in incidents)
+                foreach (var edge in incidentEdges)
                 {
                     _ = this.adjacencyIndex.Decouple(edge.Source, edge.Target);
                     _ = this.edges.Remove(edge);
