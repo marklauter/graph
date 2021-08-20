@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace Graphs.Traversals
 {
-    public sealed class DepthFirstPostOrderTraversal<TKey>
+    public sealed class BreadthFirstPreOrderTraversal<TKey>
         : Traversal<TKey>
         where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
     {
-        public DepthFirstPostOrderTraversal(IAdjacencyIndex<TKey> adjacencyIndex)
+        public BreadthFirstPreOrderTraversal(IAdjacencyIndex<TKey> adjacencyIndex)
             : base(adjacencyIndex)
         {
         }
@@ -22,28 +22,22 @@ namespace Graphs.Traversals
         public override IEnumerable<TKey> Traverse(TKey node, int maxDepth)
         {
             var depth = 0;
-            var traversal = new Stack<TKey>();
             var visited = new HashSet<TKey>(this.AdjacencyIndex.Size);
-            var neighbors = new Stack<TKey>(new TKey[] { node });
+            var neighbors = new Queue<TKey>(new TKey[] { node });
 
             while (neighbors.Count > 0)// && (maxDepth == -1 || depth < maxDepth))
             {
-                var nextNode = neighbors.Pop();
+                var nextNode = neighbors.Dequeue();
                 if (!visited.Contains(nextNode))
                 {
                     ++depth;
-                    traversal.Push(nextNode);
+                    yield return nextNode;
                     visited.Add(nextNode);
                     foreach (var neighbor in this.AdjacencyIndex.Neighbors(nextNode).Where(n => !visited.Contains(n)))
                     {
-                        neighbors.Push(neighbor);
+                        neighbors.Enqueue(neighbor);
                     }
                 }
-            }
-
-            while (traversal.Count > 0)
-            {
-                yield return traversal.Pop();
             }
         }
     }

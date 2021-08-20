@@ -1,10 +1,10 @@
-﻿using Graph.Elements;
+﻿using Graphs.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace Graph.IO.GraphML
+namespace Graphs.IO.GraphML
 {
     public abstract class GmlElement
     {
@@ -19,7 +19,7 @@ namespace Graph.IO.GraphML
             this.Element = element;
             this.Id = element.Id;
 
-            var classData = element.Classes
+            var classData = element.Labels
                 .Select(c => new GmlData(keys["class"].Id, c));
 
             var attributeData = element.Attributes

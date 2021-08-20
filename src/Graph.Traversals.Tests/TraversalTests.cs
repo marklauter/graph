@@ -1,8 +1,8 @@
-using Graph.Indexes;
+using Graphs.Indexes;
 using System;
 using Xunit;
 
-namespace Graph.Traversals.Tests
+namespace Graphs.Traversals.Tests
 {
     public abstract class TraversalTests
     {
@@ -108,10 +108,11 @@ namespace Graph.Traversals.Tests
             var index = CreateUndirectedAdjacencyList();
             index.Couple(0, 1);
             index.Couple(0, 2);
-            index.Couple(0, 3);
-            index.Couple(1, 3);
+            index.Couple(1, 2);
             index.Couple(2, 3);
             index.Couple(3, 4);
+            index.Couple(1, 4);
+            index.Couple(1, 5);
 
             var traversal = this.CreateTraversal(index);
             var vertices = traversal.Traverse(0);

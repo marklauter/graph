@@ -20,8 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Graph.Elements\Graph.Elements.csproj" />
-    <ProjectReference Include="..\Graph.IO\Graph.IO.csproj" />
+    <ProjectReference Include="..\Graph.Elements\Graphs.Elements.csproj" />
+    <ProjectReference Include="..\Graph.IO\Graphs.IO.csproj" />
   </ItemGroup>
 
 </Project>

@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <ProjectReference Include="..\Graph.Elements\Graphs.Elements.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Graph.Elements\Graph.Elements.csproj" />
+    <Folder Include="Indexes\" />
   </ItemGroup>
 
 </Project>

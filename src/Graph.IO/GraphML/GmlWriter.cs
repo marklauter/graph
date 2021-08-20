@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 
-namespace Graph.IO.GraphML
+namespace Graphs.IO.GraphML
 {
     public static class GmlWriter
     {

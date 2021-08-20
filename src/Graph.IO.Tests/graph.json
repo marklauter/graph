@@ -1,0 +1,249 @@
+{
+  "member": {
+    "edges": [
+      {
+        "directed": false,
+        "souce": "daa8dd95-4b68-403e-893e-bb0692158ff6",
+        "target": "f735b8ff-398a-4891-aa61-54b996b66559",
+        "id": "af0194a9-9af0-404a-93c0-ec3ea8ad81af",
+        "labels": [ "action" ],
+        "attributes": {}
+      },
+      {
+        "directed": false,
+        "souce": "daa8dd95-4b68-403e-893e-bb0692158ff6",
+        "target": "dfcccb60-5c77-4889-b348-3e49706c7af8",
+        "id": "860241b7-f70d-4bb5-ad62-04b6cf1dfb52",
+        "labels": [ "action" ],
+        "attributes": {}
+      },
+      {
+        "directed": false,
+        "souce": "5e7494d1-3c0b-44b9-b140-a12956f2bff9",
+        "target": "f735b8ff-398a-4891-aa61-54b996b66559",
+        "id": "9ba7009f-0484-4363-a1e6-ca2593a6b5b4",
+        "labels": [ "action" ],
+        "attributes": {}
+      },
+      {
+        "directed": false,
+        "souce": "5e7494d1-3c0b-44b9-b140-a12956f2bff9",
+        "target": "dfcccb60-5c77-4889-b348-3e49706c7af8",
+        "id": "70838026-1c4e-4e59-a0e5-cbe0553d57d4",
+        "labels": [ "action" ],
+        "attributes": {}
+      },
+      {
+        "directed": false,
+        "souce": "daa8dd95-4b68-403e-893e-bb0692158ff6",
+        "target": "5e7494d1-3c0b-44b9-b140-a12956f2bff9",
+        "id": "422f20ce-5f84-486e-a892-a028c6a2b2c3",
+        "labels": [ "road" ],
+        "attributes": { "length": "10" }
+      },
+      {
+        "directed": false,
+        "souce": "628270d6-b7b5-46c0-9eba-c45a4295bdc0",
+        "target": "f735b8ff-398a-4891-aa61-54b996b66559",
+        "id": "7df32c61-f792-40cf-8194-151056bdc647",
+        "labels": [ "action" ],
+        "attributes": {}
+      },
+      {
+        "directed": false,
+        "souce": "628270d6-b7b5-46c0-9eba-c45a4295bdc0",
+        "target": "d1d396e9-e185-4561-8980-3894ad8169e1",
+        "id": "64773095-4d8a-47ec-9984-9f99eb94ee25",
+        "labels": [ "action" ],
+        "attributes": {}
+      },
+      {
+        "directed": false,
+        "souce": "628270d6-b7b5-46c0-9eba-c45a4295bdc0",
+        "target": "515e5091-b222-4b9f-8f76-8f2724575344",
+        "id": "fffccfef-be15-4d49-8ab6-83a27cf5fc92",
+        "labels": [ "action" ],
+        "attributes": {}
+      },
+      {
+        "directed": false,
+        "souce": "628270d6-b7b5-46c0-9eba-c45a4295bdc0",
+        "target": "677d9dc1-a3eb-427d-882a-ce0a3c25ab9d",
+        "id": "8c886570-cb10-47a8-9453-0d8bcecfcc2b",
+        "labels": [ "action" ],
+        "attributes": {}
+      },
+      {
+        "directed": false,
+        "souce": "a8a240e4-fb32-4283-84f9-f017fcfee450",
+        "target": "f735b8ff-398a-4891-aa61-54b996b66559",
+        "id": "6bed01a6-1d26-4bfa-a45b-9571700d8fba",
+        "labels": [ "action" ],
+        "attributes": {}
+      },
+      {
+        "directed": false,
+        "souce": "a8a240e4-fb32-4283-84f9-f017fcfee450",
+        "target": "3818cedb-79d5-4911-b375-9b1ce52c2922",
+        "id": "4e9ff645-ed3d-499c-bec5-534c29c88059",
+        "labels": [ "action" ],
+        "attributes": {}
+      },
+      {
+        "directed": false,
+        "souce": "a8a240e4-fb32-4283-84f9-f017fcfee450",
+        "target": "2cb7c0cc-c756-464b-b738-cab165b40055",
+        "id": "54f50399-7ea7-4eb1-9124-5068c9f0fdcc",
+        "labels": [ "action" ],
+        "attributes": {}
+      },
+      {
+        "directed": false,
+        "souce": "7f96c216-7b17-443f-bf84-2b1425af6e52",
+        "target": "f735b8ff-398a-4891-aa61-54b996b66559",
+        "id": "1a2e3a26-2e21-4f00-8a8b-888f299af35a",
+        "labels": [ "action" ],
+        "attributes": {}
+      },
+      {
+        "directed": false,
+        "souce": "7f96c216-7b17-443f-bf84-2b1425af6e52",
+        "target": "d1d396e9-e185-4561-8980-3894ad8169e1",
+        "id": "5ade717e-b230-400f-bf2c-6a3058ccf306",
+        "labels": [ "action" ],
+        "attributes": {}
+      },
+      {
+        "directed": false,
+        "souce": "7f96c216-7b17-443f-bf84-2b1425af6e52",
+        "target": "6d87c80c-ae87-484f-9fd1-86dc30bcc08e",
+        "id": "314fbaa8-df38-499c-843d-0d8de40f89f9",
+        "labels": [ "action" ],
+        "attributes": {}
+      },
+      {
+        "directed": false,
+        "souce": "7f96c216-7b17-443f-bf84-2b1425af6e52",
+        "target": "677d9dc1-a3eb-427d-882a-ce0a3c25ab9d",
+        "id": "0e303064-8084-435b-856d-a16ad6f23479",
+        "labels": [ "action" ],
+        "attributes": {}
+      },
+      {
+        "directed": false,
+        "souce": "daa8dd95-4b68-403e-893e-bb0692158ff6",
+        "target": "628270d6-b7b5-46c0-9eba-c45a4295bdc0",
+        "id": "efd85f3b-323e-4b6c-9d4e-49db5cb5d296",
+        "labels": [ "contains" ],
+        "attributes": {}
+      },
+      {
+        "directed": false,
+        "souce": "5e7494d1-3c0b-44b9-b140-a12956f2bff9",
+        "target": "a8a240e4-fb32-4283-84f9-f017fcfee450",
+        "id": "c51c01e5-6ca6-4b11-892d-3a4dbad01510",
+        "labels": [ "contains" ],
+        "attributes": {}
+      },
+      {
+        "directed": false,
+        "souce": "a8a240e4-fb32-4283-84f9-f017fcfee450",
+        "target": "7f96c216-7b17-443f-bf84-2b1425af6e52",
+        "id": "f57a42f7-5bcd-407d-9a6e-a5f0fd6baedc",
+        "labels": [ "contains" ],
+        "attributes": {}
+      }
+    ],
+    "nodes": {
+      "dfcccb60-5c77-4889-b348-3e49706c7af8": {
+        "id": "dfcccb60-5c77-4889-b348-3e49706c7af8",
+        "labels": [ "action" ],
+        "attributes": { "value": "go" }
+      },
+      "f735b8ff-398a-4891-aa61-54b996b66559": {
+        "id": "f735b8ff-398a-4891-aa61-54b996b66559",
+        "labels": [ "action" ],
+        "attributes": { "value": "look" }
+      },
+      "515e5091-b222-4b9f-8f76-8f2724575344": {
+        "id": "515e5091-b222-4b9f-8f76-8f2724575344",
+        "labels": [ "action" ],
+        "attributes": { "value": "use" }
+      },
+      "6d87c80c-ae87-484f-9fd1-86dc30bcc08e": {
+        "id": "6d87c80c-ae87-484f-9fd1-86dc30bcc08e",
+        "labels": [ "action" ],
+        "attributes": { "value": "read" }
+      },
+      "d1d396e9-e185-4561-8980-3894ad8169e1": {
+        "id": "d1d396e9-e185-4561-8980-3894ad8169e1",
+        "labels": [ "action" ],
+        "attributes": { "value": "take" }
+      },
+      "677d9dc1-a3eb-427d-882a-ce0a3c25ab9d": {
+        "id": "677d9dc1-a3eb-427d-882a-ce0a3c25ab9d",
+        "labels": [ "action" ],
+        "attributes": { "value": "drop" }
+      },
+      "3818cedb-79d5-4911-b375-9b1ce52c2922": {
+        "id": "3818cedb-79d5-4911-b375-9b1ce52c2922",
+        "labels": [ "action" ],
+        "attributes": { "value": "open" }
+      },
+      "2cb7c0cc-c756-464b-b738-cab165b40055": {
+        "id": "2cb7c0cc-c756-464b-b738-cab165b40055",
+        "labels": [ "action" ],
+        "attributes": { "value": "close" }
+      },
+      "daa8dd95-4b68-403e-893e-bb0692158ff6": {
+        "id": "daa8dd95-4b68-403e-893e-bb0692158ff6",
+        "labels": [ "cell" ],
+        "attributes": {
+          "size": "10",
+          "description": "empty field",
+          "actions": "look go",
+          "name": "spawn point"
+        }
+      },
+      "5e7494d1-3c0b-44b9-b140-a12956f2bff9": {
+        "id": "5e7494d1-3c0b-44b9-b140-a12956f2bff9",
+        "labels": [ "cell" ],
+        "attributes": {
+          "size": "20",
+          "description": "crumbling castle",
+          "name": "castle"
+        }
+      },
+      "628270d6-b7b5-46c0-9eba-c45a4295bdc0": {
+        "id": "628270d6-b7b5-46c0-9eba-c45a4295bdc0",
+        "labels": [ "object" ],
+        "attributes": {
+          "description": "a sword with rust on it",
+          "name": "rusty sword"
+        }
+      },
+      "a8a240e4-fb32-4283-84f9-f017fcfee450": {
+        "id": "a8a240e4-fb32-4283-84f9-f017fcfee450",
+        "labels": [ "object" ],
+        "attributes": {
+          "description": "a chest made of wood",
+          "name": "wooden chest"
+        }
+      },
+      "7f96c216-7b17-443f-bf84-2b1425af6e52": {
+        "id": "7f96c216-7b17-443f-bf84-2b1425af6e52",
+        "labels": [ "object" ],
+        "attributes": {
+          "description": "an ancient scroll containing magic spell",
+          "name": "magic scroll"
+        }
+      }
+    },
+    "matrix": "Undirected\r\ndaa8dd95-4b68-403e-893e-bb0692158ff6:0111100000000\r\nf735b8ff-398a-4891-aa61-54b996b66559:1001100010010\r\ndfcccb60-5c77-4889-b348-3e49706c7af8:1001000000000\r\n5e7494d1-3c0b-44b9-b140-a12956f2bff9:1110000010000\r\n628270d6-b7b5-46c0-9eba-c45a4295bdc0:1100011100000\r\nd1d396e9-e185-4561-8980-3894ad8169e1:0000100000010\r\n515e5091-b222-4b9f-8f76-8f2724575344:0000100000000\r\n677d9dc1-a3eb-427d-882a-ce0a3c25ab9d:0000100000010\r\na8a240e4-fb32-4283-84f9-f017fcfee450:0101000001110\r\n3818cedb-79d5-4911-b375-9b1ce52c2922:0000000010000\r\n2cb7c0cc-c756-464b-b738-cab165b40055:0000000010000\r\n7f96c216-7b17-443f-bf84-2b1425af6e52:0100010110001\r\n6d87c80c-ae87-484f-9fd1-86dc30bcc08e:0000000000010\r\n",
+    "directed": false,
+    "id": "31b0bb4b-6148-4c40-a47f-5fc0bd47f703",
+    "labels": [ "adventure" ],
+    "attributes": { "version": "0.0" }
+  },
+  "ETag": 0
+}

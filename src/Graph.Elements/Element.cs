@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Graph.Elements
+namespace Graphs.Elements
 {
     [DebuggerDisplay("{Id}")]
     public abstract class Element
@@ -25,7 +25,7 @@ namespace Graph.Elements
 
         protected Element(Element other)
         {
-            this.Classes = ImmutableHashSet.Create(other.Classes.ToArray());
+            this.Labels = ImmutableHashSet.Create(other.Labels.ToArray());
             this.Attributes = ImmutableDictionary.CreateRange(other.Attributes);
         }
 
@@ -33,12 +33,10 @@ namespace Graph.Elements
         public Guid Id { get; private set; } = Guid.NewGuid();
 
         [JsonProperty("labels")]
-        public ImmutableHashSet<string> Classes { get; private set; } = ImmutableHashSet<string>.Empty;
+        public ImmutableHashSet<string> Labels { get; private set; } = ImmutableHashSet<string>.Empty;
 
         [JsonProperty("attributes")]
         public IImmutableDictionary<string, string> Attributes { get; private set; } = ImmutableDictionary<string, string>.Empty;
-
-        public string this[string key] => this.Attribute(key);
 
         public string Attribute(string attribute)
         {
@@ -47,37 +45,43 @@ namespace Graph.Elements
                 : null;
         }
 
-        public void Classify(string label)
+        public IElement Classify(string label)
         {
             if (String.IsNullOrWhiteSpace(label))
             {
                 throw new ArgumentException($"'{nameof(label)}' cannot be null or whitespace.", nameof(label));
             }
 
-            this.Classes = this.Classes.Add(label);
+            this.Labels = this.Labels.Add(label);
+
+            return this;
         }
 
-        public void Classify(IEnumerable<string> labels)
+        public IElement Classify(IEnumerable<string> labels)
         {
             if (labels is null)
             {
                 throw new ArgumentNullException(nameof(labels));
             }
 
-            this.Classes = this.Classes
+            this.Labels = this.Labels
                 .Union(labels);
+
+            return this;
         }
 
         public abstract object Clone();
 
-        public void Declassify(string label)
+        public IElement Declassify(string label)
         {
             if (String.IsNullOrWhiteSpace(label))
             {
                 throw new ArgumentException($"'{nameof(label)}' cannot be null or whitespace.", nameof(label));
             }
 
-            this.Classes = this.Classes.Remove(label);
+            this.Labels = this.Labels.Remove(label);
+
+            return this;
         }
 
         public bool HasAttribute(string attribute)
@@ -87,10 +91,10 @@ namespace Graph.Elements
 
         public bool Is(string label)
         {
-            return this.Classes.Contains(label);
+            return this.Labels.Contains(label);
         }
 
-        public void Qualify(string attribute, string value)
+        public IElement Qualify(string attribute, string value)
         {
             if (String.IsNullOrWhiteSpace(attribute))
             {
@@ -103,9 +107,11 @@ namespace Graph.Elements
             }
 
             this.Attributes = this.Attributes.SetItem(attribute, value);
+
+            return this;
         }
 
-        public void Qualify(IDictionary<string, string> attributes)
+        public IElement Qualify(IDictionary<string, string> attributes)
         {
             if (attributes is null)
             {
@@ -115,6 +121,8 @@ namespace Graph.Elements
             this.Attributes = this.Attributes
                 .Union(attributes)
                 .ToImmutableDictionary();
+
+            return this;
         }
     }
 }

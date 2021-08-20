@@ -1,9 +1,9 @@
-﻿using Graph.Indexes;
+﻿using Graphs.Indexes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Graph.Traversals
+namespace Graphs.Traversals
 {
     public sealed class DepthFirstPreOrderTraversal<TKey>
         : Traversal<TKey>

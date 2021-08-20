@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Graph.Elements
+namespace Graphs.Elements
 {
     [DebuggerDisplay("{Id} {Source} {Target}")]
     [JsonObject("edge")]
@@ -56,6 +56,50 @@ namespace Graph.Elements
         {
             this.Source = source;
             this.Target = target;
+        }
+
+        public Edge(
+            Node source,
+            Node target,
+            bool isDirected)
+            : base()
+        {
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (target is null)
+            {
+                throw new ArgumentNullException(nameof(target));
+            }
+
+            this.Source = source.Id;
+            this.Target = target.Id;
+            this.IsDirected = isDirected;
+        }
+
+        public Edge(
+            Guid source,
+            Guid target,
+            bool isDirected)
+            : base()
+        {
+            this.Source = source;
+            this.Target = target;
+            this.IsDirected = isDirected;
+        }
+
+        public Edge(
+            Guid id,
+            Guid source,
+            Guid target,
+            bool isDirected)
+            : base(id)
+        {
+            this.Source = source;
+            this.Target = target;
+            this.IsDirected = isDirected;
         }
 
         private Edge(Edge other)

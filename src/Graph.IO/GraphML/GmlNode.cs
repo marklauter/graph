@@ -1,8 +1,8 @@
-﻿using Graph.Elements;
+﻿using Graphs.Elements;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace Graph.IO.GraphML
+namespace Graphs.IO.GraphML
 {
     [XmlRoot("node")]
     public sealed class GmlNode

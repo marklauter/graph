@@ -1,8 +1,8 @@
-﻿using Graph.Elements;
+﻿using Graphs.Elements;
 using Newtonsoft.Json;
 using System;
 
-namespace Graph.IO
+namespace Graphs.IO
 {
     public sealed class Entity<T>
         where T : IElement

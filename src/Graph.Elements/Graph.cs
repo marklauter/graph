@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Graphs.Indexes;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -6,7 +7,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace Graph.Elements
+namespace Graphs.Elements
 {
     [DebuggerDisplay("{Id}")]
     [JsonObject("graph")]
@@ -16,17 +17,32 @@ namespace Graph.Elements
         , IEquatable<Graph>
         , IEqualityComparer<Graph>
     {
-        public Graph()
+#pragma warning disable S1144 // Unused private types or members should be removed
+        // default constructor is required by serializer
+        private Graph()
             : base()
         {
             this.edges = new();
             this.nodes = new();
         }
+#pragma warning restore S1144 // Unused private types or members should be removed
 
-        public Graph(Guid id) : base(id)
+        public Graph(IAdjacencyIndex<Guid> adjacencyIndex)
+            : base()
         {
             this.edges = new();
             this.nodes = new();
+            this.adjacencyIndex = adjacencyIndex ?? throw new ArgumentNullException(nameof(adjacencyIndex));
+        }
+
+        public Graph(Guid id, bool isDirected)
+            : base(id)
+        {
+            this.edges = new();
+            this.nodes = new();
+            this.adjacencyIndex = isDirected
+                ? DirectedAdjacencyList<Guid>.Empty()
+                : UndirectedAdjacencyList<Guid>.Empty();
         }
 
         private Graph(Graph other)
@@ -39,6 +55,31 @@ namespace Graph.Elements
             this.nodes = other.nodes.Values
                 .Select(n => n.Clone() as Node)
                 .ToDictionary(clone => clone.Id, clone => clone);
+
+            this.IsDirected = other.IsDirected;
+            this.adjacencyIndex = other.adjacencyIndex.Clone() as IAdjacencyIndex<Guid>;
+        }
+
+        private IAdjacencyIndex<Guid> adjacencyIndex;
+
+        [JsonProperty("matrix")]
+#pragma warning disable IDE0051 // Remove unused private members
+        private string Matrix
+#pragma warning restore IDE0051 // Remove unused private members
+        {
+            get => this.adjacencyIndex.ToString();
+            set
+            {
+                if (!String.IsNullOrWhiteSpace(value))
+                {
+                    var type = AdjacencyIndex.ParseType(value);
+                    this.adjacencyIndex = type == IndexType.Directed
+                        ? DirectedAdjacencyList<Guid>.Empty()
+                        : UndirectedAdjacencyList<Guid>.Empty();
+
+                    this.adjacencyIndex.Parse(value);
+                }
+            }
         }
 
         [JsonProperty("edges")]
@@ -54,7 +95,11 @@ namespace Graph.Elements
         public ImmutableHashSet<Node> Nodes => this.nodes.Values.ToImmutableHashSet();
 
         [JsonProperty("directed")]
-        public bool IsDirected { get; }
+        public bool IsDirected
+        {
+            get => this.adjacencyIndex.Type == IndexType.Directed;
+            private set => _ = value;  // makes serialization possible
+        }
 
         public Node Add()
         {
@@ -90,7 +135,9 @@ namespace Graph.Elements
                 throw new KeyNotFoundException(nameof(targetId));
             }
 
-            var edge = new Edge(sourceId, targetId);
+            _ = this.adjacencyIndex.Couple(sourceId, targetId);
+
+            var edge = new Edge(sourceId, targetId, this.IsDirected);
             return this.edges.Add(edge)
                 ? edge
                 : null;
@@ -98,24 +145,16 @@ namespace Graph.Elements
 
         public Edge Couple(Node source, Node target)
         {
-            if (!this.nodes.ContainsKey(source.Id))
-            {
-                throw new KeyNotFoundException(nameof(source));
-            }
-
-            if (!this.nodes.ContainsKey(target.Id))
-            {
-                throw new KeyNotFoundException(nameof(target));
-            }
-
-            var edge = new Edge(source, target);
-            return this.edges.Add(edge)
-                ? edge
-                : null;
+            return this.Couple(source.Id, target.Id);
         }
 
         public bool Couple(Edge edge)
         {
+            if (edge is null)
+            {
+                throw new ArgumentNullException(nameof(edge));
+            }
+
             if (!this.nodes.ContainsKey(edge.Source))
             {
                 throw new KeyNotFoundException(nameof(edge.Source));
@@ -125,6 +164,8 @@ namespace Graph.Elements
             {
                 throw new KeyNotFoundException(nameof(edge.Target));
             }
+
+            _ = this.adjacencyIndex.Couple(edge.Source, edge.Target);
 
             return this.edges.Add(edge);
         }
@@ -141,24 +182,15 @@ namespace Graph.Elements
                 throw new KeyNotFoundException(nameof(targetId));
             }
 
-            edge = new Edge(sourceId, targetId);
+            _ = this.adjacencyIndex.Decouple(sourceId, targetId);
+
+            edge = new Edge(sourceId, targetId, this.IsDirected);
             return this.edges.Remove(edge);
         }
 
         public bool TryDecouple(Node source, Node target, out Edge edge)
         {
-            if (!this.nodes.ContainsKey(source.Id))
-            {
-                throw new KeyNotFoundException(nameof(source));
-            }
-
-            if (!this.nodes.ContainsKey(target.Id))
-            {
-                throw new KeyNotFoundException(nameof(target));
-            }
-
-            edge = new Edge(source, target);
-            return this.edges.Remove(edge);
+            return this.TryDecouple(source.Id, target.Id, out edge);
         }
 
         public override bool Equals(object obj)
@@ -196,6 +228,7 @@ namespace Graph.Elements
 
                 foreach (var edge in incidents)
                 {
+                    _ = this.adjacencyIndex.Decouple(edge.Source, edge.Target);
                     _ = this.edges.Remove(edge);
                 }
 

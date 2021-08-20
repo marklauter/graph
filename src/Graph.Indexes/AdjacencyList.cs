@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
-namespace Graph.Indexes
+namespace Graphs.Indexes
 {
     public abstract class AdjacencyList<TKey>
         : AdjacencyIndex<TKey>
@@ -32,6 +33,11 @@ namespace Graph.Indexes
             return this.Size > 0
                 ? this.Index.Keys.First()
                 : throw new InvalidOperationException("First is invalid on empty index.");
+        }
+
+        public override IEnumerable<TKey> Keys()
+        {
+            return this.Index.Keys;
         }
 
         public override IEnumerable<TKey> Neighbors(TKey node)

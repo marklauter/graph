@@ -1,9 +1,9 @@
-﻿using Graph.Elements;
+﻿using Graphs.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Graph.IO
+namespace Graphs.IO
 {
     public interface IRepository<T>
         where T : IElement

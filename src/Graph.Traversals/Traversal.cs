@@ -1,9 +1,9 @@
-﻿using Graph.Indexes;
+﻿using Graphs.Indexes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Graph.Traversals
+namespace Graphs.Traversals
 {
     public abstract class Traversal<TKey>
         : ITraversal<TKey>
@@ -42,9 +42,9 @@ namespace Graph.Traversals
             var localDepth = nodes.Max(n =>
                 this.LocalDepth(this.AdjacencyIndex.Neighbors(n)
                     .Where(neighbor => !visited.Contains(neighbor))
-                    .ToArray(),
-                    visited,
-                    depth));
+                    .ToArray()
+                    ,visited
+                    ,depth));
 
             return Math.Max(depth, localDepth) + 1;
         }

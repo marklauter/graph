@@ -1,4 +1,4 @@
-namespace Graph.Indexes.Tests
+namespace Graphs.Indexes.Tests
 {
     public abstract class AdjacencyIndexTests
     {
