@@ -17,7 +17,6 @@ namespace Graphs.IO
             {
                 ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
                 NullValueHandling = NullValueHandling.Ignore,
-                TypeNameHandling = TypeNameHandling.Auto,
                 Formatting = Formatting.Indented,
                 MissingMemberHandling = MissingMemberHandling.Ignore,
             };
