@@ -64,6 +64,7 @@ namespace Graphs.Elements
 
         [JsonProperty("matrix")]
 #pragma warning disable IDE0051 // Remove unused private members
+        // it's required for serialization
         private string Matrix
 #pragma warning restore IDE0051 // Remove unused private members
         {
