@@ -61,7 +61,22 @@ namespace Graph.Elements
             this.adjacencyIndex = other.adjacencyIndex.Clone() as IAdjacencyIndex<Guid>;
         }
 
-        private readonly IAdjacencyIndex<Guid> adjacencyIndex;
+        private IAdjacencyIndex<Guid> adjacencyIndex;
+
+        [JsonProperty("matrix")]
+#pragma warning disable IDE0051 // Remove unused private members
+        private string Matrix
+#pragma warning restore IDE0051 // Remove unused private members
+        {
+            get => this.adjacencyIndex.ToString();
+            set
+            {
+                if (!String.IsNullOrWhiteSpace(value))
+                {
+                    this.adjacencyIndex.Parse(value);
+                }
+            }
+        }
 
         [JsonProperty("edges")]
         private readonly HashSet<Edge> edges;
@@ -76,7 +91,21 @@ namespace Graph.Elements
         public ImmutableHashSet<Node> Nodes => this.nodes.Values.ToImmutableHashSet();
 
         [JsonProperty("directed")]
-        public bool IsDirected { get; }
+        public bool IsDirected
+        {
+            get => this.adjacencyIndex.Type == IndexType.Directed;
+            set
+            {
+                this.adjacencyIndex = value
+                   ? DirectedAdjacencyList<Guid>.Empty()
+                   : UndirectedAdjacencyList<Guid>.Empty();
+
+                if(!String.IsNullOrEmpty(this.Matrix))
+                {
+                    this.adjacencyIndex.Parse(this.Matrix);
+                }
+            }
+        }
 
         public Node Add()
         {
