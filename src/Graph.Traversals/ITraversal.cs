@@ -13,6 +13,5 @@ namespace Graphs.Traversals
         public int Depth(TKey node);
         public IEnumerable<TKey> Traverse(TKey node);
         public IEnumerable<TKey> Traverse(TKey node, int maxDepth);
-        public IndexType Type { get; }
     }
 }

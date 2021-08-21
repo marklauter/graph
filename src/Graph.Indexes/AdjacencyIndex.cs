@@ -64,7 +64,7 @@ namespace Graphs.Indexes
                 }
 
                 var key = (TKey)TypeDescriptor.GetConverter(typeof(TKey)).ConvertFromInvariantString(parts[0]);
-                // var key = (TKey)Convert.ChangeType(parts[0], typeof(TKey));
+                // this didn't work: var key = (TKey)Convert.ChangeType(parts[0], typeof(TKey));
                 lines.Add(key, parts[1]);
                 line = reader.ReadLine();
             }

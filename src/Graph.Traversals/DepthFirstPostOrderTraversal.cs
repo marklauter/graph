@@ -23,7 +23,7 @@ namespace Graphs.Traversals
         {
             var depth = 0;
             var traversal = new Stack<TKey>();
-            var visited = new HashSet<TKey>(this.AdjacencyIndex.Size);
+            var visited = new HashSet<TKey>(this.AdjacencyQuery.Size);
             var neighbors = new Stack<TKey>(new TKey[] { node });
 
             while (neighbors.Count > 0)// && (maxDepth == -1 || depth < maxDepth))
@@ -34,7 +34,7 @@ namespace Graphs.Traversals
                     ++depth;
                     traversal.Push(nextNode);
                     visited.Add(nextNode);
-                    foreach (var neighbor in this.AdjacencyIndex.Neighbors(nextNode).Where(n => !visited.Contains(n)))
+                    foreach (var neighbor in this.AdjacencyQuery.Neighbors(nextNode).Where(n => !visited.Contains(n)))
                     {
                         neighbors.Push(neighbor);
                     }

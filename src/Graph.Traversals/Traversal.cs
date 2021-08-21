@@ -9,21 +9,21 @@ namespace Graphs.Traversals
         : ITraversal<TKey>
         where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
     {
-        protected readonly IAdjacencyIndex<TKey> AdjacencyIndex;
+        protected readonly IAdjacencyQuery<TKey> AdjacencyQuery;
 
-        protected Traversal(IAdjacencyIndex<TKey> adjacencyIndex)
+        protected Traversal(IAdjacencyQuery<TKey> adjacencyIndex)
         {
             if (adjacencyIndex is null)
             {
                 throw new System.ArgumentNullException(nameof(adjacencyIndex));
             }
 
-            this.AdjacencyIndex = adjacencyIndex;
+            this.AdjacencyQuery = adjacencyIndex;
         }
 
         public int Depth(TKey node)
         {
-            var visited = new HashSet<TKey>(this.AdjacencyIndex.Size);
+            var visited = new HashSet<TKey>(this.AdjacencyQuery.Size);
             return this.LocalDepth(new TKey[] { node }, visited, 0);
         }
 
@@ -40,7 +40,7 @@ namespace Graphs.Traversals
             }
 
             var localDepth = nodes.Max(n =>
-                this.LocalDepth(this.AdjacencyIndex.Neighbors(n)
+                this.LocalDepth(this.AdjacencyQuery.Neighbors(n)
                     .Where(neighbor => !visited.Contains(neighbor))
                     .ToArray()
                     ,visited
@@ -52,7 +52,5 @@ namespace Graphs.Traversals
         public abstract IEnumerable<TKey> Traverse(TKey node);
 
         public abstract IEnumerable<TKey> Traverse(TKey node, int maxDepth);
-
-        public IndexType Type => this.AdjacencyIndex.Type;
     }
 }

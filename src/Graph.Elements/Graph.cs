@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -87,13 +86,13 @@ namespace Graphs.Elements
         private readonly HashSet<Edge> edges;
 
         [JsonIgnore]
-        public ImmutableHashSet<Edge> Edges => this.edges.ToImmutableHashSet();
+        public IEnumerable<Edge> Edges => edges;
 
         [JsonProperty("nodes")]
         private readonly Dictionary<Guid, Node> nodes;
 
         [JsonIgnore]
-        public ImmutableHashSet<Node> Nodes => this.nodes.Values.ToImmutableHashSet();
+        public IEnumerable<Node> Nodes => this.nodes.Values;
 
         [JsonProperty("directed")]
         public bool IsDirected
@@ -101,6 +100,7 @@ namespace Graphs.Elements
             get => this.adjacencyIndex.Type == IndexType.Directed;
             private set => _ = value;  // makes serialization possible
         }
+        public int Size { get; }
 
         public Node Add()
         {
@@ -237,6 +237,29 @@ namespace Graphs.Elements
             }
 
             return false;
+        }
+
+        public IEnumerable<Node> Neighbors(Node node)
+        {
+            foreach (var id in this.adjacencyIndex.Neighbors(node.Id))
+            {
+                yield return this.nodes[id];
+            }
+        }
+
+        public bool Adjacent(Guid source, Guid target)
+        {
+            return this.adjacencyIndex.Adjacent(source, target);
+        }
+
+        public IEnumerable<Guid> Neighbors(Guid node)
+        {
+            return this.adjacencyIndex.Neighbors(node);
+        }
+
+        public int Degree(Guid node)
+        {
+            return this.adjacencyIndex.Degree(node);
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Graphs.IO.Tests
             edge1.Classify("edgeclass");
             edge1.Qualify("edgeAttribute", "edgevalue");
 
-            Assert.Equal(2, graph1.Nodes.Count);
+            Assert.Equal(2, graph1.Nodes.Count());
             Assert.Single(graph1.Edges);
 
             var repositoryName = $"gmlwriter_tests_folder_{Guid.NewGuid()}";
@@ -54,7 +54,7 @@ namespace Graphs.IO.Tests
                 var nodes1 = graph1.Nodes;
                 var nodes2 = graph2.Nodes;
 
-                Assert.Equal(nodes1.Count, nodes2.Count);
+                Assert.Equal(nodes1.Count(), nodes2.Count());
 
                 foreach (var node1 in nodes1)
                 {
@@ -99,7 +99,7 @@ namespace Graphs.IO.Tests
                 var edges1 = graph1.Edges;
                 var edges2 = graph2.Edges;
 
-                Assert.Equal(edges1.Count, edges2.Count);
+                Assert.Equal(edges1.Count(), edges2.Count());
 
                 foreach (var e1 in edges1)
                 {

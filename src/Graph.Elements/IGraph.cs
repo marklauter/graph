@@ -1,20 +1,27 @@
-﻿using System;
+﻿using Graphs.Indexes;
+using System;
 using System.Collections.Generic;
 
 namespace Graphs.Elements
 {
     public interface IGraph
+        : IAdjacencyQuery<Guid>
     {
-        public bool IsDirected { get; }
+        bool IsDirected { get; }
+        
+        IEnumerable<Node> Nodes { get; }
 
-        public Node Add();
-        public bool Add(Node node);
-        public int AddRange(IEnumerable<Node> nodes);
-        public Edge Couple(Guid sourceId, Guid targetId);
-        public Edge Couple(Node source, Node target);
-        public bool Couple(Edge edge);
-        public bool Remove(Node node);
-        public bool TryDecouple(Guid sourceId, Guid targetId, out Edge edge);
-        public bool TryDecouple(Node source, Node target, out Edge edge);
+        IEnumerable<Edge> Edges { get; }
+
+        Node Add();
+        bool Add(Node node);
+        int AddRange(IEnumerable<Node> nodes);
+        Edge Couple(Guid sourceId, Guid targetId);
+        Edge Couple(Node source, Node target);
+        bool Couple(Edge edge);
+        IEnumerable<Node> Neighbors(Node node);
+        bool Remove(Node node);
+        bool TryDecouple(Guid sourceId, Guid targetId, out Edge edge);
+        bool TryDecouple(Node source, Node target, out Edge edge);
     }
 }

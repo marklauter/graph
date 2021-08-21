@@ -4,16 +4,14 @@ using System.Collections.Generic;
 namespace Graphs.Indexes
 {
     public interface IAdjacencyIndex<TKey>
-        : ICloneable
+        : IAdjacencyQuery<TKey>
+        , ICloneable
         where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
     {
-        bool Adjacent(TKey source, TKey target);
         
         bool Couple(TKey source, TKey target);
         
         bool Decouple(TKey source, TKey target);
-        
-        int Degree(TKey node);
         
         /// <summary>
         /// Returns the first node in the index. Depending on the graph structure, the selection of the first node may be arbitrary or critically important.
@@ -24,12 +22,8 @@ namespace Graphs.Indexes
 
         IEnumerable<TKey> Keys();
         
-        IEnumerable<TKey> Neighbors(TKey node);
-
         void Parse(string matrix);
 
-        int Size { get; }
-      
         IndexType Type { get; }
     }
 }
