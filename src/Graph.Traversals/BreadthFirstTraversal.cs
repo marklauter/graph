@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace Graphs.Traversals
 {
-    public sealed class BreadthFirstPreOrderTraversal<TKey>
+    public sealed class BreadthFirstTraversal<TKey>
         : Traversal<TKey>
         where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
     {
-        public BreadthFirstPreOrderTraversal(IAdjacencyIndex<TKey> adjacencyIndex)
+        public BreadthFirstTraversal(IAdjacencyIndex<TKey> adjacencyIndex)
             : base(adjacencyIndex)
         {
         }

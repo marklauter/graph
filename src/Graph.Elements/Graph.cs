@@ -59,6 +59,7 @@ namespace Graphs.Elements
             this.adjacencyIndex = other.adjacencyIndex.Clone() as IAdjacencyIndex<Guid>;
         }
 
+
         private IAdjacencyIndex<Guid> adjacencyIndex;
 
         [JsonProperty("matrix")]
@@ -86,7 +87,7 @@ namespace Graphs.Elements
         private readonly HashSet<Edge> edges;
 
         [JsonIgnore]
-        public IEnumerable<Edge> Edges => edges;
+        public IEnumerable<Edge> Edges => this.edges;
 
         [JsonProperty("nodes")]
         private readonly Dictionary<Guid, Node> nodes;
