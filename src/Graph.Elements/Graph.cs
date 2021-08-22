@@ -21,7 +21,7 @@ namespace Graphs.Elements
         private Graph()
             : base()
         {
-            this.edges = new();
+            this.edges = new IncidenceList();
             this.nodes = new();
         }
 #pragma warning restore S1144 // Unused private types or members should be removed
@@ -29,7 +29,7 @@ namespace Graphs.Elements
         public Graph(IAdjacencyIndex<Guid> adjacencyIndex)
             : base()
         {
-            this.edges = new();
+            this.edges = new IncidenceList();
             this.nodes = new();
             this.adjacencyIndex = adjacencyIndex ?? throw new ArgumentNullException(nameof(adjacencyIndex));
         }
@@ -37,7 +37,7 @@ namespace Graphs.Elements
         public Graph(Guid id, bool isDirected)
             : base(id)
         {
-            this.edges = new();
+            this.edges = new IncidenceList();
             this.nodes = new();
             this.adjacencyIndex = isDirected
                 ? DirectedAdjacencyList<Guid>.Empty()
@@ -58,7 +58,6 @@ namespace Graphs.Elements
             this.IsDirected = other.IsDirected;
             this.adjacencyIndex = other.adjacencyIndex.Clone() as IAdjacencyIndex<Guid>;
         }
-
 
         private IAdjacencyIndex<Guid> adjacencyIndex;
 
@@ -84,13 +83,13 @@ namespace Graphs.Elements
         }
 
         [JsonProperty("edges")]
-        private readonly HashSet<Edge> edges;
+        private readonly IIncidenceIndex edges;
 
         [JsonIgnore]
         public IEnumerable<Edge> Edges => this.edges;
 
         [JsonProperty("nodes")]
-        private readonly Dictionary<Guid, Node> nodes;
+        internal readonly Dictionary<Guid, Node> nodes;
 
         [JsonIgnore]
         public IEnumerable<Node> Nodes => this.nodes.Values;
@@ -101,6 +100,7 @@ namespace Graphs.Elements
             get => this.adjacencyIndex.Type == IndexType.Directed;
             private set => _ = value;  // makes serialization possible
         }
+        
         public int Size { get; }
 
         public Node Add()
@@ -118,6 +118,11 @@ namespace Graphs.Elements
         public int AddRange(IEnumerable<Node> nodes)
         {
             return nodes.Count(n => this.nodes.TryAdd(n.Id, n));
+        }
+
+        public bool Adjacent(Guid source, Guid target)
+        {
+            return this.adjacencyIndex.Adjacent(source, target);
         }
 
         public override object Clone()
@@ -140,6 +145,7 @@ namespace Graphs.Elements
             _ = this.adjacencyIndex.Couple(sourceId, targetId);
 
             var edge = new Edge(sourceId, targetId, this.IsDirected);
+            
             return this.edges.Add(edge)
                 ? edge
                 : null;
@@ -172,27 +178,14 @@ namespace Graphs.Elements
             return this.edges.Add(edge);
         }
 
-        public bool TryDecouple(Guid sourceId, Guid targetId, out Edge edge)
+        public int Degree(Guid node)
         {
-            if (!this.nodes.ContainsKey(sourceId))
-            {
-                throw new KeyNotFoundException(nameof(sourceId));
-            }
-
-            if (!this.nodes.ContainsKey(targetId))
-            {
-                throw new KeyNotFoundException(nameof(targetId));
-            }
-
-            _ = this.adjacencyIndex.Decouple(sourceId, targetId);
-
-            edge = new Edge(sourceId, targetId, this.IsDirected);
-            return this.edges.Remove(edge);
+            return this.adjacencyIndex.Degree(node);
         }
 
-        public bool TryDecouple(Node source, Node target, out Edge edge)
+        public IEnumerable<(Edge edge, NodeTypes nodeType)> IncidentEdges(Node node)
         {
-            return this.TryDecouple(source.Id, target.Id, out edge);
+            return this.edges.Edges(node);
         }
 
         public override bool Equals(object obj)
@@ -221,6 +214,19 @@ namespace Graphs.Elements
             return HashCode.Combine(this.Id);
         }
 
+        public IEnumerable<Node> Neighbors(Node node)
+        {
+            foreach (var id in this.adjacencyIndex.Neighbors(node.Id))
+            {
+                yield return this.nodes[id];
+            }
+        }
+
+        public IEnumerable<Guid> Neighbors(Guid node)
+        {
+            return this.adjacencyIndex.Neighbors(node);
+        }
+
         public bool Remove(Node node)
         {
             if (this.nodes.Remove(node.Id))
@@ -240,27 +246,27 @@ namespace Graphs.Elements
             return false;
         }
 
-        public IEnumerable<Node> Neighbors(Node node)
+        public bool TryDecouple(Guid sourceId, Guid targetId, out Edge edge)
         {
-            foreach (var id in this.adjacencyIndex.Neighbors(node.Id))
+            if (!this.nodes.ContainsKey(sourceId))
             {
-                yield return this.nodes[id];
+                throw new KeyNotFoundException(nameof(sourceId));
             }
+
+            if (!this.nodes.ContainsKey(targetId))
+            {
+                throw new KeyNotFoundException(nameof(targetId));
+            }
+
+            _ = this.adjacencyIndex.Decouple(sourceId, targetId);
+
+            edge = new Edge(sourceId, targetId, this.IsDirected);
+            return this.edges.Remove(edge);
         }
 
-        public bool Adjacent(Guid source, Guid target)
+        public bool TryDecouple(Node source, Node target, out Edge edge)
         {
-            return this.adjacencyIndex.Adjacent(source, target);
-        }
-
-        public IEnumerable<Guid> Neighbors(Guid node)
-        {
-            return this.adjacencyIndex.Neighbors(node);
-        }
-
-        public int Degree(Guid node)
-        {
-            return this.adjacencyIndex.Degree(node);
+            return this.TryDecouple(source.Id, target.Id, out edge);
         }
     }
 }
