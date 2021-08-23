@@ -83,14 +83,16 @@ namespace Graphs.Elements.Tests
 
             var friendSuggestions = graph
                 .Where(mark, 2, n => n.Is("person"), e => e.Is("friend"))
-                .Except(friends);
+                .Select(frontier => frontier.node)
+                .Except(friends.Select(frontier => frontier.node));
 
             Assert.Contains((trooper, 1), friends);
 
             Assert.Contains((dddBook, 1), marksBooks);
             Assert.Contains((afBook, 1), marksBooks);
 
-            Assert.Contains((bobby, 2), friendSuggestions);
+            Assert.Contains(bobby, friendSuggestions);
+            Assert.DoesNotContain(trooper, friendSuggestions);
         }
     }
 }
