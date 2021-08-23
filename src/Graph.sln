@@ -38,9 +38,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.Adventure", "Game.Adve
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.Generator", "Game.Generator\Game.Generator.csproj", "{0E417598-8481-4B2C-8A4A-C7A1AF042C6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Controller", "Game.Controller\Game.Controller.csproj", "{C08A79BC-5269-459A-9291-498BC883D4D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.Controller", "Game.Controller\Game.Controller.csproj", "{C08A79BC-5269-459A-9291-498BC883D4D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Controller.Tests", "Game.Controller.Tests\Game.Controller.Tests.csproj", "{50ED88E4-C72D-43E6-BF01-121E40F66C1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.Controller.Tests", "Game.Controller.Tests\Game.Controller.Tests.csproj", "{50ED88E4-C72D-43E6-BF01-121E40F66C1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
