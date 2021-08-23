@@ -8,6 +8,9 @@ using System.Linq;
 
 namespace Graphs.Elements
 {
+    // todo: create an entirely file based graph using file based adjacency list<guid> and a new file based implementation of IIncidenceList
+    // todo: the node list can probably be modeled in file system with the repository with some extension of the repo functionality
+
     [DebuggerDisplay("{Id}")]
     [JsonObject("graph")]
     public sealed class Graph
