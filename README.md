@@ -2,7 +2,7 @@
 playing with graphs. no, not pie charts. go away now.
 
 ## why?
-every problem that matters can be solved with graphs. for instance, if you know the answer to the ultimate question of life, the universe and everything is 42, then all you have to do is traverse from node 42 to find the question. simple, right?
+every problem that matters can be solved with graphs. for instance, if you know 42 is the answer to the ultimate question of life, the universe and everything, then all you have to do is traverse from node 42 to find the question. simple, right?
 
 ## references
 
