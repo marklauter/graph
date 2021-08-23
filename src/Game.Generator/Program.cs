@@ -30,6 +30,8 @@ namespace Game.Generator
             _ = graph.Couple(game, player);
             _ = graph.Couple(game, map);
 
+            // todo: consider converting handlers from action attributes to nodes on the graph - attributes could define the arguments and return types
+
             var actionGo = (Node)graph.Add()
                 .Classify("action")
                 .Qualify("value", "go")
