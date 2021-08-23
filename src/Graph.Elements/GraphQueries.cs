@@ -9,7 +9,11 @@ namespace Graphs.Elements
     public static class GraphQueries
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S4456:Parameter validation in yielding methods should be wrapped", Justification = "shhh")]
-        public static IEnumerable<(Node node, int level)> Where(this IGraph source, Node origin, int depth, Func<Node, bool> predicate)
+        public static IEnumerable<(Node node, int level)> Where(
+            this IGraph source, 
+            Node origin, 
+            int depth, 
+            Func<Node, bool> predicate)
         {
             if (source is null)
             {
@@ -57,7 +61,11 @@ namespace Graphs.Elements
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S4456:Parameter validation in yielding methods should be wrapped", Justification = "shhh")]
-        public static IEnumerable<(Node node, int level)> Where(this IGraph source, Node origin, int depth, Func<Edge, bool> predicate)
+        public static IEnumerable<(Node node, int level)> Where(
+            this IGraph source, 
+            Node origin, 
+            int depth, 
+            Func<Edge, bool> predicate)
         {
             if (source is null)
             {
@@ -126,7 +134,11 @@ namespace Graphs.Elements
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S4456:Parameter validation in yielding methods should be wrapped", Justification = "shhh")]
-        public static IEnumerable<(Node node, int level)> Where(this IGraph source, Node origin, int depth, Func<(Edge edge, NodeTypes nodeType), bool> predicate)
+        public static IEnumerable<(Node node, int level)> Where(
+            this IGraph source, 
+            Node origin, 
+            int depth, 
+            Func<(Edge edge, NodeTypes nodeType), bool> predicate)
         {
             if (source is null)
             {
@@ -209,7 +221,12 @@ namespace Graphs.Elements
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S4456:Parameter validation in yielding methods should be wrapped", Justification = "shhh")]
-        public static IEnumerable<(Node node, int level)> Where(this IGraph source, Node origin, int depth, Func<Node, bool> nodePredicate, Func<Edge, bool> edgePredicate)
+        public static IEnumerable<(Node node, int level)> Where(
+            this IGraph source, 
+            Node origin, 
+            int depth, 
+            Func<Node, bool> nodePredicate, 
+            Func<Edge, bool> edgePredicate)
         {
             if (source is null)
             {
@@ -285,7 +302,12 @@ namespace Graphs.Elements
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S4456:Parameter validation in yielding methods should be wrapped", Justification = "shhh")]
-        public static IEnumerable<(Node node, int level)> Where(this IGraph source, Node origin, int depth, Func<Node, bool> nodePredicate, Func<(Edge edge, NodeTypes nodeType), bool> edgePredicate)
+        public static IEnumerable<(Node node, int level)> Where(
+            this IGraph source, 
+            Node origin, 
+            int depth, 
+            Func<Node, bool> nodePredicate, 
+            Func<(Edge edge, NodeTypes nodeType), bool> edgePredicate)
         {
             if (source is null)
             {
