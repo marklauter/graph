@@ -6,6 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Data\Graph\Graph.ddbe8848-5fd4-423c-bee0-7a5b939f0bd0.gdb" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Data\Graph\Graph.ddbe8848-5fd4-423c-bee0-7a5b939f0bd0.gdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
   </ItemGroup>

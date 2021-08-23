@@ -7,6 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Data\adventure.132742084510654448\Graph\Graph.ddbe8848-5fd4-423c-bee0-7a5b939f0bd0.gdb" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Data\adventure.132742084510654448\Graph\Graph.ddbe8848-5fd4-423c-bee0-7a5b939f0bd0.gdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
