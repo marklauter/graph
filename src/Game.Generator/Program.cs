@@ -27,8 +27,8 @@ namespace Game.Generator
             var map = (Node)graph.Add()
                 .Classify("map");
 
-            graph.Couple(game, player);
-            graph.Couple(game, map);
+            _ = graph.Couple(game, player);
+            _ = graph.Couple(game, map);
 
             var actionGo = (Node)graph.Add()
                 .Classify("action")
@@ -70,35 +70,35 @@ namespace Game.Generator
                 .Qualify("value", "close")
                 .Qualify("handler", "close"); // changes state of container to closed, makes contents inaccessible
 
-            graph.Couple(game, actionGo)
+            _ = graph.Couple(game, actionGo)
                 .Classify("vocabulary")
                 .Classify("verb");
 
-            graph.Couple(game, actionLook)
+            _ = graph.Couple(game, actionLook)
                 .Classify("vocabulary")
                 .Classify("verb");
 
-            graph.Couple(game, actionUse)
+            _ = graph.Couple(game, actionUse)
                 .Classify("vocabulary")
                 .Classify("verb");
 
-            graph.Couple(game, actionRead)
+            _ = graph.Couple(game, actionRead)
                 .Classify("vocabulary")
                 .Classify("verb");
 
-            graph.Couple(game, actionTake)
+            _ = graph.Couple(game, actionTake)
                 .Classify("vocabulary")
                 .Classify("verb");
 
-            graph.Couple(game, actionDrop)
+            _ = graph.Couple(game, actionDrop)
                 .Classify("vocabulary")
                 .Classify("verb");
 
-            graph.Couple(game, actionOpen)
+            _ = graph.Couple(game, actionOpen)
                 .Classify("vocabulary")
                 .Classify("verb");
 
-            graph.Couple(game, actionClose)
+            _ = graph.Couple(game, actionClose)
                 .Classify("vocabulary")
                 .Classify("verb");
 
@@ -107,51 +107,55 @@ namespace Game.Generator
                 .Classify("spawnpoint")
                 .Qualify("name", "field")
                 .Qualify("description", "empty field");
-            graph.Couple(map, field).Classify("spawnpoint");
-            graph.Couple(field, actionLook).Classify("action");
-            graph.Couple(field, actionGo).Classify("action");
+            
+            _ = graph.Couple(map, field).Classify("spawnpoint");
+            _ = graph.Couple(field, actionLook).Classify("action");
+            _ = graph.Couple(field, actionGo).Classify("action");
 
             var castle = (Node)graph.Add()
                 .Classify("location")
                 .Qualify("name", "castle")
                 .Qualify("description", "crumbling castle");
-            graph.Couple(map, castle);
-            graph.Couple(castle, actionLook).Classify("action");
-            graph.Couple(castle, actionGo).Classify("action");
+            
+            _ = graph.Couple(map, castle);
+            _ = graph.Couple(castle, actionLook).Classify("action");
+            _ = graph.Couple(castle, actionGo).Classify("action");
 
             var mountains = (Node)graph.Add()
                 .Classify("location")
                 .Qualify("name", "mountains")
                 .Qualify("description", "snow covered mountains");
-            graph.Couple(map, mountains);
-            graph.Couple(mountains, actionLook).Classify("action");
-            graph.Couple(mountains, actionGo).Classify("action");
+            
+            _ = graph.Couple(map, mountains);
+            _ = graph.Couple(mountains, actionLook).Classify("action");
+            _ = graph.Couple(mountains, actionGo).Classify("action");
 
             var village = (Node)graph.Add()
                 .Classify("location")
                 .Qualify("name", "village")
                 .Qualify("description", "a small peasant village");
-            graph.Couple(map, village);
-            graph.Couple(village, actionLook).Classify("action");
-            graph.Couple(village, actionGo).Classify("action");
+            
+            _ = graph.Couple(map, village);
+            _ = graph.Couple(village, actionLook).Classify("action");
+            _ = graph.Couple(village, actionGo).Classify("action");
 
-            graph.Couple(field, castle)
+            _ = graph.Couple(field, castle)
                 .Classify("path")
                 .Qualify("length", "20");
 
-            graph.Couple(field, mountains)
+            _ = graph.Couple(field, mountains)
                 .Classify("path")
                 .Qualify("length", "20");
 
-            graph.Couple(field, village)
+            _ = graph.Couple(field, village)
                 .Classify("path")
                 .Qualify("length", "10");
 
-            graph.Couple(mountains, castle)
+            _ = graph.Couple(mountains, castle)
                 .Classify("path")
                 .Qualify("length", "28");
 
-            graph.Couple(village, castle)
+            _ = graph.Couple(village, castle)
                 .Classify("path")
                 .Qualify("length", "22");
 
@@ -159,39 +163,36 @@ namespace Game.Generator
                 .Classify("object")
                 .Qualify("name", "rusty sword")
                 .Qualify("description", "a sword with rust on it");
-            graph.Couple(sword, actionLook).Classify("action");
-            graph.Couple(sword, actionTake).Classify("action");
-            graph.Couple(sword, actionUse).Classify("action");
-            graph.Couple(sword, actionDrop).Classify("action");
+            
+            _ = graph.Couple(sword, actionLook).Classify("action");
+            _ = graph.Couple(sword, actionTake).Classify("action");
+            _ = graph.Couple(sword, actionUse).Classify("action");
+            _ = graph.Couple(sword, actionDrop).Classify("action");
 
             var chest = (Node)graph.Add()
                 .Classify("object")
                 .Qualify("name", "wooden chest")
                 .Qualify("description", "a chest made of wood");
-            graph.Couple(chest, actionLook).Classify("action");
-            graph.Couple(chest, actionOpen).Classify("action");
-            graph.Couple(chest, actionClose).Classify("action");
+            
+            _ = graph.Couple(chest, actionLook).Classify("action");
+            _ = graph.Couple(chest, actionOpen).Classify("action");
+            _ = graph.Couple(chest, actionClose).Classify("action");
 
             var scroll = (Node)graph.Add()
                 .Classify("object")
                 .Qualify("name", "magic scroll")
                 .Qualify("description", "an ancient scroll containing magic spell");
-            graph.Couple(scroll, actionLook).Classify("action");
-            graph.Couple(scroll, actionTake).Classify("action");
-            graph.Couple(scroll, actionRead).Classify("action");
-            graph.Couple(scroll, actionDrop).Classify("action");
+            
+            _ = graph.Couple(scroll, actionLook).Classify("action");
+            _ = graph.Couple(scroll, actionTake).Classify("action");
+            _ = graph.Couple(scroll, actionRead).Classify("action");
+            _ = graph.Couple(scroll, actionDrop).Classify("action");
 
-            graph.Couple(player, sword)
-                .Classify("inventory");
+            _ = graph.Couple(player, sword).Classify("inventory");
+            _ = graph.Couple(player, field).Classify("current");
 
-            graph.Couple(player, field)
-                .Classify("current");
-
-            graph.Couple(castle, chest)
-                .Classify("contains");
-
-            graph.Couple(chest, scroll)
-                .Classify("contains");
+            _ = graph.Couple(castle, chest).Classify("contains");
+            _ = graph.Couple(chest, scroll).Classify("contains");
 
             var uprisingEvent = (Node)graph.Add()
                 .Classify("event")
@@ -211,17 +212,13 @@ namespace Game.Generator
                 .Qualify("chance", "90")
                 .Qualify("result", "death");
 
-            graph.Couple(village, uprisingEvent)
-                .Classify("event");
-
-            graph.Couple(castle, magicEvent)
-                .Classify("event");
-
-            graph.Couple(mountains, trollEvent)
-                .Classify("event");
+            _ = graph.Couple(village, uprisingEvent).Classify("event");
+            _ = graph.Couple(castle, magicEvent).Classify("event");
+            _ = graph.Couple(mountains, trollEvent).Classify("event");
 
             var myDocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             var repository = new JsonRepository<Graph>(System.IO.Path.Combine(myDocs, $"{gameName}.{DateTime.Now.ToFileTime()}"));
+            
             _ = repository.Insert(graph);
         }
     }
