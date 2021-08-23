@@ -12,7 +12,10 @@ namespace Game.Generator
             var gameName = "adventure";
 
             var graph = new Graph(UndirectedAdjacencyList<Guid>.Empty());
-            graph.Classify(gameName)
+
+            var game = (Node)graph.Add()
+                .Classify("game")
+                .Qualify("name", gameName)
                 .Qualify("version", "0.0")
                 .Qualify("sub-version", "beta");
 
@@ -20,6 +23,12 @@ namespace Game.Generator
                 .Classify("player")
                 .Qualify("name", "adventurer")
                 .Qualify("level", "1");
+
+            var map = (Node)graph.Add()
+                .Classify("map");
+
+            graph.Couple(game, player);
+            graph.Couple(game, map);
 
             var actionGo = (Node)graph.Add()
                 .Classify("action")
@@ -53,11 +62,21 @@ namespace Game.Generator
                 .Classify("action")
                 .Qualify("value", "close");
 
+            graph.Couple(game, actionGo).Classify("action");
+            graph.Couple(game, actionLook).Classify("action");
+            graph.Couple(game, actionUse).Classify("action");
+            graph.Couple(game, actionRead).Classify("action");
+            graph.Couple(game, actionTake).Classify("action");
+            graph.Couple(game, actionDrop).Classify("action");
+            graph.Couple(game, actionOpen).Classify("action");
+            graph.Couple(game, actionClose).Classify("action");
+
             var field = (Node)graph.Add()
                 .Classify("location")
                 .Classify("spawnpoint")
                 .Qualify("name", "field")
                 .Qualify("description", "empty field");
+            graph.Couple(map, field).Classify("spawnpoint");
             graph.Couple(field, actionLook).Classify("action");
             graph.Couple(field, actionGo).Classify("action");
 
@@ -65,6 +84,7 @@ namespace Game.Generator
                 .Classify("location")
                 .Qualify("name", "castle")
                 .Qualify("description", "crumbling castle");
+            graph.Couple(map, castle);
             graph.Couple(castle, actionLook).Classify("action");
             graph.Couple(castle, actionGo).Classify("action");
 
@@ -72,6 +92,7 @@ namespace Game.Generator
                 .Classify("location")
                 .Qualify("name", "mountains")
                 .Qualify("description", "snow covered mountains");
+            graph.Couple(map, mountains);
             graph.Couple(mountains, actionLook).Classify("action");
             graph.Couple(mountains, actionGo).Classify("action");
 
@@ -79,27 +100,28 @@ namespace Game.Generator
                 .Classify("location")
                 .Qualify("name", "village")
                 .Qualify("description", "a small peasant village");
+            graph.Couple(map, village);
             graph.Couple(village, actionLook).Classify("action");
             graph.Couple(village, actionGo).Classify("action");
 
             graph.Couple(field, castle)
-                .Classify("road")
+                .Classify("path")
                 .Qualify("length", "10");
 
             graph.Couple(field, mountains)
-                .Classify("road")
+                .Classify("path")
                 .Qualify("length", "10");
 
             graph.Couple(field, village)
-                .Classify("road")
+                .Classify("path")
                 .Qualify("length", "10");
 
             graph.Couple(mountains, castle)
-                .Classify("road")
+                .Classify("path")
                 .Qualify("length", "10");
 
             graph.Couple(village, castle)
-                .Classify("road")
+                .Classify("path")
                 .Qualify("length", "10");
 
             var sword = (Node)graph.Add()
@@ -130,6 +152,9 @@ namespace Game.Generator
 
             graph.Couple(player, sword)
                 .Classify("inventory");
+
+            graph.Couple(player, field)
+                .Classify("current");
 
             graph.Couple(castle, chest)
                 .Classify("contains");
