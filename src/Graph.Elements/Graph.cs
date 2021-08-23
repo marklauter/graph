@@ -100,7 +100,7 @@ namespace Graphs.Elements
             get => this.adjacencyIndex.Type == IndexType.Directed;
             private set => _ = value;  // makes serialization possible
         }
-        
+
         public int Size { get; }
 
         public Node Add()
@@ -145,7 +145,7 @@ namespace Graphs.Elements
             _ = this.adjacencyIndex.Couple(sourceId, targetId);
 
             var edge = new Edge(sourceId, targetId, this.IsDirected);
-            
+
             return this.edges.Add(edge)
                 ? edge
                 : null;

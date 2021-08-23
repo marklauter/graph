@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Graphs.Indexes
 {
@@ -75,7 +74,7 @@ namespace Graphs.Indexes
             {
                 throw new ArgumentOutOfRangeException(nameof(minSize));
             }
-            
+
             var newSize = Math.Max(this.size, minSize) * 2;
             var matrix = new bool[newSize, newSize];
 

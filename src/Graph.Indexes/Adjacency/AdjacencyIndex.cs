@@ -58,7 +58,7 @@ namespace Graphs.Indexes
             while (!String.IsNullOrEmpty(line))
             {
                 var parts = line.Split(':');
-                if(parts.Length < 2)
+                if (parts.Length < 2)
                 {
                     throw new FormatException(line);
                 }
@@ -69,7 +69,7 @@ namespace Graphs.Indexes
                 line = reader.ReadLine();
             }
 
-            foreach(var outerkey in lines.Keys)
+            foreach (var outerkey in lines.Keys)
             {
                 var i = 0;
                 line = lines[outerkey];
@@ -84,7 +84,7 @@ namespace Graphs.Indexes
                 }
             }
         }
-        
+
         public abstract int Size { get; }
 
         public override string ToString()

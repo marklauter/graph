@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Graphs.Indexes
 {
@@ -89,7 +88,7 @@ namespace Graphs.Indexes
 
         public override IEnumerable<int> Keys()
         {
-            for(var i = 0; i < this.Size; ++i)
+            for (var i = 0; i < this.Size; ++i)
             {
                 yield return i;
             }

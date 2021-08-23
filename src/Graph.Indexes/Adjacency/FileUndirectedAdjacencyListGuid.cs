@@ -25,11 +25,11 @@ namespace Graphs.Indexes
             if (!fileExists || !FileContainsKey(fileName, target))
             {
                 this.AddKeyToFile(fileName, fileExists, target);
-                
+
                 fileName = System.IO.Path.Combine(this.Path, target.ToString());
                 fileExists = File.Exists(fileName);
                 this.AddKeyToFile(fileName, fileExists, source);
-                
+
                 return true;
             }
 
@@ -39,12 +39,12 @@ namespace Graphs.Indexes
         public override bool Decouple(Guid source, Guid target)
         {
             var fileName = System.IO.Path.Combine(this.Path, source.ToString());
-            if (File.Exists(fileName)  || FileContainsKey(fileName, target))
+            if (File.Exists(fileName) || FileContainsKey(fileName, target))
             {
                 this.RemoveKeyFromFile(fileName, target);
 
                 fileName = System.IO.Path.Combine(this.Path, target.ToString());
-                if(File.Exists(fileName))
+                if (File.Exists(fileName))
                 {
                     this.RemoveKeyFromFile(fileName, source);
                 }

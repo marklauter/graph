@@ -164,7 +164,7 @@ namespace Graphs.IO.Tests
             var graph = new Graph(index);
 
             graph.Classify(graphLabel)
-                .Qualify("version", version);            
+                .Qualify("version", version);
 
             var actionGo = (Node)graph.Add()
                 .Classify("action")
@@ -277,11 +277,11 @@ namespace Graphs.IO.Tests
                 var clone = (Graph)entity;
                 var cloneNodes = clone.Nodes;
                 var cloneEdges = clone.Edges;
-                
+
                 Assert.NotEmpty(cloneNodes);
                 Assert.NotEmpty(cloneEdges);
 
-                foreach(var node in graph.Nodes)
+                foreach (var node in graph.Nodes)
                 {
                     Assert.Contains(node, cloneNodes);
                 }

@@ -1,5 +1,4 @@
-﻿using Graphs.Indexes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Graphs.Traversals
