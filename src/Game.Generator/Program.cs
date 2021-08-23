@@ -62,14 +62,37 @@ namespace Game.Generator
                 .Classify("action")
                 .Qualify("value", "close");
 
-            graph.Couple(game, actionGo).Classify("action");
-            graph.Couple(game, actionLook).Classify("action");
-            graph.Couple(game, actionUse).Classify("action");
-            graph.Couple(game, actionRead).Classify("action");
-            graph.Couple(game, actionTake).Classify("action");
-            graph.Couple(game, actionDrop).Classify("action");
-            graph.Couple(game, actionOpen).Classify("action");
-            graph.Couple(game, actionClose).Classify("action");
+            graph.Couple(game, actionGo)
+                .Classify("vocabulary")
+                .Classify("verb");
+
+            graph.Couple(game, actionLook)
+                .Classify("vocabulary")
+                .Classify("verb");
+
+            graph.Couple(game, actionUse)
+                .Classify("vocabulary")
+                .Classify("verb");
+
+            graph.Couple(game, actionRead)
+                .Classify("vocabulary")
+                .Classify("verb");
+
+            graph.Couple(game, actionTake)
+                .Classify("vocabulary")
+                .Classify("verb");
+
+            graph.Couple(game, actionDrop)
+                .Classify("vocabulary")
+                .Classify("verb");
+
+            graph.Couple(game, actionOpen)
+                .Classify("vocabulary")
+                .Classify("verb");
+
+            graph.Couple(game, actionClose)
+                .Classify("vocabulary")
+                .Classify("verb");
 
             var field = (Node)graph.Add()
                 .Classify("location")
