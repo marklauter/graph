@@ -32,35 +32,43 @@ namespace Game.Generator
 
             var actionGo = (Node)graph.Add()
                 .Classify("action")
-                .Qualify("value", "go");
+                .Qualify("value", "go")
+                .Qualify("handler", "transfer"); // transfer the player from origin location to destination location
 
             var actionLook = (Node)graph.Add()
                 .Classify("action")
-                .Qualify("value", "look");
+                .Qualify("value", "look")
+                .Qualify("handler", "describe"); // displays detailed description to player
 
             var actionUse = (Node)graph.Add()
                 .Classify("action")
-                .Qualify("value", "use");
+                .Qualify("value", "use")
+                .Qualify("handler", "use"); // applies object consequences to target - for example, use sword on ork will result in an attempt to hit an ork with the sword, so a roll for hit chance and then a roll for damage
 
             var actionRead = (Node)graph.Add()
                 .Classify("action")
-                .Qualify("value", "read");
+                .Qualify("value", "read")
+                .Qualify("handler", "describe"); // displays detailed description to player
 
             var actionTake = (Node)graph.Add()
                 .Classify("action")
-                .Qualify("value", "take");
+                .Qualify("value", "take")
+                .Qualify("handler", "transfer"); // transfers object from origin location to player
 
             var actionDrop = (Node)graph.Add()
                 .Classify("action")
-                .Qualify("value", "drop");
+                .Qualify("value", "drop")
+                .Qualify("handler", "transfer"); // transfers object from player to target location
 
             var actionOpen = (Node)graph.Add()
                 .Classify("action")
-                .Qualify("value", "open");
+                .Qualify("value", "open")
+                .Qualify("handler", "open"); // changes state of container to open, makes contents accessible
 
             var actionClose = (Node)graph.Add()
                 .Classify("action")
-                .Qualify("value", "close");
+                .Qualify("value", "close")
+                .Qualify("handler", "close"); // changes state of container to closed, makes contents inaccessible
 
             graph.Couple(game, actionGo)
                 .Classify("vocabulary")
@@ -129,11 +137,11 @@ namespace Game.Generator
 
             graph.Couple(field, castle)
                 .Classify("path")
-                .Qualify("length", "10");
+                .Qualify("length", "20");
 
             graph.Couple(field, mountains)
                 .Classify("path")
-                .Qualify("length", "10");
+                .Qualify("length", "20");
 
             graph.Couple(field, village)
                 .Classify("path")
@@ -141,11 +149,11 @@ namespace Game.Generator
 
             graph.Couple(mountains, castle)
                 .Classify("path")
-                .Qualify("length", "10");
+                .Qualify("length", "28");
 
             graph.Couple(village, castle)
                 .Classify("path")
-                .Qualify("length", "10");
+                .Qualify("length", "22");
 
             var sword = (Node)graph.Add()
                 .Classify("object")

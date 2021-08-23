@@ -40,6 +40,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.Generator", "Game.Gene
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Controller", "Game.Controller\Game.Controller.csproj", "{C08A79BC-5269-459A-9291-498BC883D4D9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Controller.Tests", "Game.Controller.Tests\Game.Controller.Tests.csproj", "{50ED88E4-C72D-43E6-BF01-121E40F66C1F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -94,6 +96,10 @@ Global
 		{C08A79BC-5269-459A-9291-498BC883D4D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C08A79BC-5269-459A-9291-498BC883D4D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C08A79BC-5269-459A-9291-498BC883D4D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50ED88E4-C72D-43E6-BF01-121E40F66C1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50ED88E4-C72D-43E6-BF01-121E40F66C1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50ED88E4-C72D-43E6-BF01-121E40F66C1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50ED88E4-C72D-43E6-BF01-121E40F66C1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -111,6 +117,7 @@ Global
 		{BCFA30E5-7B5E-4B33-92CD-C5DCE1CA0290} = {A3813B94-3004-447D-8D53-65F4261622D6}
 		{0E417598-8481-4B2C-8A4A-C7A1AF042C6C} = {A3813B94-3004-447D-8D53-65F4261622D6}
 		{C08A79BC-5269-459A-9291-498BC883D4D9} = {A3813B94-3004-447D-8D53-65F4261622D6}
+		{50ED88E4-C72D-43E6-BF01-121E40F66C1F} = {4BF8A6DB-C6FF-40BA-A190-39EC0D8E1AE4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D4FF5415-98E3-4C9E-A10D-75A2795F81C3}
