@@ -33,7 +33,12 @@ namespace Graphs.Elements.Tests
             var afBook = (Node)graph.Add()
                 .Classify("book")
                 .Qualify("title", "About Face")
-                .Qualify("author","Alan Cooper") ;
+                .Qualify("author","Alan Cooper");
+
+            var doetBook = (Node)graph.Add()
+                .Classify("book")
+                .Qualify("title", "Design of Everyday Things")
+                .Qualify("author", "Donald Norman");
 
             var trooper = (Node)graph.Add()
                 .Classify("person")
@@ -69,28 +74,40 @@ namespace Graphs.Elements.Tests
             var markBook2 = graph.Couple(mark, afBook)
                 .Classify("owns");
 
-            var trooperBook = graph.Couple(trooper, dddBook)
+            var trooperBook1 = graph.Couple(trooper, dddBook)
+                .Classify("owns");
+
+            var trooperBook2 = graph.Couple(trooper, doetBook)
                 .Classify("owns");
 
             var jimmyBook = graph.Couple(jimmy, dddBook)
                 .Classify("owns");
 
-            var friends = graph
-                .Where<Edge>(mark, 1, e => e.Is("friend"));
+            var marksFriends = graph
+                .Where<Edge>(mark, 1, e => e.Is("friend"))
+                .Select(frontier => frontier.node);
 
             var marksBooks = graph
-                .Where(mark, 1, n => n.Is("book"), e => e.Is("owns"));
+                .Where(mark, 1, n => n.Is("book"), e => e.Is("owns"))
+                .Select(frontier => frontier.node);
+
+            var suggestedBooks = marksFriends
+                .SelectMany(friend => graph.Where(friend, 1, n => n.Is("book"), e => e.Is("owns")))
+                .Select(frontier => frontier.node)
+                .Except(marksBooks);
 
             var friendSuggestions = graph
                 .Where(mark, 2, n => n.Is("person"), e => e.Is("friend"))
                 .Select(frontier => frontier.node)
-                .Except(friends.Select(frontier => frontier.node));
+                .Except(marksFriends);
 
-            Assert.Contains((trooper, 1), friends);
-
-            Assert.Contains((dddBook, 1), marksBooks);
-            Assert.Contains((afBook, 1), marksBooks);
-
+            Assert.Contains(trooper, marksFriends);
+            Assert.Contains(dddBook, marksBooks);
+            Assert.Contains(afBook, marksBooks);
+            Assert.DoesNotContain(doetBook, marksBooks);
+            Assert.Contains(doetBook, suggestedBooks);
+            Assert.DoesNotContain(dddBook, suggestedBooks);
+            Assert.DoesNotContain(afBook, suggestedBooks);
             Assert.Contains(bobby, friendSuggestions);
             Assert.DoesNotContain(trooper, friendSuggestions);
         }
