@@ -47,9 +47,7 @@ namespace Graphs.Elements
         private Graph(Graph other)
             : base(other)
         {
-            this.edges = other.edges
-                .Select(e => e.Clone() as Edge)
-                .ToHashSet();
+            this.edges = other.edges.Clone() as IIncidenceIndex;
 
             this.nodes = other.nodes.Values
                 .Select(n => n.Clone() as Node)

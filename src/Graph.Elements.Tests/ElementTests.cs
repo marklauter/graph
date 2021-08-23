@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Graphs.Elements.Tests
 {
-    public class ElementTests
+    public sealed class ElementTests
     {
         private class ConcreteElement : Element
         {
@@ -115,5 +115,4 @@ namespace Graphs.Elements.Tests
             Assert.True(element.Is(labels[0]));
         }
     }
-
 }

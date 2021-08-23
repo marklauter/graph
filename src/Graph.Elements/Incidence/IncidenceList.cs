@@ -19,6 +19,12 @@ namespace Graphs.Indexes
 
         public IncidenceList() { }
 
+        private IncidenceList(IncidenceList other)
+        {
+            this.sources = new(other.sources);
+            this.targets = new(other.targets);
+        }
+
         public bool Add(Edge edge)
         {
             if (!this.sources.TryGetValue(edge.Source, out var sourceEdges))
@@ -35,6 +41,19 @@ namespace Graphs.Indexes
 
             return sourceEdges.Add(edge)
                 && targetEdges.Add(edge);
+        }
+
+        public void AddRange(IEnumerable<Edge> edges)
+        {
+            foreach (var edge in edges)
+            {
+                _ = this.Add(edge);
+            }
+        }
+
+        public object Clone()
+        {
+            return new IncidenceList(this);
         }
 
         public IEnumerable<(Edge edge, NodeTypes nodeType)> Edges(Node node)
@@ -71,6 +90,11 @@ namespace Graphs.Indexes
             }
         }
 
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+
         public bool Remove(Node node)
         {
             return this.sources.Remove(node.Id)
@@ -83,11 +107,6 @@ namespace Graphs.Indexes
                 && sourceEdges.Remove(edge)
                 && this.targets.TryGetValue(edge.Target, out var targetEdges)
                 && targetEdges.Remove(edge);
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
         }
     }
 }

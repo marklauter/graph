@@ -1,10 +1,12 @@
 ﻿using Graphs.Elements;
+using System;
 using System.Collections.Generic;
 
 namespace Graphs.Indexes
 {
     public interface IIncidenceIndex
         : IEnumerable<Edge>
+        , ICloneable
     {
         bool Add(Edge edge);
 
