@@ -9,7 +9,7 @@ namespace Game.Controller.Tests
     {
         public static Graph CreateGraph(Guid graphId)
         {
-            var repositoryName = Path.Combine("Data", "adventure.132742084510654448");
+            var repositoryName = Path.Combine("Data", "adventure.132743028908632345");
             var repository = new JsonRepository<Graph>(repositoryName);
             return (Graph)repository.Read(graphId);
         }

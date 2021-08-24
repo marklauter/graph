@@ -1,6 +1,7 @@
 ﻿using Game.Controller.Exceptions;
 using Graphs.Elements;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Game.Controller
@@ -32,35 +33,59 @@ namespace Game.Controller
                 throw new ArgumentException(input);
             }
 
-            var verb = this.GetVerb(parts, input);
-            var targetInput = parts.Single(p => p != verb.Attribute("value"));
-            var target = this.GetTarget(targetInput, verb);
+            var location = this.graph
+               .Where<Node>(this.player, 1, n => n.Is("location"))
+               .Select(f => f.node)
+               .Single();
 
-            return new Command(verb, target);
+            var accessibleLocations = this.GetAccessibleLocations(location);
+            var allowedObjects = this.GetAllowedObjects(location);
+
+            var verb = this.GetVerb(parts, input, allowedObjects, accessibleLocations);
+            var handler = this.GetHandler(verb);
+            
+            var targetName = parts.Single(p => p != verb.Attribute("name"));
+            var target = this.GetTarget(targetName, verb, allowedObjects, accessibleLocations);
+
+            return new Command(verb, target, handler);
         }
 
-        private Node GetVerb(string[] parts, string input)
+        private IEnumerable<Node> GetAccessibleLocations(Node location)
         {
-            var location = this.graph
-                .Where<Node>(this.player, 1, n => n.Is("location"))
-                .Select(f => f.node)
-                .Single();
-
-            var accessibleLocations = this.graph
+            return this.graph
                 .Where(location, 1, n => n.Is("location"), e => e.Is("path"))
-                .Select(f => f.node);
+                .Select(f => f.node)
+                .Append(location);
+        }
 
+        private IEnumerable<Node> GetAllowedObjects(Node location)
+        {
             var inventory = this.graph
                 .Where(this.player, 1, n => n.Is("object"), e => e.Is("inventory"))
                 .Select(f => f.node);
 
-            var objects = this.graph
+            return this.graph
                 .Where(location, 2, n => n.Is("object"), e => e.Is("contains"))
                 .Select(f => f.node)
                 .Union(inventory)
                 .Distinct();
+        }
 
-            var allowedObjectActions = objects
+        private Node GetHandler(Node verb)
+        {
+            return this.graph
+                .Where<Node>(verb, 1, n => n.Is("handler"))
+                .Select(f=> f.node)
+                .Single();
+        }
+
+        private Node GetVerb(
+            string[] parts,
+            string input,
+            IEnumerable<Node> allowedObjects,
+            IEnumerable<Node> accessibleLocations)
+        {
+            var allowedObjectActions = allowedObjects
                 .SelectMany(o => this.graph.Where<Node>(o, 1, n => n.Is("action")))
                 .Select(f => f.node);
 
@@ -73,41 +98,26 @@ namespace Game.Controller
                 .Distinct();
 
             var verb = allowedActions
-                .FirstOrDefault(a => parts.Contains(a.Attribute("value")));
+                .FirstOrDefault(a => parts.Contains(a.Attribute("name")));
 
             return verb ?? throw new ActionNotFoundException(input);
         }
 
-        private Node GetTarget(string targetText, Node verb)
+        private Node GetTarget(
+            string targetName,
+            Node verb,
+            IEnumerable<Node> allowedObjects,
+            IEnumerable<Node> accessibleLocations)
         {
-            var location = this.graph
-                .Where<Node>(this.player, 1, n => n.Is("location"))
-                .Select(f => f.node)
-                .Single();
-
-            var accessibleLocations = this.graph
-                .Where(location, 1, n => n.Is("location"), e => e.Is("path"))
-                .Select(f => f.node)
-                .Append(location);
-
-            var inventory = this.graph
-                .Where(this.player, 1, n => n.Is("object"), e => e.Is("inventory"))
-                .Select(f => f.node);
-
-            var allowedObjects = this.graph
-                .Where(location, 2, n => n.Is("object"), e => e.Is("contains"))
-                .Select(f => f.node)
-                .Union(inventory);
-
             var allowedTargets = allowedObjects
                 .Union(accessibleLocations)
                 .Where(t => this.graph.Where<Node>(t, 1, v => v.Is("action") && v == verb).Any())
                 .Distinct();
 
             var target = allowedTargets
-                .FirstOrDefault(a => targetText == a.Attribute("name"));
+                .FirstOrDefault(a => targetName == a.Attribute("name"));
 
-            return target ?? throw new ActionTargetNotFoundException(targetText);
+            return target ?? throw new ActionTargetNotFoundException(targetName);
         }
     }
 }

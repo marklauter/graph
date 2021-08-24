@@ -30,46 +30,50 @@ namespace Game.Generator
             _ = graph.Couple(game, player);
             _ = graph.Couple(game, map);
 
-            // todo: consider converting handlers from action attributes to nodes on the graph - attributes could define the arguments and return types
+            // todo: consider converting handlers from action attributes to nodes on the graph - attributes could define the arguments and return types use the transferHandler and actionGo as a template
+            var transferHandler = (Node)graph.Add()
+                .Classify("handler")
+                .Qualify("classname", "MoveActionHandler"); // transfer the player from origin location to destination location
 
             var actionGo = (Node)graph.Add()
                 .Classify("action")
-                .Qualify("value", "go")
-                .Qualify("handler", "transfer"); // transfer the player from origin location to destination location
+                .Qualify("name", "go");
+
+            _ = graph.Couple(actionGo, transferHandler);
 
             var actionLook = (Node)graph.Add()
                 .Classify("action")
-                .Qualify("value", "look")
+                .Qualify("name", "look")
                 .Qualify("handler", "describe"); // displays detailed description to player
 
             var actionUse = (Node)graph.Add()
                 .Classify("action")
-                .Qualify("value", "use")
+                .Qualify("name", "use")
                 .Qualify("handler", "use"); // applies object consequences to target - for example, use sword on ork will result in an attempt to hit an ork with the sword, so a roll for hit chance and then a roll for damage
 
             var actionRead = (Node)graph.Add()
                 .Classify("action")
-                .Qualify("value", "read")
+                .Qualify("name", "read")
                 .Qualify("handler", "describe"); // displays detailed description to player
 
             var actionTake = (Node)graph.Add()
                 .Classify("action")
-                .Qualify("value", "take")
+                .Qualify("name", "take")
                 .Qualify("handler", "transfer"); // transfers object from origin location to player
 
             var actionDrop = (Node)graph.Add()
                 .Classify("action")
-                .Qualify("value", "drop")
+                .Qualify("name", "drop")
                 .Qualify("handler", "transfer"); // transfers object from player to target location
 
             var actionOpen = (Node)graph.Add()
                 .Classify("action")
-                .Qualify("value", "open")
+                .Qualify("name", "open")
                 .Qualify("handler", "open"); // changes state of container to open, makes contents accessible
 
             var actionClose = (Node)graph.Add()
                 .Classify("action")
-                .Qualify("value", "close")
+                .Qualify("name", "close")
                 .Qualify("handler", "close"); // changes state of container to closed, makes contents inaccessible
 
             _ = graph.Couple(game, actionGo)

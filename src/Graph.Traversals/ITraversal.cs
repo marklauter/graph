@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Graphs.Traversals
 {
+    // todo: traversals can be refactored into a set of extension methods
     public interface ITraversal<TKey>
         where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
     {
