@@ -8,6 +8,39 @@ namespace Graphs.Elements
     // uses BFS to query the graph - returns frontiers of nodes
     public static class GraphQueries
     {
+        public static bool TryGetElement<T>(
+            this IGraph source,
+            Guid id,
+            out T element)
+            where T : IElement
+        {
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            try
+            {
+                if (typeof(T) == typeof(Node))
+                {
+                    element = (T)(IElement)source.Node(id);
+                    return true;
+                }
+                else if (typeof(T) == typeof(Edge))
+                {
+                    element = (T)(IElement)source.Edge(id);
+                    return true;
+                }
+            }
+            catch
+            {
+                element = default;
+                return false;
+            }
+
+            throw new InvalidOperationException();
+        }
+
         public static IEnumerable<(Node node, int level)> Where<T>(
             this IGraph source,
             Node origin,
@@ -35,7 +68,7 @@ namespace Graphs.Elements
                 throw new ArgumentNullException(nameof(predicate));
             }
 
-            switch(predicate)
+            switch (predicate)
             {
                 case Func<Node, bool>:
                     return SearchNodes(source, origin, depth, predicate as Func<Node, bool>);
@@ -43,7 +76,7 @@ namespace Graphs.Elements
                     return SearchEdges(source, origin, depth, predicate as Func<Edge, bool>);
                 default:
                     throw new InvalidOperationException();
-            }           
+            }
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S4456:Parameter validation in yielding methods should be wrapped", Justification = "shhh")]

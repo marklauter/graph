@@ -17,8 +17,10 @@ namespace Graphs.Elements
         Edge Couple(Guid sourceId, Guid targetId);
         Edge Couple(Node source, Node target);
         bool Couple(Edge edge);
+        Edge Edge(Guid id);
         IEnumerable<(Edge edge, NodeTypes nodeType)> IncidentEdges(Node node);
         IEnumerable<Node> Neighbors(Node node);
+        Node Node(Guid id);
         bool Remove(Node node);
         bool TryDecouple(Guid sourceId, Guid targetId, out Edge edge);
         bool TryDecouple(Node source, Node target, out Edge edge);

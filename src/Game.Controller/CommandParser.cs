@@ -3,7 +3,7 @@ using Graphs.Elements;
 using System;
 using System.Linq;
 
-namespace Game.Adventure
+namespace Game.Controller
 {
     internal sealed class CommandParser
     {
@@ -87,7 +87,8 @@ namespace Game.Adventure
 
             var accessibleLocations = this.graph
                 .Where(location, 1, n => n.Is("location"), e => e.Is("path"))
-                .Select(f => f.node);
+                .Select(f => f.node)
+                .Append(location);
 
             var inventory = this.graph
                 .Where(this.player, 1, n => n.Is("object"), e => e.Is("inventory"))

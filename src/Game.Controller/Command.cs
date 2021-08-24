@@ -1,6 +1,6 @@
 ﻿using Graphs.Elements;
 
-namespace Game.Adventure
+namespace Game.Controller
 {
     public sealed class Command
     {

@@ -29,4 +29,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Game.Controller\Game.Controller.csproj" />
+    <ProjectReference Include="..\Graph.IO\Graphs.IO.csproj" />
+  </ItemGroup>
+
 </Project>

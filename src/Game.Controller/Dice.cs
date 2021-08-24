@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Game.Adventure
+namespace Game.Controller
 {
     public static class Dice
     {

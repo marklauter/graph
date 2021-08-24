@@ -3,18 +3,22 @@ using Graphs.Elements;
 using System;
 using System.Linq;
 
-namespace Game.Adventure
+namespace Game.Controller
 {
     internal sealed class Controller
     {
         private readonly IGraph graph;
         private readonly CommandParser commandParser;
 
-        public Controller(IGraph graph)
+        public Controller(IGraph graph, Node game)
         {
             this.graph = graph ?? throw new ArgumentNullException(nameof(graph));
-            this.commandParser = new CommandParser(this.graph);
+            var player = graph
+                .Where<Node>(game, 1, n => n.Is("player"))
+                .Select(f => f.node)
+                .Single();
 
+            this.commandParser = new CommandParser(this.graph, player);
         }
 
         public void ProcessCommand(Node player, Node location, Command command)

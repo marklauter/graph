@@ -184,6 +184,15 @@ namespace Graphs.Elements
             return this.adjacencyIndex.Degree(node);
         }
 
+        public Edge Edge(Guid id)
+        {
+            var edge = this.edges
+                .FirstOrDefault(edge => edge.Id == id);
+            return edge != null
+                ? edge
+                : throw new KeyNotFoundException(id.ToString());
+        }
+
         public IEnumerable<(Edge edge, NodeTypes nodeType)> IncidentEdges(Node node)
         {
             return this.edges.Edges(node);
@@ -226,6 +235,13 @@ namespace Graphs.Elements
         public IEnumerable<Guid> Neighbors(Guid node)
         {
             return this.adjacencyIndex.Neighbors(node);
+        }
+        
+        public Node Node(Guid id)
+        {
+            return this.nodes.TryGetValue(id, out var node) 
+                ? node 
+                : throw new KeyNotFoundException(id.ToString());
         }
 
         public bool Remove(Node node)
