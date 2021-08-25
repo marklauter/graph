@@ -44,6 +44,8 @@ namespace Game.Controller.ActionHandlers
                .Single();
 
             // date will act as transction if computer crashes before decouple of current location fails
+            // because to get current location if the user is linked to more than one we can just take
+            // the one with the most recent date
             _ = graph.Couple(player, target)
                 .Classify("current")
                 .Qualify("since", DateTime.UtcNow.ToString("o"));

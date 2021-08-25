@@ -6,7 +6,16 @@ namespace Game.Adventure
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var app = new Application();
+            try
+            {
+                app.Run();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"fatal error {ex.GetType()}, '{ex.Message}'");
+                Console.WriteLine(ex.StackTrace);
+            }
         }
     }
 }

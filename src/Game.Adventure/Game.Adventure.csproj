@@ -6,11 +6,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Data\Graph\Graph.ddbe8848-5fd4-423c-bee0-7a5b939f0bd0.gdb" />
+    <None Remove="appsettings.json" />
+    <None Remove="Data\Graph\Graph.fe09eca3-5a93-4b04-b505-23add1c99de8.gdb" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Data\Graph\Graph.ddbe8848-5fd4-423c-bee0-7a5b939f0bd0.gdb">
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Graph\Graph.fe09eca3-5a93-4b04-b505-23add1c99de8.gdb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -23,6 +27,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Game.Controller\Game.Controller.csproj" />
     <ProjectReference Include="..\Graph.Elements\Graphs.Elements.csproj" />
+    <ProjectReference Include="..\Graph.IO\Graphs.IO.csproj" />
   </ItemGroup>
 
 </Project>

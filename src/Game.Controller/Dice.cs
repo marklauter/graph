@@ -2,7 +2,7 @@
 
 namespace Game.Controller
 {
-    public static class Dice
+    internal static class Dice
     {
         public static bool Roll(int chance)
         {
@@ -17,5 +17,4 @@ namespace Game.Controller
             return roll1 + roll2 < threshold;
         }
     }
-
 }

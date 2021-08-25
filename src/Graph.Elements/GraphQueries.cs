@@ -41,6 +41,13 @@ namespace Graphs.Elements
             throw new InvalidOperationException();
         }
 
+        public static Node FirstOrDefault(
+            this IGraph source,
+            Func<Node, bool> predicate)
+        {
+            return source.Nodes.FirstOrDefault(predicate);
+        }
+
         public static IEnumerable<(Node node, int level)> Where<T>(
             this IGraph source,
             Node origin,
