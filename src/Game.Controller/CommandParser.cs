@@ -43,7 +43,7 @@ namespace Game.Controller
 
             var verb = this.GetVerb(parts, input, allowedObjects, accessibleLocations);
             var handler = this.GetHandler(verb);
-            
+
             var targetName = parts.Single(p => p != verb.Attribute("name"));
             var target = this.GetTarget(targetName, verb, allowedObjects, accessibleLocations);
 
@@ -61,13 +61,18 @@ namespace Game.Controller
         private IEnumerable<Node> GetAllowedObjects(Node location)
         {
             var inventory = this.graph
-                .Where(this.player, 1, n => n.Is("object"), e => e.Is("inventory"))
+                .Where<Node>(this.player, 1, n => n.Is("inventory"))
+                .Select(f => f.node)
+                .Single();
+
+            var inventoryItems = this.graph
+                .Where(inventory, 1, n => n.Is("object"), e=> e.Is("contains"))
                 .Select(f => f.node);
 
             return this.graph
                 .Where(location, 2, n => n.Is("object"), e => e.Is("contains"))
                 .Select(f => f.node)
-                .Union(inventory)
+                .Union(inventoryItems)
                 .Distinct();
         }
 
@@ -75,7 +80,7 @@ namespace Game.Controller
         {
             return this.graph
                 .Where<Node>(verb, 1, n => n.Is("handler"))
-                .Select(f=> f.node)
+                .Select(f => f.node)
                 .Single();
         }
 

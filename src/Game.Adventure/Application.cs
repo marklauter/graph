@@ -33,34 +33,23 @@ namespace Game.Adventure
                 .Where<Node>(game, 1, n => n.Is("player"))
                 .Select(f => f.node)
                 .Single();
+            var location = graph
+                .Where<Node>(player, 1, n => n.Is("location"))
+                .Select(f => f.node)
+                .First();
 
             var controller = new GameController(graph, game, player);
+            controller.ActionHandled += this.Controller_ActionHandled;
+
+            Console.ForegroundColor = ConsoleColor.Green;
 
             Console.WriteLine($"Hello, {player.Attribute("name")}. Welcome to {game.Attribute("name")} ver {game.Attribute("version")}.");
-            Console.WriteLine("Good luck guessing how the command system works and try not to die. <evil laugh>");
+            Console.WriteLine("Good luck guessing how the command system works. Tip, check github for source code.");
             Console.WriteLine("");
+            Console.WriteLine($"You're located here: {location.Attribute("name")}. try not to die, scrub. <evil laugh>");
 
             while (true)
             {
-                var location = graph
-                    .Where<Node>(player, 1, n => n.Is("location"))
-                    .Select(f => f.node)
-                    .First();
-
-                Console.WriteLine($"You're located here: {location.Attribute("name")}.");
-
-                var accessibleLocations = graph
-                    .Where<Node>(location, 1, n => n.Is("location"))
-                    .Select(f => f.node);
-
-                Console.WriteLine();
-                Console.WriteLine($"You can see the following:");
-                var i = 0;
-                foreach (var place in accessibleLocations)
-                {
-                    Console.WriteLine($"{++i}. {place.Attribute("name")}");
-                }
-
                 Console.WriteLine();
                 Console.WriteLine("What do you want to do?");
                 var success = false;
@@ -76,7 +65,8 @@ namespace Game.Adventure
                     {
                         var color = Console.ForegroundColor;
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine($"Nope. Guess again. (ex: {ex.GetType()} - '{ex.Message}')");
+                        Console.WriteLine($"Nope. Try using a verb and direct object. Words are hard. Keep at it.");
+                        Console.WriteLine($"Here's a useless hint from the developer. ex: {ex.GetType()}, '{ex.Message}'");
                         Console.ForegroundColor = color;
                     }
                 }
@@ -85,6 +75,12 @@ namespace Game.Adventure
                 Console.WriteLine("---------------------------");
                 Console.Beep();
             }
+        }
+
+        private void Controller_ActionHandled(object sender, Controller.ActionHandlers.ActionHandledEventArgs e)
+        {
+            Console.WriteLine();
+            Console.WriteLine(e.Message);
         }
     }
 }

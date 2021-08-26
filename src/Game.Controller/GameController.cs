@@ -11,6 +11,8 @@ namespace Game.Controller
         private readonly Node player;
         private readonly CommandParser commandParser;
 
+        public event EventHandler<ActionHandledEventArgs> ActionHandled;
+
         public GameController(IGraph graph, Node game, Node player)
         {
             this.graph = graph ?? throw new ArgumentNullException(nameof(graph));
@@ -23,7 +25,15 @@ namespace Game.Controller
         {
             var command = this.commandParser.Parse(input);
             var handler = CreateHandler(command);
+
+            handler.ActionHandled += this.Handler_ActionHandled;
             handler.HandleAction(this.graph, this.player, command.Verb, command.Target);
+        }
+
+        private void Handler_ActionHandled(object sender, ActionHandledEventArgs e)
+        {
+            (sender as IActionHandler).ActionHandled -= this.Handler_ActionHandled;
+            ActionHandled?.Invoke(this, e);
         }
 
         private static IActionHandler CreateHandler(Command command)

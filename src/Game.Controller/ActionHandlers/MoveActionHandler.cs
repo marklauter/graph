@@ -7,6 +7,8 @@ namespace Game.Controller.ActionHandlers
     public sealed class MoveActionHandler
         : IActionHandler
     {
+        public event EventHandler<ActionHandledEventArgs> ActionHandled;
+
         public void HandleAction(
             IGraph graph,
             Node player,
@@ -33,26 +35,30 @@ namespace Game.Controller.ActionHandlers
                 throw new ArgumentNullException(nameof(target));
             }
 
-            if (verb.Attribute("name") != "go")
-            {
-                throw new ArgumentException(nameof(verb));
-            }
-
             var location = graph
                .Where<Node>(player, 1, n => n.Is("location"))
                .Select(f => f.node)
                .Single();
 
-            // date will act as transction if computer crashes before decouple of current location fails
-            // because to get current location if the user is linked to more than one we can just take
-            // the one with the most recent date
-            _ = graph.Couple(player, target)
-                .Classify("current")
-                .Qualify("since", DateTime.UtcNow.ToString("o"));
-
-            if (!graph.TryDecouple(player, location, out var egde))
+            if (location != target)
             {
-                throw new InvalidOperationException("failed to decouple player from current location");
+                // date will act as transction if computer crashes before decouple of current location fails
+                // because to get current location if the user is linked to more than one we can just take
+                // the one with the most recent date
+                _ = graph.Couple(player, target)
+                    .Classify("current")
+                    .Qualify("since", DateTime.UtcNow.ToString("o"));
+
+                if (!graph.TryDecouple(player, location, out var egde))
+                {
+                    throw new InvalidOperationException("failed to decouple player from current location");
+                }
+
+                this.ActionHandled?.Invoke(this, new ActionHandledEventArgs($"{player.Attribute("name")} moved from {location.Attribute("name")} to {target.Attribute("name")}."));
+            }
+            else
+            {
+                this.ActionHandled?.Invoke(this, new ActionHandledEventArgs($"{player.Attribute("name")} is already here: {location.Attribute("name")}."));
             }
         }
     }
