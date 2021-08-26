@@ -189,9 +189,7 @@ namespace Graphs.Elements
         {
             var edge = this.edges
                 .FirstOrDefault(edge => edge.Id == id);
-            return edge != null
-                ? edge
-                : throw new KeyNotFoundException(id.ToString());
+            return edge ?? throw new KeyNotFoundException(id.ToString());
         }
 
         public IEnumerable<(Edge edge, NodeTypes nodeType)> IncidentEdges(Node node)

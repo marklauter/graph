@@ -7,14 +7,14 @@
 
   <ItemGroup>
     <None Remove="appsettings.json" />
-    <None Remove="Data\Graph\Graph.d1a83412-f7cc-45ec-96b8-01da7c6b1428.gdb" />
+    <None Remove="Data\Graph\Graph.c51de046-7cb8-444a-a5c4-fcbfe7a69cbf.gdb" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Graph\Graph.d1a83412-f7cc-45ec-96b8-01da7c6b1428.gdb">
+    <Content Include="Data\Graph\Graph.c51de046-7cb8-444a-a5c4-fcbfe7a69cbf.gdb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
