@@ -237,11 +237,11 @@ namespace Graphs.Elements
         {
             return this.adjacencyIndex.Neighbors(node);
         }
-        
+
         public Node Node(Guid id)
         {
-            return this.nodes.TryGetValue(id, out var node) 
-                ? node 
+            return this.nodes.TryGetValue(id, out var node)
+                ? node
                 : throw new KeyNotFoundException(id.ToString());
         }
 

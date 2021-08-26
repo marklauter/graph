@@ -3,10 +3,10 @@ using System;
 
 namespace Game.Controller.ActionHandlers
 {
-    public interface IActionHandler
+    internal interface IActionHandler
     {
         event EventHandler<ActionHandledEventArgs> ActionHandled;
 
-        void HandleAction(IGraph graph, Node player, Node verb, Node target);
+        void HandleAction(IGraph graph, Node player, Command command);
     }
 }

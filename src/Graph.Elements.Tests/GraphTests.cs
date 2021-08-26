@@ -1,9 +1,6 @@
 ﻿using Graphs.Indexes;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Graphs.Elements.Tests
@@ -33,7 +30,7 @@ namespace Graphs.Elements.Tests
             var afBook = (Node)graph.Add()
                 .Classify("book")
                 .Qualify("title", "About Face")
-                .Qualify("author","Alan Cooper");
+                .Qualify("author", "Alan Cooper");
 
             var doetBook = (Node)graph.Add()
                 .Classify("book")

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Game.Controller.ActionHandlers
 {
-    public sealed class DescribeActionHandler
+    internal sealed class DescribeActionHandler
         : IActionHandler
     {
         public event EventHandler<ActionHandledEventArgs> ActionHandled;
@@ -14,8 +14,7 @@ namespace Game.Controller.ActionHandlers
         public void HandleAction(
             IGraph graph,
             Node player,
-            Node verb,
-            Node target)
+            Command command)
         {
             if (graph is null)
             {
@@ -27,33 +26,28 @@ namespace Game.Controller.ActionHandlers
                 throw new ArgumentNullException(nameof(player));
             }
 
-            if (verb is null)
+            if (command is null)
             {
-                throw new ArgumentNullException(nameof(verb));
-            }
-
-            if (target is null)
-            {
-                throw new ArgumentNullException(nameof(target));
+                throw new ArgumentNullException(nameof(command));
             }
 
             var stringBuilder = new StringBuilder();
 
-            var containedObjects = GetContainedObjects(graph, target);
+            var containedObjects = GetContainedObjects(graph, command.Target);
 
-            if ((target.Is("object") || target.Is("location")) && target.HasAttribute("description"))
+            if ((command.Target.Is("object") || command.Target.Is("location")) && command.Target.HasAttribute("description"))
             {
                 stringBuilder
-                    .AppendLine($"looking at {target.Attribute("name")} you see {target.Attribute("description")}");
+                    .AppendLine($"looking at {command.Target.Attribute("name")} you see {command.Target.Attribute("description")}");
             }
 
-            if (target.Is("container") || target.Is("location"))
+            if (command.Target.Is("container") || command.Target.Is("location"))
             {
                 if (containedObjects.Any())
                 {
                     var i = 1;
                     stringBuilder.AppendLine();
-                    stringBuilder.AppendLine($"{target.Attribute("name")} contains:");
+                    stringBuilder.AppendLine($"{command.Target.Attribute("name")} contains:");
                     foreach (var node in containedObjects)
                     {
                         stringBuilder.AppendLine($"  {i}. {node.Attribute("name")}");
@@ -62,13 +56,13 @@ namespace Game.Controller.ActionHandlers
                 else
                 {
                     stringBuilder.AppendLine();
-                    stringBuilder.AppendLine($"{target.Attribute("name")} is empty.");
+                    stringBuilder.AppendLine($"{command.Target.Attribute("name")} is empty.");
                 }
             }
 
-            if (target.Is("location"))
+            if (command.Target.Is("location"))
             {
-                var accessibleLocations = GetAccessibleLocations(graph, target);
+                var accessibleLocations = GetAccessibleLocations(graph, command.Target);
                 if (accessibleLocations.Any())
                 {
                     stringBuilder.AppendLine();

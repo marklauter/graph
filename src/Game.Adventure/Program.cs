@@ -2,16 +2,16 @@
 
 namespace Game.Adventure
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var app = new Application();
             try
             {
                 app.Run();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine($"fatal error {ex.GetType()}, '{ex.Message}'");
                 Console.WriteLine(ex.StackTrace);

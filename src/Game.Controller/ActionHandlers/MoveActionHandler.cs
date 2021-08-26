@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Game.Controller.ActionHandlers
 {
-    public sealed class MoveActionHandler
+    internal sealed class MoveActionHandler
         : IActionHandler
     {
         public event EventHandler<ActionHandledEventArgs> ActionHandled;
@@ -12,8 +12,7 @@ namespace Game.Controller.ActionHandlers
         public void HandleAction(
             IGraph graph,
             Node player,
-            Node verb,
-            Node target)
+            Command command)
         {
             if (graph is null)
             {
@@ -25,14 +24,9 @@ namespace Game.Controller.ActionHandlers
                 throw new ArgumentNullException(nameof(player));
             }
 
-            if (verb is null)
+            if (command is null)
             {
-                throw new ArgumentNullException(nameof(verb));
-            }
-
-            if (target is null)
-            {
-                throw new ArgumentNullException(nameof(target));
+                throw new ArgumentNullException(nameof(command));
             }
 
             var location = graph
@@ -40,12 +34,12 @@ namespace Game.Controller.ActionHandlers
                .Select(f => f.node)
                .Single();
 
-            if (location != target)
+            if (location != command.Target)
             {
                 // date will act as transction if computer crashes before decouple of current location fails
                 // because to get current location if the user is linked to more than one we can just take
                 // the one with the most recent date
-                _ = graph.Couple(player, target)
+                _ = graph.Couple(player, command.Target)
                     .Classify("current")
                     .Qualify("since", DateTime.UtcNow.ToString("o"));
 
@@ -54,7 +48,7 @@ namespace Game.Controller.ActionHandlers
                     throw new InvalidOperationException("failed to decouple player from current location");
                 }
 
-                this.ActionHandled?.Invoke(this, new ActionHandledEventArgs($"{player.Attribute("name")} moved from {location.Attribute("name")} to {target.Attribute("name")}."));
+                this.ActionHandled?.Invoke(this, new ActionHandledEventArgs($"{player.Attribute("name")} moved from {location.Attribute("name")} to {command.Target.Attribute("name")}."));
             }
             else
             {

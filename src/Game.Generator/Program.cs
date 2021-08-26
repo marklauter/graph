@@ -27,8 +27,9 @@ namespace Game.Generator
             var inventory = (Node)graph.Add()
                 .Classify("inventory")
                 .Classify("container")
+                .Qualify("name", "inventory")
                 .Qualify("maxWeight", "20");
-            
+
             var map = (Node)graph.Add()
                 .Classify("map");
 
@@ -36,30 +37,32 @@ namespace Game.Generator
             _ = graph.Couple(game, map);
             _ = graph.Couple(player, inventory);
 
-            // todo: consider converting handlers from action attributes to nodes on the graph - attributes could define the arguments and return types use the transferHandler and actionGo as a template
-            var transferHandler = (Node)graph.Add()
+            var moveHandler = (Node)graph.Add()
                 .Classify("handler")
-                .Qualify("classname", "MoveActionHandler"); // transfer the player from origin location to destination location
+                .Qualify("classname", "MoveActionHandler"); // move the player from origin location to destination location
 
             var describeHandler = (Node)graph.Add()
                 .Classify("handler")
-                .Qualify("classname", "DescribeActionHandler"); // transfer the player from origin location to destination location
+                .Qualify("classname", "DescribeActionHandler"); // describes the target of the action
+
+            var transferHandler = (Node)graph.Add()
+               .Classify("handler")
+               .Qualify("classname", "TransferActionHandler") // transfer an object from its current owner to the player
+               .Qualify("requiredAttribute", "direction");
 
             var actionGo = (Node)graph.Add()
                 .Classify("action")
                 .Qualify("name", "go");
 
-            _ = graph.Couple(actionGo, transferHandler);
+            _ = graph.Couple(actionGo, moveHandler);
 
             var lookAction = (Node)graph.Add()
                 .Classify("action")
-                .Qualify("name", "look")
-                .Qualify("handler", "describe"); // displays detailed description to player
+                .Qualify("name", "look");
 
             var examineAction = (Node)graph.Add()
                 .Classify("action")
-                .Qualify("name", "examine")
-                .Qualify("handler", "describe"); // displays detailed description to player
+                .Qualify("name", "examine");
 
             _ = graph.Couple(lookAction, describeHandler);
             _ = graph.Couple(examineAction, describeHandler);
@@ -77,12 +80,16 @@ namespace Game.Generator
             var takeAction = (Node)graph.Add()
                 .Classify("action")
                 .Qualify("name", "take")
-                .Qualify("handler", "transfer"); // transfers object from origin location to player
+                .Qualify("direction", "toPlayer"); // transfers object from origin location to player
+
+            _ = graph.Couple(takeAction, transferHandler);
 
             var dropAction = (Node)graph.Add()
                 .Classify("action")
                 .Qualify("name", "drop")
-                .Qualify("handler", "transfer"); // transfers object from player to target location
+                .Qualify("direction", "fromPlayer"); // transfers object from player to target location
+
+            _ = graph.Couple(dropAction, transferHandler);
 
             var openAction = (Node)graph.Add()
                 .Classify("action")
@@ -138,7 +145,7 @@ namespace Game.Generator
                 .Classify("spawnpoint")
                 .Qualify("name", "field")
                 .Qualify("description", "empty field");
-            
+
             _ = graph.Couple(map, field).Classify("spawnpoint");
             _ = graph.Couple(field, lookAction).Classify("action");
             _ = graph.Couple(field, examineAction).Classify("action");
@@ -148,7 +155,7 @@ namespace Game.Generator
                 .Classify("location")
                 .Qualify("name", "castle")
                 .Qualify("description", "crumbling castle. might be haunted.");
-            
+
             _ = graph.Couple(map, castle);
             _ = graph.Couple(castle, lookAction).Classify("action");
             _ = graph.Couple(castle, examineAction).Classify("action");
@@ -158,7 +165,7 @@ namespace Game.Generator
                 .Classify("location")
                 .Qualify("name", "mountains")
                 .Qualify("description", "snow covered mountains. idea habitat for mountain trolls.");
-            
+
             _ = graph.Couple(map, mountains);
             _ = graph.Couple(mountains, lookAction).Classify("action");
             _ = graph.Couple(mountains, examineAction).Classify("action");
@@ -168,7 +175,7 @@ namespace Game.Generator
                 .Classify("location")
                 .Qualify("name", "village")
                 .Qualify("description", "a small peasant village. probably filled with friendly, helpful people.");
-            
+
             _ = graph.Couple(map, village);
             _ = graph.Couple(village, lookAction).Classify("action");
             _ = graph.Couple(village, examineAction).Classify("action");
@@ -198,7 +205,7 @@ namespace Game.Generator
                 .Classify("object")
                 .Qualify("name", "rusty sword")
                 .Qualify("description", "a sword. with rust.");
-            
+
             _ = graph.Couple(sword, lookAction).Classify("action");
             _ = graph.Couple(sword, examineAction).Classify("action");
             _ = graph.Couple(sword, takeAction).Classify("action");
@@ -210,7 +217,7 @@ namespace Game.Generator
                 .Classify("container")
                 .Qualify("name", "wooden chest")
                 .Qualify("description", "a chest made of wood. it's closed.");
-            
+
             _ = graph.Couple(chest, lookAction).Classify("action");
             _ = graph.Couple(chest, examineAction).Classify("action");
             _ = graph.Couple(chest, openAction).Classify("action");
@@ -220,7 +227,7 @@ namespace Game.Generator
                 .Classify("object")
                 .Qualify("name", "magic scroll")
                 .Qualify("description", "an ancient scroll. maybe it contains magic spells.");
-            
+
             _ = graph.Couple(scroll, lookAction).Classify("action");
             _ = graph.Couple(scroll, examineAction).Classify("action");
             _ = graph.Couple(scroll, takeAction).Classify("action");
@@ -257,7 +264,7 @@ namespace Game.Generator
 
             var myDocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             var repository = new JsonRepository<Graph>(System.IO.Path.Combine(myDocs, $"{gameName}.{DateTime.Now.ToFileTime()}"));
-            
+
             _ = repository.Insert(graph);
         }
     }

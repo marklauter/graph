@@ -66,7 +66,7 @@ namespace Game.Controller.Tests
 
             Assert.True(originalLocation.Is("location"));
             Assert.Equal("field", originalLocation.Attribute("name"));
-    
+
             var controller = new GameController(graph, game, player);
             controller.ProcessCommand(input);
 

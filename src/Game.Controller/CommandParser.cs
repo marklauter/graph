@@ -66,7 +66,7 @@ namespace Game.Controller
                 .Single();
 
             var inventoryItems = this.graph
-                .Where(inventory, 1, n => n.Is("object"), e=> e.Is("contains"))
+                .Where(inventory, 1, n => n.Is("object"), e => e.Is("contains"))
                 .Select(f => f.node);
 
             return this.graph
