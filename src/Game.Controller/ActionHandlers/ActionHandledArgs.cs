@@ -2,7 +2,7 @@
 
 namespace Game.Controller.ActionHandlers
 {
-    internal sealed class ActionHandledEventArgs
+    public sealed class ActionHandledEventArgs
         : EventArgs
     {
         public ActionHandledEventArgs(string message)

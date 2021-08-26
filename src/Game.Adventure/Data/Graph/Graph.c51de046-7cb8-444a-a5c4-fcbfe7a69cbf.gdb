@@ -1504,8 +1504,8 @@
           "object"
         ],
         "attributes": {
-          "description": "a sword. with rust.",
-          "name": "rusty sword"
+          "description": "an old, rusty sword. the edges are dull and nicked.",
+          "name": "sword"
         }
       },
       "6aef70f2-5639-4e6a-bc8e-a29c1de2f4d5": {
@@ -1516,7 +1516,7 @@
         ],
         "attributes": {
           "description": "a chest made of wood. it's closed.",
-          "name": "wooden chest"
+          "name": "chest"
         }
       },
       "6091cbcf-5141-4e6d-8793-0be7e12b8ffb": {
@@ -1526,7 +1526,7 @@
         ],
         "attributes": {
           "description": "an ancient scroll. maybe it contains magic spells.",
-          "name": "magic scroll"
+          "name": "scroll"
         }
       },
       "a104f2dc-a1a2-4d74-af56-7d077af32a95": {

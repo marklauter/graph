@@ -203,7 +203,7 @@ namespace Game.Generator
 
             var sword = (Node)graph.Add()
                 .Classify("object")
-                .Qualify("name", "rusty sword")
+                .Qualify("name", "sword")
                 .Qualify("description", "a sword. with rust.");
 
             _ = graph.Couple(sword, lookAction).Classify("action");
@@ -215,7 +215,7 @@ namespace Game.Generator
             var chest = (Node)graph.Add()
                 .Classify("object")
                 .Classify("container")
-                .Qualify("name", "wooden chest")
+                .Qualify("name", "chest")
                 .Qualify("description", "a chest made of wood. it's closed.");
 
             _ = graph.Couple(chest, lookAction).Classify("action");
@@ -225,7 +225,7 @@ namespace Game.Generator
 
             var scroll = (Node)graph.Add()
                 .Classify("object")
-                .Qualify("name", "magic scroll")
+                .Qualify("name", "scroll")
                 .Qualify("description", "an ancient scroll. maybe it contains magic spells.");
 
             _ = graph.Couple(scroll, lookAction).Classify("action");

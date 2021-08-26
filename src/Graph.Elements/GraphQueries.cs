@@ -213,7 +213,7 @@ namespace Graphs.Elements
                 .Where(edgePredicate)
                 .ToArray();
 
-            var nodeIds = edges.Select(e => e.Source)
+            var nodeIds = edges.Select(e => e.Source) // todo: could use select many since edge is enumerable
                 .Union(edges.Select(e => e.Target))
                 .Distinct()
                 .ToHashSet();

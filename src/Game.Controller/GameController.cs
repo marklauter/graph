@@ -27,7 +27,7 @@ namespace Game.Controller
             var handler = CreateHandler(command);
 
             handler.ActionHandled += this.Handler_ActionHandled;
-            handler.HandleAction(this.graph, this.player, command.Verb, command.Target);
+            handler.HandleAction(this.graph, this.player, command);
         }
 
         private void Handler_ActionHandled(object sender, ActionHandledEventArgs e)
