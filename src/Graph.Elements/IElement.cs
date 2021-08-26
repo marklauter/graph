@@ -8,9 +8,7 @@ namespace Graphs.Elements
         : ICloneable
     {
         Guid Id { get; }
-
         ImmutableHashSet<string> Labels { get; }
-
         public IImmutableDictionary<string, string> Attributes { get; }
 
         public string Attribute(string attribute);
