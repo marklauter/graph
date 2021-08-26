@@ -9,9 +9,9 @@ namespace Game.Controller.Tests
     public class CommandParserTests
     {
 
-        private readonly Guid graphId = Guid.Parse("fe09eca3-5a93-4b04-b505-23add1c99de8");
-        private readonly Guid gameId = Guid.Parse("c8f7b98f-dab8-4c33-ba39-2b1457a66e78");
-        private readonly Guid playerId = Guid.Parse("63d20e2c-fb57-472e-847a-7543ab0fabb8");
+        private readonly Guid graphId = Guid.Parse("d1a83412-f7cc-45ec-96b8-01da7c6b1428");
+        private readonly Guid gameId = Guid.Parse("da323889-8547-454b-a248-571dae95d9ea");
+        private readonly Guid playerId = Guid.Parse("23fdc3f5-d4d8-4ef4-91f2-8e7f64bb5ce7");
 
         [Fact]
         public void CommandParser_Parse_Succeeds()
@@ -67,7 +67,7 @@ namespace Game.Controller.Tests
             Assert.True(originalLocation.Is("location"));
             Assert.Equal("field", originalLocation.Attribute("name"));
     
-            var controller = new GameController(graph, game);
+            var controller = new GameController(graph, game, player);
             controller.ProcessCommand(input);
 
             var newLocation = graph
