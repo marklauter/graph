@@ -70,6 +70,7 @@ namespace Game.Controller
                 .Select(f => f.node)
                 .Append(inventory);
 
+            // todo: depth of 2 lets player see into containers, but if a container is closed they should have to open it first
             return this.graph
                 .Where(location, 2, n => n.Is("object"), e => e.Is("contains"))
                 .Select(f => f.node)
