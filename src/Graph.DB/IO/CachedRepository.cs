@@ -7,6 +7,7 @@ using System.Linq;
 namespace Graphs.DB.IO
 {
     // todo: make file sytem invalidate the cache - which of these is the best?
+    // actually I just need to add an event system to the IRepository and then key on the events from this.repository
     // HostFileChangeMonitor - https://docs.microsoft.com/en-us/dotnet/api/system.runtime.caching.hostfilechangemonitor?view=dotnet-plat-ext-5.0
     // FileChangeMonitor  - https://docs.microsoft.com/en-us/dotnet/api/system.runtime.caching.filechangemonitor?view=dotnet-plat-ext-5.0
     // FileSystemWatcher - https://docs.microsoft.com/en-us/dotnet/api/system.io.filesystemwatcher.changed?view=net-5.0
@@ -89,22 +90,23 @@ namespace Graphs.DB.IO
             return this.cache.Set(element.Key, this.repository.Insert(element));
         }
 
-        public override Entity<T> Read(string key)
+        public override Entity<T> Select(string key)
         {
             return this.cache
                 .GetOrCreate(key, cacheEntry =>
                 {
-                    _ = this.cacheEntryOptions != null
-                        ? cacheEntry.SetOptions(this.cacheEntryOptions)
-                        : null;
+                    if (this.cacheEntryOptions != null)
+                    {
+                        cacheEntry.SetOptions(this.cacheEntryOptions);
+                    }
 
                     _ = this.keys.Add(key);
 
-                    return this.repository.Read(key);
+                    return this.repository.Select(key);
                 });
         }
 
-        public override IEnumerable<Entity<T>> Read(Func<T, bool> predicate)
+        public override IEnumerable<Entity<T>> Select(Func<T, bool> predicate)
         {
             var elements = (this as IRepository<T>).Entities()
                 .Select(entity => entity.Member)

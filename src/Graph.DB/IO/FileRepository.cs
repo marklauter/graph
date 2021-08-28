@@ -56,12 +56,12 @@ namespace Graphs.DB.IO
                 : this.CreateFile(this.GetFileName(element.Key), (Entity<T>)element);
         }
 
-        public override Entity<T> Read(string key)
+        public override Entity<T> Select(string key)
         {
             return this.ReadFile(this.GetFileName(key));
         }
 
-        public override IEnumerable<Entity<T>> Read(Func<T, bool> predicate)
+        public override IEnumerable<Entity<T>> Select(Func<T, bool> predicate)
         {
             return (this as IRepository<T>).Entities()
                 .Select(e => e.Member)

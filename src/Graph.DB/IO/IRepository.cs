@@ -7,6 +7,11 @@ namespace Graphs.DB.IO
     public interface IRepository<T>
         where T : IElement
     {
+        event EventHandler<KeyEventArgs> Deleted;
+        event EventHandler<EntityEventArgs<T>> Inserted;
+        event EventHandler<EntityEventArgs<T>> Selected;
+        event EventHandler<EntityEventArgs<T>> Updated;
+
         int Count();
 
         int Delete(string key);
@@ -27,9 +32,9 @@ namespace Graphs.DB.IO
         int Update(IEnumerable<Entity<T>> entities);
         int Update(IEnumerable<T> elements);
 
-        Entity<T> Read(string key);
-        IEnumerable<Entity<T>> Read(IEnumerable<string> keys);
-        IEnumerable<Entity<T>> Read(Func<T, bool> predicate);
+        Entity<T> Select(string key);
+        IEnumerable<Entity<T>> Select(IEnumerable<string> keys);
+        IEnumerable<Entity<T>> Select(Func<T, bool> predicate);
     }
 }
 

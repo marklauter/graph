@@ -23,6 +23,7 @@ namespace Graphs.DB.IO
         [JsonProperty("member")]
         internal T Member { get; }
 
+        // todo: how to implement etags?
         public int ETag { get; private set; }
 
         public static explicit operator T(Entity<T> entity)

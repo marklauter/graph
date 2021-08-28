@@ -63,14 +63,14 @@ namespace Graphs.DB.IO
                 : elements.Select(model => this.Insert(model));
         }
 
-        public abstract Entity<T> Read(string key);
+        public abstract Entity<T> Select(string key);
 
-        public IEnumerable<Entity<T>> Read(IEnumerable<string> keys)
+        public IEnumerable<Entity<T>> Select(IEnumerable<string> keys)
         {
-            return keys.Select(key => this.Read(key));
+            return keys.Select(key => this.Select(key));
         }
 
-        public abstract IEnumerable<Entity<T>> Read(Func<T, bool> predicate);
+        public abstract IEnumerable<Entity<T>> Select(Func<T, bool> predicate);
         
         public abstract int Update(Entity<T> entity);
 
