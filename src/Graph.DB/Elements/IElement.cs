@@ -7,6 +7,11 @@ namespace Graphs.DB.Elements
         : ICloneable
     {
         /// <summary>
+        /// Gets the key used for serialization.
+        /// </summary>
+        string Key { get; }
+
+        /// <summary>
         /// Gets the value of an attribute.
         /// </summary>
         /// <param name="name">Name of the attribute.</param>
@@ -16,7 +21,7 @@ namespace Graphs.DB.Elements
         /// <seealso cref="Qualify(IDictionary{string, string})"/>
         /// <seealso cref="HasAttribute(string)"/>
         /// </remarks>
-        public string Attribute(string name);
+        string Attribute(string name);
 
         /// <summary>
         /// Assigns a label to the element.
@@ -28,7 +33,7 @@ namespace Graphs.DB.Elements
         /// <seealso cref="Declassify(string)"/>
         /// <seealso cref="Is(string)"/>
         /// </remarks>
-        public IElement Classify(string label);
+        IElement Classify(string label);
 
         /// <summary>
         /// Assigns a set of labels to the element.
@@ -40,7 +45,7 @@ namespace Graphs.DB.Elements
         /// <seealso cref="Declassify(string)"/>
         /// <seealso cref="Is(string)"/>
         /// </remarks>
-        public IElement Classify(IEnumerable<string> labels);
+        IElement Classify(IEnumerable<string> labels);
 
         /// <summary>
         /// Unassign a label from the element.
@@ -52,7 +57,7 @@ namespace Graphs.DB.Elements
         /// <seealso cref="Classify(IEnumerable{string})"/>
         /// <seealso cref="Is(string)"/>
         /// </remarks>
-        public IElement Declassify(string label);
+        IElement Declassify(string label);
 
         /// <summary>
         /// Checks the map of attribute name-value pairs for a matching name.
@@ -64,7 +69,7 @@ namespace Graphs.DB.Elements
         /// <seealso cref="Qualify(string, string)"/>
         /// <seealso cref="Qualify(IDictionary{string, string})"/>
         /// </remarks>
-        public bool HasAttribute(string name);
+        bool HasAttribute(string name);
 
         /// <summary>
         /// Checks the element for a classification matching the label.
@@ -76,7 +81,7 @@ namespace Graphs.DB.Elements
         /// <seealso cref="Classify(IEnumerable{string})"/>
         /// <seealso cref="Declassify(string)"/>
         /// </remarks>
-        public bool Is(string label);
+        bool Is(string label);
 
         /// <summary>
         /// Sets adds an attribute, in the form of a name-value pair, to the element.
@@ -89,7 +94,7 @@ namespace Graphs.DB.Elements
         /// <seealso cref="Attribute(string)"/>
         /// <seealso cref="HasAttribute(string)"/>
         /// </remarks>
-        public IElement Qualify(string name, string value);
+        IElement Qualify(string name, string value);
 
         /// <summary>
         /// Apppends a set of attributes to the element.
@@ -102,6 +107,6 @@ namespace Graphs.DB.Elements
         /// <seealso cref="Attribute(string)"/>
         /// <seealso cref="HasAttribute(string)"/>
         /// </remarks>
-        public IElement Qualify(IEnumerable<KeyValuePair<string, string>> attributes);
+        IElement Qualify(IEnumerable<KeyValuePair<string, string>> attributes);
     }
 }

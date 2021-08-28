@@ -1,13 +1,19 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 
 namespace Graphs.DB.Elements
 {
+    [DebuggerDisplay("{Key}")]
     public abstract class Element
         : IElement
     {
+        /// <inheritdoc/>
+        [JsonIgnore]
+        public abstract string Key { get; }
+
         [JsonProperty("attributes")]
         private readonly Dictionary<string, string> attributes = new();
 

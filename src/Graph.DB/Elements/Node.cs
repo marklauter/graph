@@ -8,7 +8,7 @@ using System.Runtime.Serialization;
 
 namespace Graphs.DB.Elements
 {
-    [DebuggerDisplay("{Id}")]
+    [DebuggerDisplay("{Key}")]
     [JsonObject("node")]
     public sealed class Node<TId>
         : Element
@@ -16,10 +16,13 @@ namespace Graphs.DB.Elements
         , IEqualityComparer<Node<TId>>
         where TId : IComparable, IComparable<TId>, IEquatable<TId>
     {
+        /// <inheritdoc/>
+        [JsonIgnore]
+        public override string Key => this.Id.ToString();
+
         [JsonProperty]
         private readonly HashSet<TId> neighbors = null!;
 
-        [JsonProperty]
         private readonly Dictionary<TId, Edge<TId>> edges = null!;
 
         /// <summary>

@@ -8,7 +8,7 @@ using System.Diagnostics.Contracts;
 
 namespace Graphs.DB.Elements
 {
-    [DebuggerDisplay("{Id} {Source} {Target}")]
+    [DebuggerDisplay("{Key}")]
     [JsonObject("edge")]
     public sealed class Edge<TId>
         : Element
@@ -16,6 +16,10 @@ namespace Graphs.DB.Elements
         , IEqualityComparer<Edge<TId>>
         where TId : IComparable, IComparable<TId>, IEquatable<TId>
     {
+        /// <inheritdoc/>
+        [JsonIgnore]
+        public override string Key => $"{this.SourceId}.{this.TargetId}";
+
         [Required]
         [JsonProperty("directed")]
         public bool IsDirected { get; }
