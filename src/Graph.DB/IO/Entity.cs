@@ -17,7 +17,6 @@ namespace Graphs.DB.IO
             this.ETag = etag;
         }
 
-        //todo: could use attributes on member type to tag properties as part of the key. would require static type property cache. there's an example in sumo.data.
         [JsonIgnore]
         public string Key => this.Member.Key;
 
