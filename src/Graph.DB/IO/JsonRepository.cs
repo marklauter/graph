@@ -24,6 +24,11 @@ namespace Graphs.DB.IO
             this.serializer = JsonSerializer.Create(settings);
         }
 
+        protected override string GetFileExtension()
+        {
+            return "json";
+        }
+
         protected override Entity<T> StreamRead(Stream stream)
         {
             using var streamReader = new StreamReader(stream);

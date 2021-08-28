@@ -11,14 +11,18 @@ namespace Graphs.DB.IO
     // LazyCache - https://blog.novanet.no/asp-net-core-memory-cache-is-get-or-create-thread-safe/
 
     public class CachedRepository<T>
-        : IRepository<T>
+        : Repository<T>
+        , IRepository<T>
+        , IDisposable
         where T : IElement
     {
         // todo: remove keys on expiration
+        // tood: implement reader writer locker slim
         private readonly HashSet<string> keys = new();
         private readonly IMemoryCache cache;
         private readonly IRepository<T> repository;
         private readonly MemoryCacheEntryOptions cacheEntryOptions;
+        private bool disposedValue;
 
         public CachedRepository(IRepository<T> repository)
         {
@@ -33,50 +37,57 @@ namespace Graphs.DB.IO
             this.cacheEntryOptions = cacheEntryOptions ?? throw new ArgumentNullException(nameof(cacheEntryOptions));
         }
 
-        public int Delete(string key)
+        public override int Count()
         {
+            return this.repository.Count();
+        }
+
+        public override int Delete(string key)
+        {
+            this.cache.Remove(key);
             return this.repository.Delete(key);
         }
 
-        public int Delete(Entity<T> entity)
+        public override IEnumerable<Entity<T>> Entities()
         {
-            return this.repository.Delete(entity);
+            foreach (var key in this.keys)
+            {
+                if (this.cache.TryGetValue(key, out var entity))
+                {
+                    yield return (Entity<T>)entity;
+                }
+            }
+
+            foreach (var entity in this.repository.Entities(this.keys))
+            {
+                yield return entity;
+            }
         }
 
-        public int Delete(T element)
+        public override IEnumerable<Entity<T>> Entities(IEnumerable<string> excludedKeys)
         {
-            return this.repository.Delete(element);
+            var includedKeys = this.keys.Except(excludedKeys);
+            foreach (var key in includedKeys)
+            {
+                if (this.cache.TryGetValue(key, out var entity))
+                {
+                    yield return (Entity<T>)entity;
+                }
+            }
+
+            foreach (var entity in this.repository.Entities(excludedKeys.Union(includedKeys)))
+            {
+                yield return entity;
+            }
         }
 
-        public int Delete(IEnumerable<Entity<T>> entities)
-        {
-            return this.repository.Delete(entities);
-        }
-
-        public int Delete(IEnumerable<T> elements)
-        {
-            return this.repository.Delete(elements);
-        }
-
-        public int Delete(Func<T, bool> predicate)
-        {
-            return this.repository.Delete(predicate);
-        }
-
-        public Entity<T> Insert(T element)
+        public override Entity<T> Insert(T element)
         {
             _ = this.keys.Add(element.Key);
             return this.cache.Set(element.Key, this.repository.Insert(element));
         }
 
-        public IEnumerable<Entity<T>> Insert(IEnumerable<T> elements)
-        {
-            return elements == null
-                ? throw new ArgumentNullException(nameof(elements))
-                : elements.Select(model => this.Insert(model));
-        }
-
-        public Entity<T> Read(string key)
+        public override Entity<T> Read(string key)
         {
             return this.cache
                 .GetOrCreate(key, cacheEntry =>
@@ -91,51 +102,46 @@ namespace Graphs.DB.IO
                 });
         }
 
-        public IEnumerable<Entity<T>> Read(IEnumerable<string> keys)
+        public override IEnumerable<Entity<T>> Read(Func<T, bool> predicate)
         {
-            return keys.Select(key => this.Read(key));
+            var elements = (this as IRepository<T>).Entities()
+                .Select(entity => entity.Member)
+                .Where(predicate)
+                .Select(element => (Entity<T>)element);
+
+            var uncachedKeys = elements
+                .Where(entity => !this.keys.Contains(entity.Key))
+                .Select(entity => this.cache.Set(entity.Key, entity))
+                .Select(entity => entity.Key);
+
+            this.keys.UnionWith(uncachedKeys);
+
+            return elements;
         }
 
-        public IEnumerable<Entity<T>> Read(Func<T, bool> predicate)
+        public override int Update(Entity<T> entity)
         {
-            var elements = this.EnumerateEntities()
-                .Select(e => e.Member)
-                .Where(predicate);
-
-
-
-            return this.repository.Read(predicate);
-        }
-
-        public int Update(Entity<T> entity)
-        {
+            this.cache.Set(entity.Key, entity);
             return this.repository.Update(entity);
         }
 
-        public int Update(T element)
+        protected virtual void Dispose(bool disposing)
         {
-            return this.repository.Update(element);
-        }
-
-        public int Update(IEnumerable<Entity<T>> entities)
-        {
-            return this.repository.Update(entities);
-        }
-
-        public int Update(IEnumerable<T> elements)
-        {
-            return this.repository.Update(elements);
-        }
-
-        private IEnumerable<Entity<T>> EnumerateEntities()
-        {
-            foreach (var key in this.keys)
+            if (!this.disposedValue)
             {
-                if (this.cache.TryGetValue(key, out var entity))
+                if (disposing)
                 {
-                    yield return (Entity<T>)entity;
+                    this.cache.Dispose();
                 }
+
+                this.disposedValue = true;
             }
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

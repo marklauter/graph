@@ -7,7 +7,8 @@ using System.Linq;
 namespace Graphs.DB.IO
 {
     public abstract class FileRepository<T>
-        : IRepository<T>
+        : Repository<T>
+        , IRepository<T>
         where T : IElement
     {
         protected FileRepository(string path)
@@ -22,106 +23,57 @@ namespace Graphs.DB.IO
 
         private readonly string path;
 
-        public int Delete(string key)
+        public override int Count()
         {
-            return this.DeleteFile(this.GetFileName(key));
+            return Directory.EnumerateFiles(this.path).Count();
         }
 
-        public int Delete(Entity<T> entity)
+        public override int Delete(string key)
         {
-            return entity is null
-                ? throw new ArgumentNullException(nameof(entity))
-                : this.Delete(entity.Key);
+            return DeleteFile(this.GetFileName(key));
         }
 
-        public int Delete(T element)
+        public override IEnumerable<Entity<T>> Entities()
         {
-            return element is null
-                 ? throw new ArgumentNullException(nameof(element))
-                 : this.Delete(element.Key);
+            return Directory.EnumerateFiles(this.path)
+                .Select(filename => this.ReadFile(filename));
         }
 
-        public int Delete(IEnumerable<Entity<T>> entities)
+        public override IEnumerable<Entity<T>> Entities(IEnumerable<string> excludedKeys)
         {
-            return entities is null
-                ? throw new ArgumentNullException(nameof(entities))
-                : entities.Sum(e => this.Delete(e));
+            var excludedFileNames = excludedKeys
+                .Select(key => this.GetFileName(key));
+
+            return Directory.EnumerateFiles(this.path)
+                .Where(filename => !excludedFileNames.Contains(filename))
+                .Select(filename => this.ReadFile(filename));
         }
 
-        public int Delete(IEnumerable<T> elements)
-        {
-            return elements is null
-                ? throw new ArgumentNullException(nameof(elements))
-                : elements.Sum(e => this.Delete(e));
-        }
-
-        public int Delete(Func<T, bool> predicate)
-        {
-            var entities = this.EnumerateEntities()
-                .Select(e => e.Member)
-                .Where(predicate);
-
-            return this.Delete(entities);
-        }
-
-        public Entity<T> Insert(T element)
+        public override Entity<T> Insert(T element)
         {
             return element == null
                 ? throw new ArgumentNullException(nameof(element))
                 : this.CreateFile(this.GetFileName(element.Key), (Entity<T>)element);
         }
 
-        public IEnumerable<Entity<T>> Insert(IEnumerable<T> elements)
-        {
-            return elements == null
-                ? throw new ArgumentNullException(nameof(elements))
-                : elements.Select(model => this.Insert(model));
-        }
-
-        public Entity<T> Read(string key)
+        public override Entity<T> Read(string key)
         {
             return this.ReadFile(this.GetFileName(key));
         }
 
-        public IEnumerable<Entity<T>> Read(IEnumerable<string> keys)
+        public override IEnumerable<Entity<T>> Read(Func<T, bool> predicate)
         {
-            return keys.Select(key => this.Read(key));
-        }
-
-        public IEnumerable<Entity<T>> Read(Func<T, bool> predicate)
-        {
-            return this.EnumerateEntities()
+            return (this as IRepository<T>).Entities()
                 .Select(e => e.Member)
                 .Where(predicate)
                 .Select(e => e as Entity<T>);
         }
 
-        public int Update(Entity<T> entity)
+        public override int Update(Entity<T> entity)
         {
             return entity == null
                 ? throw new ArgumentNullException(nameof(entity))
                 : this.UpdateFile(this.GetFileName(entity.Key), entity);
-        }
-
-        public int Update(T element)
-        {
-            return element == null
-                ? throw new ArgumentNullException(nameof(element))
-                : this.Update((Entity<T>)element);
-        }
-
-        public int Update(IEnumerable<Entity<T>> entities)
-        {
-            return entities is null
-                ? throw new ArgumentNullException(nameof(entities))
-                : entities.Sum(entity => this.Update(entity));
-        }
-
-        public int Update(IEnumerable<T> elements)
-        {
-            return elements is null
-                ? throw new ArgumentNullException(nameof(elements))
-                : elements.Sum(element => this.Update(element));
         }
 
         protected abstract Entity<T> StreamRead(Stream stream);
@@ -133,29 +85,11 @@ namespace Graphs.DB.IO
             return "dat";
         }
 
-        private string GetFileName(string key)
-        {
-            return Path.Combine(this.path, $"{typeof(T).Name}.{key}.{this.GetFileExtension()}");
-        }
-
-        private Entity<T> ReadFile(string fileName)
-        {
-            using var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-            return this.StreamRead(stream);
-        }
-
         private Entity<T> CreateFile(string fileName, Entity<T> entity)
         {
             using var stream = new FileStream(fileName, FileMode.CreateNew, FileAccess.Write);
             this.StreamWrite(entity, stream);
             return entity;
-        }
-
-        private int UpdateFile(string fileName, Entity<T> entity)
-        {
-            using var stream = new FileStream(fileName, FileMode.Open, FileAccess.Write);
-            this.StreamWrite(entity, stream);
-            return 1;
         }
 
         private static int DeleteFile(string fileName)
@@ -169,10 +103,22 @@ namespace Graphs.DB.IO
             return 0;
         }
 
-        private IEnumerable<Entity<T>> EnumerateEntities()
+        private string GetFileName(string key)
         {
-            return Directory.EnumerateFiles(this.path)
-                .Select(filename => this.ReadFile(filename));
+            return Path.Combine(this.path, $"{typeof(T).Name}.{key}.{this.GetFileExtension()}");
+        }
+
+        private Entity<T> ReadFile(string fileName)
+        {
+            using var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+            return this.StreamRead(stream);
+        }
+
+        private int UpdateFile(string fileName, Entity<T> entity)
+        {
+            using var stream = new FileStream(fileName, FileMode.Open, FileAccess.Write);
+            this.StreamWrite(entity, stream);
+            return 1;
         }
     }
 }

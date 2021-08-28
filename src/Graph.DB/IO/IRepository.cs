@@ -7,12 +7,17 @@ namespace Graphs.DB.IO
     public interface IRepository<T>
         where T : IElement
     {
+        int Count();
+
         int Delete(string key);
         int Delete(Entity<T> entity);
         int Delete(T element);
         int Delete(IEnumerable<Entity<T>> entities);
         int Delete(IEnumerable<T> elements);
         int Delete(Func<T, bool> predicate);
+
+        IEnumerable<Entity<T>> Entities();
+        IEnumerable<Entity<T>> Entities(IEnumerable<string> excludedKeys);
 
         Entity<T> Insert(T element);
         IEnumerable<Entity<T>> Insert(IEnumerable<T> elements);
