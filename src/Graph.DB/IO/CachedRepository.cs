@@ -6,8 +6,10 @@ using System.Linq;
 
 namespace Graphs.DB.IO
 {
+    // todo: make file sytem invalidate the cache - which of these is the best?
     // HostFileChangeMonitor - https://docs.microsoft.com/en-us/dotnet/api/system.runtime.caching.hostfilechangemonitor?view=dotnet-plat-ext-5.0
     // FileChangeMonitor  - https://docs.microsoft.com/en-us/dotnet/api/system.runtime.caching.filechangemonitor?view=dotnet-plat-ext-5.0
+    // FileSystemWatcher - https://docs.microsoft.com/en-us/dotnet/api/system.io.filesystemwatcher.changed?view=net-5.0
     // LazyCache - https://blog.novanet.no/asp-net-core-memory-cache-is-get-or-create-thread-safe/
 
     public class CachedRepository<T>
