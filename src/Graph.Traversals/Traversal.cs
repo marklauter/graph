@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace Graphs.Traversals
 {
+    // todo: refactor traversal as extensions classes
     public abstract class Traversal<TKey>
         : ITraversal<TKey>
         where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>

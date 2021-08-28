@@ -38,14 +38,14 @@ namespace Game.Controller
                .Select(f => f.node)
                .Single();
 
-            var accessibleLocations = this.GetAccessibleLocations(location);
-            var allowedObjects = this.GetAllowedObjects(location);
+            var allowedTargets = this.GetAccessibleLocations(location)
+                .Union(this.GetAllowedObjects(location));
 
-            var verb = this.GetVerb(parts, input, allowedObjects, accessibleLocations);
+            var verb = this.GetVerb(parts, input, allowedTargets);
             var handler = this.GetHandler(verb);
 
-            var targetName = parts.Single(p => p != verb.Attribute("name"));
-            var target = this.GetTarget(targetName, verb, allowedObjects, accessibleLocations);
+            var noun = parts.Single(p => p != verb.Attribute("name"));
+            var target = this.GetTarget(noun, verb, allowedTargets);
 
             return new Command(verb, target, handler);
         }
@@ -89,19 +89,11 @@ namespace Game.Controller
         private Node GetVerb(
             string[] parts,
             string input,
-            IEnumerable<Node> allowedObjects,
-            IEnumerable<Node> accessibleLocations)
+            IEnumerable<Node> allowedTargets)
         {
-            var allowedObjectActions = allowedObjects
-                .SelectMany(o => this.graph.Where<Node>(o, 1, n => n.Is("action")))
-                .Select(f => f.node);
-
-            var allowedLocationActions = accessibleLocations
-                .SelectMany(o => this.graph.Where<Node>(o, 1, n => n.Is("action")))
-                .Select(f => f.node);
-
-            var allowedActions = allowedObjectActions
-                .Union(allowedLocationActions)
+            var allowedActions = allowedTargets
+                .SelectMany(allowedTarget => this.graph.Where<Node>(allowedTarget, 1, n => n.Is("action")))
+                .Select(f => f.node)
                 .Distinct();
 
             var verb = allowedActions
@@ -111,20 +103,18 @@ namespace Game.Controller
         }
 
         private Node GetTarget(
-            string targetName,
+            string noun,
             Node verb,
-            IEnumerable<Node> allowedObjects,
-            IEnumerable<Node> accessibleLocations)
+            IEnumerable<Node> allowedTargets)
         {
-            var allowedTargets = allowedObjects
-                .Union(accessibleLocations)
+            allowedTargets = allowedTargets
                 .Where(t => this.graph.Where<Node>(t, 1, v => v.Is("action") && v == verb).Any())
                 .Distinct();
 
             var target = allowedTargets
-                .FirstOrDefault(a => targetName == a.Attribute("name"));
+                .FirstOrDefault(a => noun == a.Attribute("name"));
 
-            return target ?? throw new ActionTargetNotFoundException(targetName);
+            return target ?? throw new ActionTargetNotFoundException(noun);
         }
     }
 }
