@@ -30,7 +30,14 @@ namespace Graphs.DB.IO
 
         public override int Delete(string key)
         {
-            return DeleteFile(this.GetFileName(key));
+            if (String.IsNullOrWhiteSpace(key))
+            {
+                throw new ArgumentException($"'{nameof(key)}' cannot be null or whitespace.", nameof(key));
+            }
+
+            var i = DeleteFile(this.GetFileName(key));
+            this.OnDeleted(new KeyEventArgs(key));
+            return i;
         }
 
         public override IEnumerable<Entity<T>> Entities()
@@ -41,6 +48,11 @@ namespace Graphs.DB.IO
 
         public override IEnumerable<Entity<T>> Entities(IEnumerable<string> excludedKeys)
         {
+            if (excludedKeys is null)
+            {
+                throw new ArgumentNullException(nameof(excludedKeys));
+            }
+
             var excludedFileNames = excludedKeys
                 .Select(key => this.GetFileName(key));
 
@@ -51,29 +63,47 @@ namespace Graphs.DB.IO
 
         public override Entity<T> Insert(T element)
         {
-            return element == null
+            var entity = element == null
                 ? throw new ArgumentNullException(nameof(element))
                 : this.CreateFile(this.GetFileName(element.Key), (Entity<T>)element);
+            this.OnInserted(new EntityEventArgs<T>(entity));
+            return entity;
         }
 
         public override Entity<T> Select(string key)
         {
-            return this.ReadFile(this.GetFileName(key));
+            if (String.IsNullOrWhiteSpace(key))
+            {
+                throw new ArgumentException($"'{nameof(key)}' cannot be null or whitespace.", nameof(key));
+            }
+
+            var entity = this.ReadFile(this.GetFileName(key));
+            this.OnSelected(new EntityEventArgs<T>(entity));
+            return entity;
         }
 
         public override IEnumerable<Entity<T>> Select(Func<T, bool> predicate)
         {
-            return (this as IRepository<T>).Entities()
-                .Select(e => e.Member)
-                .Where(predicate)
-                .Select(e => e as Entity<T>);
+            return predicate is null
+                ? throw new ArgumentNullException(nameof(predicate))
+                : this.Entities()
+                    .Select(e => e.Member)
+                    .Where(predicate)
+                    .Select(e =>
+                    {
+                        var entity = e as Entity<T>;
+                        this.OnSelected(new EntityEventArgs<T>(entity));
+                        return entity;
+                    });
         }
 
         public override int Update(Entity<T> entity)
         {
-            return entity == null
+            var i = entity == null
                 ? throw new ArgumentNullException(nameof(entity))
                 : this.UpdateFile(this.GetFileName(entity.Key), entity);
+            this.OnUpdated(new EntityEventArgs<T>(entity));
+            return i;
         }
 
         protected abstract Entity<T> StreamRead(Stream stream);

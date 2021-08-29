@@ -9,6 +9,11 @@ namespace Graphs.DB.IO
         : IRepository<T>
         where T : IElement
     {
+        public event EventHandler<KeyEventArgs> Deleted;
+        public event EventHandler<EntityEventArgs<T>> Inserted;
+        public event EventHandler<EntityEventArgs<T>> Selected;
+        public event EventHandler<EntityEventArgs<T>> Updated;
+
         public abstract int Count();
         
         public abstract int Delete(string key);
@@ -43,7 +48,7 @@ namespace Graphs.DB.IO
 
         public int Delete(Func<T, bool> predicate)
         {
-            var elements = (this as IRepository<T>).Entities()
+            var elements = this.Entities()
                 .Select(e => e.Member)
                 .Where(predicate);
 
@@ -93,6 +98,26 @@ namespace Graphs.DB.IO
             return elements is null
                 ? throw new ArgumentNullException(nameof(elements))
                 : elements.Sum(element => this.Update(element));
+        }
+
+        protected void OnDeleted(KeyEventArgs args)
+        {
+            this.Deleted?.Invoke(this, args);
+        }
+
+        protected void OnInserted(EntityEventArgs<T> args)
+        {
+            this.Inserted?.Invoke(this, args);
+        }
+
+        protected void OnSelected(EntityEventArgs<T> args)
+        {
+            this.Selected?.Invoke(this, args);
+        }
+
+        protected void OnUpdated(EntityEventArgs<T> args)
+        {
+            this.Updated?.Invoke(this, args);
         }
     }
 }
