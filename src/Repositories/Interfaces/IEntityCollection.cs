@@ -9,5 +9,3 @@ namespace Repositories
         IEnumerable<Entity<T>> Entities(IEnumerable<string> excludedKeys);
     }
 }
-
-

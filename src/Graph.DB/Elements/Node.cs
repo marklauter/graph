@@ -18,13 +18,8 @@ namespace Graphs.DB.Elements
         where TId : IComparable, IComparable<TId>, IEquatable<TId>
     {
         [JsonProperty]
-        private readonly HashSet<TId> neighbors = null!;
+        private readonly ConcurrentHashSet<TId> neighbors = new();
 
-        private readonly Dictionary<TId, Edge<TId>> edges = null!;
-
-        /// <summary>
-        /// Gets the Id of the element.
-        /// </summary>
         [Key]
         [JsonProperty("id")]
         public TId Id { get; }
@@ -34,7 +29,7 @@ namespace Graphs.DB.Elements
         private Node([DisallowNull] Node<TId> other)
             : base(other)
         {
-
+            this.neighbors = new ConcurrentHashSet<TId>(other.neighbors);
         }
 
         [JsonConstructor]
@@ -62,65 +57,20 @@ namespace Graphs.DB.Elements
             return new Node<TId>(this);
         }
 
-        public Edge<TId> Couple([DisallowNull] Node<TId> target)
+        public bool Couple([DisallowNull] Node<TId> target)
         {
-            return this.Couple(target, false);
+            return this.neighbors.Add(target.Id);
         }
 
-        public Edge<TId> Couple([DisallowNull] Node<TId> target, bool isDirected)
+        public bool TryDecouple([DisallowNull] Node<TId> target)
         {
-            var edge = new Edge<TId>(this, target, isDirected);
-
-            this.neighbors.Add(target.Id);
-            this.edges.Add(target.Id, edge);
-
-            if (!isDirected)
-            {
-                target.neighbors.Add(this.Id);
-                target.edges.Add(this.Id, edge);
-            }
-
-            return edge;
-        }
-
-        public bool TryDecouple([DisallowNull] Node<TId> target, out Edge<TId> edge)
-        {
-            var result = this.edges.TryGetValue(target.Id, out edge)
-                && this.neighbors.Remove(target.Id)
-                && this.edges.Remove(target.Id);
-
-            result = result && edge.IsDirected
-                || target.neighbors.Remove(this.Id)
-                && target.edges.Remove(this.Id);
-
-            return result;
+            return this.neighbors.Remove(target.Id);
         }
 
         [Pure]
         public int Degree()
         {
             return this.neighbors.Count;
-        }
-
-        public Edge<TId> Edge(Node<TId> target)
-        {
-            return this.Edge(target.Id);
-        }
-
-        public Edge<TId> Edge(TId targetId)
-        {
-            return this.edges.TryGetValue(targetId, out var edge)
-                ? edge
-                : throw new KeyNotFoundException(targetId.ToString());
-        }
-
-        [Pure]
-        public IEnumerable<Edge<TId>> Edges()
-        {
-            foreach (var edge in this.edges.Values)
-            {
-                yield return edge;
-            }
         }
 
         [Pure]
@@ -157,10 +107,7 @@ namespace Graphs.DB.Elements
         [Pure]
         public IEnumerable<TId> Neighbors()
         {
-            foreach (var id in this.neighbors)
-            {
-                yield return id;
-            }
+            return this.neighbors.Items();
         }
 
         [OnDeserialized]

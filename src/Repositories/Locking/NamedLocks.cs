@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Threading;
 
 namespace Repositories.Locking
 {
@@ -9,90 +8,112 @@ namespace Repositories.Locking
     {
         private readonly ConcurrentDictionary<string, GateEntry> gates = new();
 
-        private ReaderWriterLockSlim GetGate(string key)
+        private GateEntry GetGate(string key)
         {
             if (this.gates.TryGetValue(key, out var gateEntry))
-            {
-                gateEntry.Touch();
-            }
-            else
             {
                 gateEntry = new GateEntry();
                 this.gates.TryAdd(key, gateEntry);
             }
 
-            return gateEntry.Gate;
+            return gateEntry;
         }
 
-        public ReaderWriterLockSlim EnterReadLock(string key, TimeSpan timeout)
+        public void EnterReadLock(string key, TimeSpan timeout)
         {
-            return this.GetGate(key).TryEnterReadLock(timeout)
-                ? this.GetGate(key) // touches the gate
-                : throw new TimeoutException(nameof(EnterReadLock));
+            if (!this.GetGate(key).AddLock().Gate.TryEnterReadLock(timeout))
+            {
+                throw new TimeoutException(nameof(EnterReadLock));
+            }
         }
 
-        public void ExitReadLock(ReaderWriterLockSlim gate)
+        public void ExitReadLock(string key)
         {
-            gate.ExitReadLock();
+            var entry = this.GetGate(key);
+            entry.RemoveLock().Gate.ExitReadLock();
+            if (entry.Locks() <= 0)
+            {
+                _ = this.gates.TryRemove(key, out _);
+            }
         }
 
-        public ReaderWriterLockSlim EnterUpgradeableReadLock(string key, TimeSpan timeout)
+        public void EnterUpgradeableReadLock(string key, TimeSpan timeout)
         {
-            return this.GetGate(key).TryEnterUpgradeableReadLock(timeout)
-                ? this.GetGate(key) // touches the gate
-                : throw new TimeoutException(nameof(EnterUpgradeableReadLock));
+            if (!this.GetGate(key).AddLock().Gate.TryEnterUpgradeableReadLock(timeout))
+            {
+                throw new TimeoutException(nameof(EnterUpgradeableReadLock));
+            }
         }
 
-        public void ExitUpgradeableReadLock(ReaderWriterLockSlim gate)
+        public void ExitUpgradeableReadLock(string key)
         {
-            gate.ExitUpgradeableReadLock();
+            var entry = this.GetGate(key);
+            entry.RemoveLock().Gate.ExitUpgradeableReadLock();
+            if (entry.Locks() <= 0)
+            {
+                _ = this.gates.TryRemove(key, out _);
+            }
         }
 
-        public ReaderWriterLockSlim EnterWriteLock(string key, TimeSpan timeout)
+        public void EnterWriteLock(string key, TimeSpan timeout)
         {
-            return this.GetGate(key).TryEnterWriteLock(timeout)
-                ? this.GetGate(key) // touches the gate
-                : throw new TimeoutException(nameof(EnterWriteLock));
+            if (!this.GetGate(key).AddLock().Gate.TryEnterWriteLock(timeout))
+            {
+                throw new TimeoutException(nameof(EnterWriteLock));
+            }
         }
 
-        public void ExitWriteLock(ReaderWriterLockSlim gate)
+        public void ExitWriteLock(string key)
         {
-            gate.ExitWriteLock();
+            var entry = this.GetGate(key);
+            entry.RemoveLock().Gate.ExitWriteLock();
+            if (entry.Locks() <= 0)
+            {
+                _ = this.gates.TryRemove(key, out _);
+            }
         }
 
         public bool IsReadLockHeld(string key)
         {
-            return this.GetGate(key).IsReadLockHeld;
+            return this.gates.ContainsKey(key) && this.GetGate(key).Gate.IsReadLockHeld;
         }
 
         public bool IsUpgradeableReadLockHeld(string key)
         {
-            return this.GetGate(key).IsUpgradeableReadLockHeld;
+            return this.gates.ContainsKey(key) && this.GetGate(key).Gate.IsUpgradeableReadLockHeld;
         }
 
         public bool IsWriteLockHeld(string key)
         {
-            return this.GetGate(key).IsWriteLockHeld;
+            return this.gates.ContainsKey(key) && this.GetGate(key).Gate.IsWriteLockHeld;
         }
 
         public int CurrentReadCount(string key)
         {
-            return this.GetGate(key).CurrentReadCount;
+            return this.gates.ContainsKey(key)
+                ? this.GetGate(key).Gate.CurrentReadCount
+                : 0;
         }
 
         public int WaitingReadCount(string key)
         {
-            return this.GetGate(key).WaitingReadCount;
+            return this.gates.ContainsKey(key)
+                ? this.GetGate(key).Gate.WaitingReadCount
+                : 0;
         }
 
         public int WaitingWriteCount(string key)
         {
-            return this.GetGate(key).WaitingWriteCount;
+            return this.gates.ContainsKey(key)
+                ? this.GetGate(key).Gate.WaitingWriteCount
+                : 0;
         }
 
         public int WaitingUpgradeCount(string key)
         {
-            return this.GetGate(key).WaitingUpgradeCount;
+            return this.gates.ContainsKey(key)
+                ? this.GetGate(key).Gate.WaitingUpgradeCount
+                : 0;
         }
     }
 }

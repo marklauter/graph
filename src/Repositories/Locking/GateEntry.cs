@@ -1,16 +1,27 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 
 namespace Repositories.Locking
 {
     internal sealed class GateEntry
     {
-        public DateTime Touched { get; private set; } = DateTime.UtcNow;
+        private int locks = 0;
         public ReaderWriterLockSlim Gate { get; } = new ReaderWriterLockSlim();
 
-        public void Touch()
+        public GateEntry AddLock()
         {
-            this.Touched = DateTime.UtcNow;
+            Interlocked.Increment(ref this.locks);
+            return this;
+        }
+
+        public GateEntry RemoveLock()
+        {
+            Interlocked.Decrement(ref this.locks);
+            return this;
+        }
+
+        public int Locks()
+        {
+            return this.locks;
         }
     }
 }

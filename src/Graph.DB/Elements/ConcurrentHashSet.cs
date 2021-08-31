@@ -3,12 +3,19 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 
-namespace Repositories.Locking
+namespace Graphs.DB.Elements
 {
     internal sealed class ConcurrentHashSet<T>
     {
         private readonly HashSet<T> hashset = new();
         private readonly ReaderWriterLockSlim gate = new();
+
+        public ConcurrentHashSet() { }
+
+        public ConcurrentHashSet(ConcurrentHashSet<T> other)
+        {
+            this.hashset.UnionWith(other.hashset);
+        }
 
         public bool Add(T item)
         {
@@ -47,7 +54,6 @@ namespace Repositories.Locking
             {
                 this.gate.ExitWriteLock();
             }
-
         }
 
         public void UnionWith(IEnumerable<T> other)
@@ -76,12 +82,28 @@ namespace Repositories.Locking
             }
         }
 
-        public ImmutableHashSet<T> Items()
+        public int Count
+        {
+            get
+            {
+                this.gate.EnterReadLock();
+                try
+                {
+                    return this.hashset.Count;
+                }
+                finally
+                {
+                    this.gate.ExitReadLock();
+                }
+            }
+        }
+
+        public IEnumerable<T> Items()
         {
             this.gate.EnterReadLock();
             try
             {
-                return this.hashset.ToImmutableHashSet();
+                return this.hashset.ToImmutableArray();
             }
             finally
             {

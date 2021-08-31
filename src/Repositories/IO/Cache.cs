@@ -44,12 +44,12 @@ namespace Repositories
         {
             var accessType = CacheAccessType.Hit;
             Entity<T> entity;
-            var gate = this.locks.EnterUpgradeableReadLock(key, this.lockTimeout);
+            this.locks.EnterUpgradeableReadLock(key, this.lockTimeout);
             try
             {
                 if (!this.cache.TryGetValue(key, out entity))
                 {
-                    gate.TryEnterWriteLock(this.lockTimeout);
+                    this.locks.EnterWriteLock(key, this.lockTimeout);
                     try
                     {
                         entity = this.cache.Set(
@@ -60,13 +60,13 @@ namespace Repositories
                     }
                     finally
                     {
-                        gate.ExitWriteLock();
+                        this.locks.ExitWriteLock(key);
                     }
                 }
             }
             finally
             {
-                this.locks.ExitUpgradeableReadLock(gate);
+                this.locks.ExitUpgradeableReadLock(key);
             }
 
             this.CacheAccessed?.Invoke(this, new CacheAccessedArgs(key, accessType));

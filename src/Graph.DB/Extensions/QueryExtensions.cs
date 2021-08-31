@@ -31,8 +31,11 @@
 //            var visited = new HashSet<Node<TId>>(new[] { origin });
 
 //            // todo: someone has to be responsible for loading nodes from file if they aren't in memory
+//            // source has to be graph and the graph will be responsible for providing nodes and edges from the cache
+//            // for now it's time to start writing tests and prove the new repository works, then write the new graph, then write the new linq to graph expressions
 
 //            var frontier = origin.Neighbors()
+//                .Select()
 //                .Where(predicate)
 //                .ToArray();
 //        }

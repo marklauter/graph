@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.IO;
 
 namespace Repositories
@@ -9,8 +10,8 @@ namespace Repositories
     {
         private readonly JsonSerializer serializer;
 
-        public JsonRepository(string path)
-            : base(path)
+        public JsonRepository(string path, TimeSpan lockTimeout)
+            : base(path, lockTimeout)
         {
             var settings = new JsonSerializerSettings
             {

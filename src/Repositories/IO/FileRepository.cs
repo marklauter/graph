@@ -127,7 +127,7 @@ namespace Repositories
 
         private void CreateFile(string fileName, Entity<T> entity)
         {
-            var gate = this.locks.EnterWriteLock(fileName, this.lockTimeout);
+            this.locks.EnterWriteLock(fileName, this.lockTimeout);
             try
             {
                 using var stream = new FileStream(fileName, FileMode.CreateNew, FileAccess.Write);
@@ -135,13 +135,13 @@ namespace Repositories
             }
             finally
             {
-                this.locks.ExitWriteLock(gate);
+                this.locks.ExitWriteLock(fileName);
             }
         }
 
         private int DeleteFile(string fileName)
         {
-            var gate = this.locks.EnterWriteLock(fileName, this.lockTimeout);
+            this.locks.EnterWriteLock(fileName, this.lockTimeout);
             try
             {
                 if (File.Exists(fileName))
@@ -152,7 +152,7 @@ namespace Repositories
             }
             finally
             {
-                this.locks.ExitWriteLock(gate);
+                this.locks.ExitWriteLock(fileName);
             }
 
             return 0;
@@ -165,7 +165,7 @@ namespace Repositories
 
         private Entity<T> ReadFile(string fileName)
         {
-            var gate = this.locks.EnterReadLock(fileName, this.lockTimeout);
+            this.locks.EnterReadLock(fileName, this.lockTimeout);
             try
             {
                 using var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
@@ -173,13 +173,13 @@ namespace Repositories
             }
             finally
             {
-                this.locks.ExitReadLock(gate);
+                this.locks.ExitReadLock(fileName);
             }
         }
 
         private void UpdateFile(string fileName, Entity<T> entity)
         {
-            var gate = this.locks.EnterWriteLock(fileName, this.lockTimeout);
+            this.locks.EnterWriteLock(fileName, this.lockTimeout);
             try
             {
                 using var stream = new FileStream(fileName, FileMode.Open, FileAccess.Write);
@@ -187,7 +187,7 @@ namespace Repositories
             }
             finally
             {
-                this.locks.ExitWriteLock(gate);
+                this.locks.ExitWriteLock(fileName);
             }
         }
     }
