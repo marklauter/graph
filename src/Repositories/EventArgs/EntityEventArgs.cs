@@ -1,11 +1,10 @@
-﻿using Graphs.DB.Elements;
-using System;
+﻿using System;
 
-namespace Graphs.DB.IO
+namespace Repositories
 {
     public sealed class EntityEventArgs<T>
         : EventArgs
-        where T : IElement
+        where T : class
     {
         public EntityEventArgs(Entity<T> entity)
         {

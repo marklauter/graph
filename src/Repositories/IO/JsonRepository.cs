@@ -1,12 +1,11 @@
-﻿using Graphs.DB.Elements;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.IO;
 
-namespace Graphs.DB.IO
+namespace Repositories
 {
     public sealed class JsonRepository<T>
         : FileRepository<T>
-        where T : IElement
+        where T : class
     {
         private readonly JsonSerializer serializer;
 

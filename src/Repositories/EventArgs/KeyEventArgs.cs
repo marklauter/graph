@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Graphs.DB.IO
+namespace Repositories
 {
     public sealed class KeyEventArgs
         : EventArgs
@@ -18,5 +18,3 @@ namespace Graphs.DB.IO
         public string Key { get; }
     }
 }
-
-

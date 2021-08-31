@@ -1,22 +1,24 @@
-﻿using Graphs.DB.Elements;
-using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Repositories.Locking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Graphs.DB.IO
+namespace Repositories
 {
+    public sealed class Cache
+
     public sealed class CachedRepository<T>
         : Repository<T>
         , ICachedRepository<T>
         , IDisposable
-        where T : IElement
+        where T : class
     {
         // tood: implement reader writer locker slim
-        private readonly HashSet<string> keys = new();
         private readonly IMemoryCache cache;
         private readonly IRepository<T> repository;
         private readonly MemoryCacheEntryOptions cacheEntryOptions;
+        private readonly ConcurrentHashSet<string> keys = new();
         private bool disposedValue;
 
         public event EventHandler<KeyEventArgs> CacheHit;
@@ -56,41 +58,47 @@ namespace Graphs.DB.IO
 
             this.cache.Remove(key);
             this.keys.Remove(key);
-            var i = this.repository.Delete(key);
+            var deletedCount = this.repository.Delete(key);
+
             this.OnDeleted(new KeyEventArgs(key));
-            return i;
+            return deletedCount;
         }
 
-        public override IEnumerable<Entity<T>> Entities()
+        protected override IEnumerable<Entity<T>> Entities()
         {
-            foreach (var key in this.keys)
+            foreach (var key in this.keys.Items())
             {
-                if (this.cache.TryGetValue<Entity<T>>(key, out var entity))
+                if (this.TryGetEntity(key, out var entity))
                 {
                     yield return entity;
                 }
             }
 
-            foreach (var entity in this.repository.Entities(this.keys))
+            foreach (var entity in (this.repository as IEntityCollection<T>).Entities(this.keys))
             {
                 yield return entity;
             }
         }
 
-        public override IEnumerable<Entity<T>> Entities(IEnumerable<string> excludedKeys)
+        protected override IEnumerable<Entity<T>> Entities(IEnumerable<string> excludedKeys)
         {
-            CheckKeys(excludedKeys);
+            return excludedKeys is null
+                ? throw new ArgumentNullException(nameof(excludedKeys))
+                : this.GetEntities(excludedKeys);
+        }
 
+        private IEnumerable<Entity<T>> GetEntities(IEnumerable<string> excludedKeys)
+        {
             var includedKeys = this.keys.Except(excludedKeys);
             foreach (var key in includedKeys)
             {
-                if (this.cache.TryGetValue<Entity<T>>(key, out var entity))
+                if (this.TryGetEntity(key, out var entity))
                 {
                     yield return entity;
                 }
             }
 
-            foreach (var entity in this.repository.Entities(excludedKeys.Union(includedKeys)))
+            foreach (var entity in (this.repository as IEntityCollection<T>).Entities(excludedKeys.Union(includedKeys)))
             {
                 yield return entity;
             }
@@ -98,8 +106,8 @@ namespace Graphs.DB.IO
 
         public override Entity<T> Insert(T element)
         {
-            var entity = this.cache.Set(element.Key, this.repository.Insert(element), this.cacheEntryOptions);
-            this.keys.Add(element.Key);
+            var entity = this.repository.Insert(element);
+            _ = this.SetEntity(entity);
             this.OnInserted(new EntityEventArgs<T>(entity));
             return entity;
         }
@@ -111,15 +119,14 @@ namespace Graphs.DB.IO
                 throw new ArgumentException($"'{nameof(key)}' cannot be null or whitespace.", nameof(key));
             }
 
-            if (this.cache.TryGetValue<Entity<T>>(key, out var entity))
+            if (this.TryGetEntity(key, out var entity))
             {
                 this.CacheHit?.Invoke(this, new KeyEventArgs(key));
             }
             else
             {
                 entity = this.repository.Select(key);
-                this.cache.Set(key, entity, this.cacheEntryOptions);
-                this.keys.Add(key);
+                this.SetEntity(entity);
                 this.CacheMiss?.Invoke(this, new KeyEventArgs(key));
             }
 
@@ -127,30 +134,28 @@ namespace Graphs.DB.IO
             return entity;
         }
 
-        public override IEnumerable<Entity<T>> Select(Func<T, bool> predicate)
+        public override IEnumerable<Entity<T>> Select(Func<Entity<T>, bool> predicate)
         {
             if (predicate is null)
             {
                 throw new ArgumentNullException(nameof(predicate));
             }
 
-            var elements = this.Entities()
-                .Select(entity => entity.Member)
+            var entities = this.Entities()
                 .Where(predicate)
-                .Select(element =>
+                .Select(e =>
                 {
-                    var entity = (Entity<T>)element;
-                    this.OnSelected(new EntityEventArgs<T>(entity));
-                    return entity;
+                    this.OnSelected(new EntityEventArgs<T>(e));
+                    return e;
                 });
 
-            var uncachedKeys = elements
-                .Where(entity => !this.keys.Contains(entity.Key))
-                .Select(entity => this.cache.Set(entity.Key, entity, this.cacheEntryOptions))
+            var cachedKeys = entities
+                .Where(entity => this.keys.Contains(entity.Key))
                 .Select(entity => entity.Key);
 
-            var cachedKeys = elements
-                .Where(entity => this.keys.Contains(entity.Key))
+            var uncachedKeys = entities
+                .Where(entity => !this.keys.Contains(entity.Key))
+                .Select(entity => this.SetEntity(entity))
                 .Select(entity => entity.Key);
 
             this.keys.UnionWith(uncachedKeys);
@@ -165,21 +170,19 @@ namespace Graphs.DB.IO
                 this.CacheMiss?.Invoke(this, new KeyEventArgs(key));
             }
 
-            return elements;
+            return entities;
         }
 
-        public override int Update(Entity<T> entity)
+        public override Entity<T> Update(Entity<T> entity)
         {
-            if (entity is null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
+            var clone = entity is null
+                ? throw new ArgumentNullException(nameof(entity))
+                : this.repository.Update(entity);
 
-            this.keys.Add(entity.Key);
-            this.cache.Set(entity.Key, entity, this.cacheEntryOptions);
-            var i = this.repository.Update(entity);
-            this.OnUpdated(new EntityEventArgs<T>(entity));
-            return i;
+            this.SetEntity(clone);
+            this.OnUpdated(new EntityEventArgs<T>(clone));
+
+            return clone;
         }
 
         public void Dispose()
@@ -198,14 +201,6 @@ namespace Graphs.DB.IO
                 }
 
                 this.disposedValue = true;
-            }
-        }
-
-        private static void CheckKeys(IEnumerable<string> excludedKeys)
-        {
-            if (excludedKeys is null)
-            {
-                throw new ArgumentNullException(nameof(excludedKeys));
             }
         }
 
@@ -233,6 +228,19 @@ namespace Graphs.DB.IO
         {
             this.keys.Remove(key as string);
             this.CacheItemEvicted?.Invoke(this, new CacheItemEvictedEventArgs<T>(value as Entity<T>, reason));
+        }
+        
+        private bool TryGetEntity(string key, out Entity<T> entity)
+        {
+            return this.cache.TryGetValue(key, out entity);
+        }
+
+        private Entity<T> SetEntity(Entity<T> entity)
+        {
+            this.cache.Set(entity.Key, entity, this.cacheEntryOptions);
+            this.keys.Add(entity.Key);
+
+            return entity;
         }
     }
 }

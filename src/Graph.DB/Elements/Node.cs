@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
@@ -16,10 +17,6 @@ namespace Graphs.DB.Elements
         , IEqualityComparer<Node<TId>>
         where TId : IComparable, IComparable<TId>, IEquatable<TId>
     {
-        /// <inheritdoc/>
-        [JsonIgnore]
-        public override string Key => this.Id.ToString();
-
         [JsonProperty]
         private readonly HashSet<TId> neighbors = null!;
 
@@ -28,6 +25,7 @@ namespace Graphs.DB.Elements
         /// <summary>
         /// Gets the Id of the element.
         /// </summary>
+        [Key]
         [JsonProperty("id")]
         public TId Id { get; }
 

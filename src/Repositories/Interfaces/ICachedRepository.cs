@@ -1,11 +1,10 @@
-﻿using Graphs.DB.Elements;
-using System;
+﻿using System;
 
-namespace Graphs.DB.IO
+namespace Repositories
 {
-    internal interface ICachedRepository<T>
+    public interface ICachedRepository<T>
         : IRepository<T>
-        where T : IElement
+        where T : class
 
     {
         event EventHandler<KeyEventArgs> CacheHit;

@@ -10,10 +10,6 @@ namespace Graphs.DB.Elements
     public abstract class Element
         : IElement
     {
-        /// <inheritdoc/>
-        [JsonIgnore]
-        public abstract string Key { get; }
-
         [JsonProperty("attributes")]
         private readonly Dictionary<string, string> attributes = new();
 
