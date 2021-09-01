@@ -4,6 +4,8 @@ playing with graphs. no, not pie charts. go away now.
 ## why?
 every problem that matters can be solved with graphs. for instance, if you know the answer to the ultimate question of life, the universe and everything is 42, then all you have to do is traverse from node 42 to find the question. simple, right?
 
+i'm interested in AI/ML, NLP, semantic networks, data structures, and exploring how to build indexeed files. this project lets me mash all that together. just screwing around.
+
 ## semantic networks
 ![semantic network image](https://www.assignmentpoint.com/wp-content/uploads/2016/04/Semantic-Network.jpg)
 
