@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Repositories
+namespace Graphs.Documents
 {
     [Serializable]
     public class ETagMismatchException

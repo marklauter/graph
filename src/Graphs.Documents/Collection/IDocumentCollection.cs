@@ -7,9 +7,9 @@ namespace Graphs.Documents
         : IEnumerable<T>
         where T : class
     {
-        event EventHandler<DocumentRemovedEventArgs> Removed;
-        event EventHandler<DocumentAddedEventArgs<T>> Added;
-        event EventHandler<DocumentUpdatedEventArgs<T>> Updated;
+        event EventHandler<DocumentRemovedEventArgs<T>> DocumentRemoved;
+        event EventHandler<DocumentAddedEventArgs<T>> DocumentAdded;
+        event EventHandler<DocumentUpdatedEventArgs<T>> DocumentUpdated;
 
         int Count { get; }
 

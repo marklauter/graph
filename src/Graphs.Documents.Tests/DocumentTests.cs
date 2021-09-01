@@ -1,20 +1,7 @@
-using System;
-using System.ComponentModel.DataAnnotations;
 using Xunit;
 
 namespace Graphs.Documents.Tests
-{
-    public sealed class KeylessMember
-    {
-
-    }
-
-    public sealed class Member
-    {
-        [Key]
-        public Guid Id { get; } = Guid.NewGuid();
-    }
-
+{ 
     public class DocumentTests
     {
         [Fact]
@@ -69,6 +56,24 @@ namespace Graphs.Documents.Tests
 
             var clone = (Document<Member>)document.Clone();
             Assert.NotEqual(document.ETag, clone.ETag);
+        }
+
+        [Fact]
+        public void Document_EventArgs()
+        {
+            var document = (Document<Member>)new Member();
+
+            var documentEventArgs = new DocumentEventArgs<Member>(document);
+            Assert.Equal(document, documentEventArgs.Document);
+
+            var documentAddedEventArgs = new DocumentAddedEventArgs<Member>(document);
+            Assert.Equal(document, documentAddedEventArgs.Document);
+
+            var documentUpdatedEventArgs = new DocumentUpdatedEventArgs<Member>(document);
+            Assert.Equal(document, documentUpdatedEventArgs.Document);
+
+            var documentRemovedEventArgs = new DocumentRemovedEventArgs<Member>(document);
+            Assert.Equal(document, documentRemovedEventArgs.Document);
         }
     }
 }
