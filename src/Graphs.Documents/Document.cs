@@ -27,10 +27,10 @@ namespace Graphs.Documents
         }
 
         [JsonProperty]
-        public Guid ETag { get; }
+        internal Guid ETag { get; }
 
         [JsonProperty]
-        public string Key { get; }
+        internal string Key { get; }
 
         [JsonProperty]
         internal T Member { get; }

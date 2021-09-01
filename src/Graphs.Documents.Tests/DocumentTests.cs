@@ -26,7 +26,7 @@ namespace Graphs.Documents.Tests
         }
 
         [Fact]
-        public void DocumentExplicitOperatorT_ReturnsDocumentT()
+        public void Document_ExplicitOperatorT_ReturnsDocumentT()
         {
             var member = new Member();
             var document1 = (Document<Member>)member;
@@ -43,14 +43,32 @@ namespace Graphs.Documents.Tests
             Assert.Equal(keylessMember.GetHashCode().ToString(), document2.Key);
         }
 
-        public void DocumentExplicitOperatorDocumentT_ReturnsDocumentT()
+        [Fact]
+        public void Document_ExplicitOperatorDocumentT_ReturnsT()
+        {
+            var member1 = new Member();
+            var document = (Document<Member>)member1;
+            Assert.NotNull(document);
+            Assert.NotNull(document.Member);
+            Assert.Equal(typeof(Member), document.Member.GetType());
+            Assert.Equal(member1.Id.ToString(), document.Key);
+
+            var member2 = (Member)document;
+            Assert.Equal(member1.Id, member2.Id);
+        }
+
+        [Fact]
+        public void Document_Clone_Updates_ETag()
         {
             var member = new Member();
             var document = (Document<Member>)member;
             Assert.NotNull(document);
             Assert.NotNull(document.Member);
             Assert.Equal(typeof(Member), document.Member.GetType());
+            Assert.Equal(member.Id.ToString(), document.Key);
 
+            var clone = (Document<Member>)document.Clone();
+            Assert.NotEqual(document.ETag, clone.ETag);
         }
     }
 }

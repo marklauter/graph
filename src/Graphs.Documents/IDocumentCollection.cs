@@ -13,7 +13,11 @@ namespace Graphs.Documents
 
         int Count { get; }
 
+        Document<T> Add(Document<T> document);
+        IEnumerable<Document<T>> Add(IEnumerable<Document<T>> documents);
+
         void Clear();
+
         bool Contains(string key);
 
         Document<T> Read(string key);
@@ -21,10 +25,11 @@ namespace Graphs.Documents
 
         bool Remove(string key);
         int Remove(IEnumerable<string> keys);
+
         bool Remove(Document<T> document);
         int Remove(IEnumerable<Document<T>> documents);
 
-        Document<T> Write(Document<T> document);
-        IEnumerable<Document<T>> Write(IEnumerable<Document<T>> documents);
+        Document<T> Update(Document<T> document);
+        IEnumerable<Document<T>> Update(IEnumerable<Document<T>> documents);
     }
 }
