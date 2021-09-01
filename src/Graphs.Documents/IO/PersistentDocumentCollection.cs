@@ -53,7 +53,10 @@ namespace Graphs.Documents.IO
 
         protected override void ClearCollection()
         {
-            throw new NotImplementedException();
+            foreach (var file in Directory.EnumerateFiles(this.path))
+            {
+                ThreadSafeFile.Delete(file, this.lockTimeout);
+            }
         }
 
         protected override Document<T> ReadDocument(string key)
