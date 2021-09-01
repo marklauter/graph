@@ -2,12 +2,64 @@ using Graphs.Elements;
 using Graphs.Indexes;
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using Xunit;
 
 namespace Graphs.IO.Tests
 {
     public class RepositoryTests
     {
+        [Fact]
+        public void FileAccessTest()
+        {
+            if(File.Exists("test.txt"))
+            File.Delete("test.txt");
+
+            var stream1 = new FileStream("test.txt", FileMode.CreateNew, FileAccess.Write, FileShare.None);
+            Assert.NotNull(stream1);
+            FileStream stream2 = null;
+            var open = false;
+            var tries = 0;
+            while (!open)
+            {
+                try
+                {
+                    stream2 = new FileStream("test.txt", FileMode.Open, FileAccess.Read, FileShare.Read);
+                    open = true;
+                }
+                catch(Exception ex)
+                {
+                    if (!FileIsLocked(ex as IOException))
+                    {
+                        throw;
+                    }
+                    else
+                    {
+                        ++tries;
+                        if (tries > 10)
+                        {
+                            stream1.Close();
+                            stream1.Dispose();
+                        }
+                    }
+                }
+            }
+            Assert.NotNull(stream2);
+            stream2.Close();
+            stream2.Dispose();
+
+            File.Delete("test.txt");
+        }
+
+        private const uint HRFileLocked = 0x80070020;
+        private const uint HRPortionOfFileLocked = 0x80070021;
+
+        private static bool FileIsLocked(IOException ioException)
+        {
+            var errorCode = (uint)Marshal.GetHRForException(ioException);
+            return errorCode == HRFileLocked || errorCode == HRPortionOfFileLocked;
+        }
+
         [Fact]
         public void Repository_Insert_Node_Succeeds()
         {

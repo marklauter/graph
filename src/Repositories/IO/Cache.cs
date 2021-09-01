@@ -13,7 +13,7 @@ namespace Repositories
     {
         private bool disposedValue;
         private readonly IMemoryCache cache;
-        private readonly IRepository<T> repository;
+        private readonly IDocumentCollection<T> repository;
         private readonly TimeSpan lockTimeout;
         private readonly MemoryCacheEntryOptions cacheEntryOptions;
         private readonly NamedLocks locks = new();
@@ -21,13 +21,13 @@ namespace Repositories
         public event EventHandler<CacheAccessedArgs> CacheAccessed;
         public event EventHandler<CacheItemEvictedEventArgs<T>> CacheItemEvicted;
 
-        public Cache(IRepository<T> repository, TimeSpan lockTimeout)
+        public Cache(IDocumentCollection<T> repository, TimeSpan lockTimeout)
             : this(repository, lockTimeout, new MemoryCacheEntryOptions())
         {
 
         }
 
-        public Cache(IRepository<T> repository, TimeSpan lockTimeout, MemoryCacheEntryOptions cacheEntryOptions)
+        public Cache(IDocumentCollection<T> repository, TimeSpan lockTimeout, MemoryCacheEntryOptions cacheEntryOptions)
         {
             this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
             this.lockTimeout = lockTimeout;

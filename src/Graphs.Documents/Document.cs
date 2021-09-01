@@ -1,27 +1,20 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace Repositories
+namespace Graphs.Documents
 {
-    [JsonObject("entity")]
-    public sealed class Entity<T>
+    [JsonObject]
+    public sealed class Document<T>
         : ICloneable
         where T : class
     {
-        private Entity()
+        private Document(Document<T> other)
+            : this(other.Member, other.Key, Guid.NewGuid())
         {
-            this.ETag = Guid.NewGuid();
-        }
-
-        private Entity(Entity<T> other)
-        {
-            this.Member = other.Member;
-            this.Key = GetKey(this.Member);
-            this.ETag = Guid.NewGuid();
         }
 
         [JsonConstructor]
-        private Entity(T member, string key, Guid etag)
+        private Document(T member, string key, Guid etag)
         {
             if (String.IsNullOrWhiteSpace(key))
             {
@@ -33,37 +26,46 @@ namespace Repositories
             this.ETag = etag;
         }
 
+        [JsonProperty]
         public Guid ETag { get; }
 
-        [JsonIgnore]
+        [JsonProperty]
         public string Key { get; }
 
-        [JsonProperty("member")]
+        [JsonProperty]
         internal T Member { get; }
 
         public object Clone()
         {
-            return new Entity<T>(this);
+            return new Document<T>(this);
         }
 
         private static string GetKey(T member)
+        {
+            return KeyInfoCache<T>.KeyProperties.Length > 0 
+                ? BuildKey(member) 
+                : member.GetHashCode().ToString();
+        }
+
+        private static string BuildKey(T member)
         {
             var keys = new string[KeyInfoCache<T>.KeyProperties.Length];
             for (var i = 0; i < keys.Length; ++i)
             {
                 keys[i] = KeyInfoCache<T>.KeyProperties[i].GetValue(member).ToString();
             }
+
             return String.Join('.', keys);
         }
 
-        public static explicit operator T(Entity<T> entity)
+        public static explicit operator T(Document<T> entity)
         {
             return entity.Member;
         }
 
-        public static explicit operator Entity<T>(T member)
+        public static explicit operator Document<T>(T member)
         {
-            return new Entity<T>(member, GetKey(member), Guid.NewGuid());
+            return new Document<T>(member, GetKey(member), Guid.NewGuid());
         }
     }
 }

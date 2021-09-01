@@ -1,4 +1,4 @@
-﻿using Repositories.Locking;
+﻿using Repositories.IO;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,7 +23,6 @@ namespace Repositories
         }
 
         private readonly string path;
-        private readonly NamedLocks locks = new();
         private readonly TimeSpan lockTimeout;
 
         public override int Count()
@@ -67,7 +66,7 @@ namespace Repositories
                 ? throw new ArgumentNullException(nameof(element))
                 : (Entity<T>)element;
 
-            this.CreateFile(this.GetFileName(entity.Key), entity);
+            this.CreateFileAsync(this.GetFileName(entity.Key), entity);
             this.OnInserted(new EntityEventArgs<T>(entity));
             return entity;
         }
@@ -125,34 +124,20 @@ namespace Repositories
             return "dat";
         }
 
-        private void CreateFile(string fileName, Entity<T> entity)
+        private void CreateFileAsync(string fileName, Entity<T> entity)
         {
-            this.locks.EnterWriteLock(fileName, this.lockTimeout);
-            try
-            {
-                using var stream = new FileStream(fileName, FileMode.CreateNew, FileAccess.Write);
-                this.StreamWrite(entity, stream);
-            }
-            finally
-            {
-                this.locks.ExitWriteLock(fileName);
-            }
+            using var stream = ThreadSafeFile
+                .Open(fileName, FileMode.CreateNew, FileAccess.Write, FileShare.None, this.lockTimeout);
+            this.StreamWrite(entity, stream);
+            stream.Flush();
         }
 
         private int DeleteFile(string fileName)
         {
-            this.locks.EnterWriteLock(fileName, this.lockTimeout);
-            try
+            if (File.Exists(fileName))
             {
-                if (File.Exists(fileName))
-                {
-                    File.Delete(fileName);
-                    return 1;
-                }
-            }
-            finally
-            {
-                this.locks.ExitWriteLock(fileName);
+                ThreadSafeFile.Delete(fileName, this.lockTimeout);
+                return 1;
             }
 
             return 0;
@@ -165,30 +150,17 @@ namespace Repositories
 
         private Entity<T> ReadFile(string fileName)
         {
-            this.locks.EnterReadLock(fileName, this.lockTimeout);
-            try
-            {
-                using var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-                return this.StreamRead(stream);
-            }
-            finally
-            {
-                this.locks.ExitReadLock(fileName);
-            }
+            using var stream = ThreadSafeFile
+                .Open(fileName, FileMode.Open, FileAccess.Read, FileShare.Read, this.lockTimeout);
+            return this.StreamRead(stream);
         }
 
         private void UpdateFile(string fileName, Entity<T> entity)
         {
-            this.locks.EnterWriteLock(fileName, this.lockTimeout);
-            try
-            {
-                using var stream = new FileStream(fileName, FileMode.Open, FileAccess.Write);
-                this.StreamWrite(entity, stream);
-            }
-            finally
-            {
-                this.locks.ExitWriteLock(fileName);
-            }
+            using var stream = ThreadSafeFile
+                .Open(fileName, FileMode.Open, FileAccess.Write, FileShare.None, this.lockTimeout);
+            this.StreamWrite(entity, stream);
+            stream.Flush();
         }
     }
 }

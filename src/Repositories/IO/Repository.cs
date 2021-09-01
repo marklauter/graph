@@ -5,7 +5,7 @@ using System.Linq;
 namespace Repositories
 {
     public abstract class Repository<T>
-        : IRepository<T>
+        : IDocumentCollection<T>
         , IEntityCollection<T>
         where T : class
     {
