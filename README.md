@@ -4,6 +4,9 @@ playing with graphs. no, not pie charts. go away now.
 ## why?
 every problem that matters can be solved with graphs. for instance, if you know the answer to the ultimate question of life, the universe and everything is 42, then all you have to do is traverse from node 42 to find the question. simple, right?
 
+## semantic networks
+[![semantic network image from wikipedia](https://en.wikipedia.org/wiki/Semantic_network#/media/File:Semantic_Net.svg)]
+
 ## references
 
 - https://www.youtube.com/watch?v=aRo6na52tZs
