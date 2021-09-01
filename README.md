@@ -5,7 +5,7 @@ playing with graphs. no, not pie charts. go away now.
 every problem that matters can be solved with graphs. for instance, if you know the answer to the ultimate question of life, the universe and everything is 42, then all you have to do is traverse from node 42 to find the question. simple, right?
 
 ## semantic networks
-[![semantic network image from wikipedia](https://upload.wikimedia.org/wikipedia/commons/6/67/Semantic_Net.svg)]
+![semantic network image](https://www.assignmentpoint.com/wp-content/uploads/2016/04/Semantic-Network.jpg)
 
 ## references
 
