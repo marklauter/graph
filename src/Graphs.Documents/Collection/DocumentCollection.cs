@@ -4,11 +4,6 @@ using System.Collections.Generic;
 
 namespace Graphs.Documents
 {
-    // todo: queue is better than locks
-    //private readonly ConcurrentQueue<Document<T>> addQueue = new();
-    //private readonly ConcurrentQueue<string> removeQueue = new();
-    //private readonly ConcurrentQueue<Document<T>> updateQueue = new();
-
     public abstract class DocumentCollection<T>
         : IDocumentCollection<T>
         where T : class
