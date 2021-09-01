@@ -6,6 +6,7 @@ using System.Diagnostics.Contracts;
 
 namespace Graphs.DB.Elements
 {
+    // todo: make thread safe
     [DebuggerDisplay("{Key}")]
     public abstract class Element
         : IElement

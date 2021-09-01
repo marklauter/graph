@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Graphs.Documents
+﻿namespace Graphs.Documents
 {
     public class DocumentRemovedEventArgs<T>
         : DocumentEventArgs<T>

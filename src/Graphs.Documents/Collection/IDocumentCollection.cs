@@ -3,18 +3,22 @@ using System.Collections.Generic;
 
 namespace Graphs.Documents
 {
+
+    // todo: best advice to avoiding the need for locking is to use a concurrent queue for writes
     public interface IDocumentCollection<T>
         : IEnumerable<T>
         where T : class
     {
-        event EventHandler<DocumentRemovedEventArgs<T>> DocumentRemoved;
         event EventHandler<DocumentAddedEventArgs<T>> DocumentAdded;
+        event EventHandler<DocumentRemovedEventArgs<T>> DocumentRemoved;
         event EventHandler<DocumentUpdatedEventArgs<T>> DocumentUpdated;
+
+        event EventHandler<EventArgs> Cleared;
 
         int Count { get; }
 
-        Document<T> Add(Document<T> document);
-        IEnumerable<Document<T>> Add(IEnumerable<Document<T>> documents);
+        void Add(Document<T> document);
+        void Add(IEnumerable<Document<T>> documents);
 
         void Clear();
 
@@ -23,13 +27,13 @@ namespace Graphs.Documents
         Document<T> Read(string key);
         IEnumerable<Document<T>> Read(IEnumerable<string> keys);
 
-        bool Remove(string key);
-        int Remove(IEnumerable<string> keys);
+        void Remove(string key);
+        void Remove(IEnumerable<string> keys);
 
-        bool Remove(Document<T> document);
-        int Remove(IEnumerable<Document<T>> documents);
+        void Remove(Document<T> document);
+        void Remove(IEnumerable<Document<T>> documents);
 
-        Document<T> Update(Document<T> document);
-        IEnumerable<Document<T>> Update(IEnumerable<Document<T>> documents);
+        void Update(Document<T> document);
+        void Update(IEnumerable<Document<T>> documents);
     }
 }
