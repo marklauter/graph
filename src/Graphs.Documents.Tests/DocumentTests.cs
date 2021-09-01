@@ -7,9 +7,9 @@ namespace Graphs.Documents.Tests
         [Fact]
         public void KeyInfoCache_IsFilled()
         {
-            Assert.Equal(nameof(Member), KeyInfoCache<Member>.TypeName);
-            Assert.Single(KeyInfoCache<Member>.KeyProperties);
-            Assert.Contains(KeyInfoCache<Member>.KeyProperties, p => p.Name == nameof(Member.Id));
+            Assert.Equal(nameof(Member), DocumentKeys<Member>.TypeName);
+            Assert.Single(DocumentKeys<Member>.KeyProperties);
+            Assert.Contains(DocumentKeys<Member>.KeyProperties, p => p.Name == nameof(Member.Id));
         }
 
         [Fact]

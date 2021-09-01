@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Graphs.Documents
 {
-    internal static class KeyInfoCache<T>
+    internal static class DocumentKeys<T>
         where T : class
     {
         public static PropertyInfo[] KeyProperties { get; } =

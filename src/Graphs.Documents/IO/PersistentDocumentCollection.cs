@@ -11,19 +11,22 @@ namespace Graphs.Documents.IO
         where T : class
     {
         // queues are better than locks, but still need to implement locking waits for file open
-        private readonly ConcurrentQueue<Document<T>> addQueue = new();
-        private readonly ConcurrentQueue<string> removeQueue = new();
-        private readonly ConcurrentQueue<Document<T>> updateQueue = new();
+        private readonly ConcurrentQueue<DocumentActionItem> actionQueue = new();
+        private readonly IDocumentSerializer<T> serializer;
         private readonly string path;
         private readonly TimeSpan lockTimeout;
 
-        public PersistentDocumentCollection(string path, TimeSpan lockTimeout)
+        protected PersistentDocumentCollection(
+            IDocumentSerializer<T> serializer,
+            string path,
+            TimeSpan lockTimeout)
         {
             if (String.IsNullOrWhiteSpace(path))
             {
                 throw new ArgumentException($"'{nameof(path)}' cannot be null or whitespace.", nameof(path));
             }
 
+            this.serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
             this.path = path;
             this.lockTimeout = lockTimeout;
         }
@@ -32,17 +35,20 @@ namespace Graphs.Documents.IO
 
         public override bool Contains(string key)
         {
-            throw new NotImplementedException();
+            return File.Exists(this.GetFileName(key));
         }
 
-        public override IEnumerator<T> GetEnumerator()
+        public override IEnumerator<Document<T>> GetEnumerator()
         {
-            throw new NotImplementedException();
+            foreach (var file in Directory.EnumerateFiles(this.path))
+            {
+                yield return this.ReadFile(file);
+            }
         }
 
         protected override void AddDocument(Document<T> document)
         {
-            this.addQueue.Enqueue(document);
+            this.actionQueue.Enqueue(new DocumentActionItem(document, DocumentAction.Add));
         }
 
         protected override void ClearCollection()
@@ -52,21 +58,50 @@ namespace Graphs.Documents.IO
 
         protected override Document<T> ReadDocument(string key)
         {
-            throw new NotImplementedException();
+            if (String.IsNullOrWhiteSpace(key))
+            {
+                throw new ArgumentException($"'{nameof(key)}' cannot be null or whitespace.", nameof(key));
+            }
+
+            return this.ReadFile(this.GetFileName(key));
         }
 
         protected override void RemoveDocument(string key)
         {
-            this.removeQueue.Enqueue(key);
+            this.actionQueue.Enqueue(new DocumentActionItem(key, DocumentAction.Remove));
         }
 
         protected override void UpdateDocument(Document<T> document)
         {
-            this.updateQueue.Enqueue(document);
+            this.actionQueue.Enqueue(new DocumentActionItem(document, DocumentAction.Update));
         }
 
-        protected abstract Document<T> DeserializeDocument(Stream stream);
+        private Document<T> ReadFile(string fileName)
+        {
+            using var stream = ThreadSafeFile.Open(
+                fileName, 
+                FileMode.Open, 
+                FileAccess.Read, 
+                FileShare.Read, 
+                this.lockTimeout);
+            return this.serializer.Deserialize(stream);
+        }
 
-        protected abstract void SerializeDocument(Document<T> document);
+        private void WriteFile(string fileName, Document<T> document)
+        {
+            using var stream = ThreadSafeFile.Open(
+                fileName, 
+                FileMode.OpenOrCreate, 
+                FileAccess.Write, 
+                FileShare.None, 
+                this.lockTimeout);
+            this.serializer.Serialize(document, stream);
+            stream.Flush();
+        }
+
+        private string GetFileName(string key)
+        {
+            return Path.Combine(this.path, $"{key}.{DocumentKeys<T>.TypeName}");
+        }
     }
 }

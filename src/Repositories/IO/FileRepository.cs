@@ -66,7 +66,7 @@ namespace Repositories
                 ? throw new ArgumentNullException(nameof(element))
                 : (Entity<T>)element;
 
-            this.CreateFileAsync(this.GetFileName(entity.Key), entity);
+            this.CreateFile(this.GetFileName(entity.Key), entity);
             this.OnInserted(new EntityEventArgs<T>(entity));
             return entity;
         }
@@ -124,7 +124,7 @@ namespace Repositories
             return "dat";
         }
 
-        private void CreateFileAsync(string fileName, Entity<T> entity)
+        private void CreateFile(string fileName, Entity<T> entity)
         {
             using var stream = ThreadSafeFile
                 .Open(fileName, FileMode.CreateNew, FileAccess.Write, FileShare.None, this.lockTimeout);

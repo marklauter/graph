@@ -6,7 +6,7 @@ namespace Graphs.Documents
 
     // todo: best advice to avoiding the need for locking is to use a concurrent queue for writes
     public interface IDocumentCollection<T>
-        : IEnumerable<T>
+        : IEnumerable<Document<T>>
         where T : class
     {
         event EventHandler<DocumentAddedEventArgs<T>> DocumentAdded;

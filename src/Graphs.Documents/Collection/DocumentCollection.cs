@@ -49,7 +49,7 @@ namespace Graphs.Documents
 
         public abstract bool Contains(string key);
 
-        public abstract IEnumerator<T> GetEnumerator();
+        public abstract IEnumerator<Document<T>> GetEnumerator();
 
         public Document<T> Read(string key)
         {

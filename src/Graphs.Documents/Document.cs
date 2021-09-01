@@ -42,17 +42,17 @@ namespace Graphs.Documents
 
         private static string GetKey(T member)
         {
-            return KeyInfoCache<T>.KeyProperties.Length > 0 
+            return DocumentKeys<T>.KeyProperties.Length > 0 
                 ? BuildKey(member) 
                 : member.GetHashCode().ToString();
         }
 
         private static string BuildKey(T member)
         {
-            var keys = new string[KeyInfoCache<T>.KeyProperties.Length];
+            var keys = new string[DocumentKeys<T>.KeyProperties.Length];
             for (var i = 0; i < keys.Length; ++i)
             {
-                keys[i] = KeyInfoCache<T>.KeyProperties[i].GetValue(member).ToString();
+                keys[i] = DocumentKeys<T>.KeyProperties[i].GetValue(member).ToString();
             }
 
             return String.Join('.', keys);
