@@ -26,7 +26,7 @@ namespace Graphs.DB.Elements
         /// <remarks>
         /// <seealso cref="Classify(IEnumerable{String})"/>
         /// <seealso cref="Declassify(String)"/>
-        /// <seealso cref="Is(String)"/>
+        /// <seealso cref="IsClass(String)"/>
         /// </remarks>
         IElement Classify(string label);
 
@@ -38,7 +38,7 @@ namespace Graphs.DB.Elements
         /// <remarks>
         /// <see cref="Classify(String)"/>
         /// <seealso cref="Declassify(String)"/>
-        /// <seealso cref="Is(String)"/>
+        /// <seealso cref="IsClass(String)"/>
         /// </remarks>
         IElement Classify(IEnumerable<string> labels);
 
@@ -50,7 +50,7 @@ namespace Graphs.DB.Elements
         /// <remarks>
         /// <seealso cref="Classify(String)"/>
         /// <seealso cref="Classify(IEnumerable{String})"/>
-        /// <seealso cref="Is(String)"/>
+        /// <seealso cref="IsClass(String)"/>
         /// </remarks>
         IElement Declassify(string label);
 
@@ -63,6 +63,7 @@ namespace Graphs.DB.Elements
         /// <seealso cref="Attribute(String)"/>
         /// <seealso cref="Qualify(String, String)"/>
         /// <seealso cref="Qualify(IDictionary{String, String})"/>
+        /// HasA
         /// </remarks>
         bool HasAttribute(string name);
 
@@ -75,8 +76,9 @@ namespace Graphs.DB.Elements
         /// <seealso cref="Classify(IEnumerable{String})"/>
         /// <seealso cref="Classify(IEnumerable{String})"/>
         /// <seealso cref="Declassify(String)"/>
+        /// IsA
         /// </remarks>
-        bool Is(string label);
+        bool IsClass(string label);
 
         /// <summary>
         /// Sets adds an attribute, in the form of a name-value pair, to the element.

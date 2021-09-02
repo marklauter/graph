@@ -68,7 +68,7 @@ namespace Graphs.DB.Elements
 
         /// <inheritdoc/>
         [Pure]
-        public bool Is(string label)
+        public bool IsClass(string label)
         {
             return this.labels.Contains(label);
         }
