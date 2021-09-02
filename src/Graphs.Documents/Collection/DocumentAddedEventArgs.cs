@@ -4,7 +4,7 @@
         : DocumentEventArgs<T>
         where T : class
     {
-        public DocumentAddedEventArgs(Document<T> document) 
+        public DocumentAddedEventArgs(Document<T> document)
             : base(document)
         {
         }

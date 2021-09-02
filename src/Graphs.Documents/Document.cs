@@ -42,8 +42,8 @@ namespace Graphs.Documents
 
         private static string GetKey(T member)
         {
-            return DocumentKeys<T>.KeyProperties.Length > 0 
-                ? BuildKey(member) 
+            return DocumentKeys<T>.KeyProperties.Length > 0
+                ? BuildKey(member)
                 : member.GetHashCode().ToString();
         }
 

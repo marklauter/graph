@@ -2,11 +2,18 @@
 
 namespace Graphs.Documents.IO
 {
-    internal sealed class DocumentActionItem
+    internal sealed class DocumentActionItem<T>
+        where T : class
     {
-        public DocumentActionItem(object item, DocumentAction action)
+        public DocumentActionItem(DocumentAction action, string key)
         {
-            this.Item = item ?? throw new ArgumentNullException(nameof(item));
+            this.Item = key ?? throw new ArgumentNullException(nameof(key));
+            this.Action = action;
+        }
+
+        public DocumentActionItem(DocumentAction action, Document<T> document)
+        {
+            this.Item = document ?? throw new ArgumentNullException(nameof(document));
             this.Action = action;
         }
 

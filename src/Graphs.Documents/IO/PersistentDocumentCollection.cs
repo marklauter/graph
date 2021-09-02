@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
 
 namespace Graphs.Documents.IO
 {
@@ -12,29 +10,35 @@ namespace Graphs.Documents.IO
         , IDisposable
         where T : class
     {
-        // queues are better than locks, but still need to implement locking waits for file open
-        private readonly ConcurrentQueue<DocumentActionItem> actionQueue = new();
-        private readonly IDocumentSerializer<T> serializer;
+        // todo: add cache for reads
         private readonly string path;
         private readonly TimeSpan fileLockTimeout;
-        private readonly CancellationTokenSource cancellationTokenSource = new();
+        private readonly IDocumentSerializer<T> serializer;
+        private readonly DocumentActionQueueProcessor<T> actionQueue;
         private bool disposedValue;
 
         protected PersistentDocumentCollection(
-            IDocumentSerializer<T> serializer,
             string path,
             TimeSpan fileLockTimeout)
+            : this(path, fileLockTimeout, null)
+        {
+
+        }
+
+        protected PersistentDocumentCollection(
+            string path,
+            TimeSpan fileLockTimeout,
+            IDocumentSerializer<T> serializer)
         {
             if (String.IsNullOrWhiteSpace(path))
             {
                 throw new ArgumentException($"'{nameof(path)}' cannot be null or whitespace.", nameof(path));
             }
 
-            this.serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
-            this.path = path;
+            this.serializer = serializer ?? new JsonDocumentSerializer<T>();
+            this.actionQueue = new DocumentActionQueueProcessor<T>(this.DeleteFile, this.WriteFile);
             this.fileLockTimeout = fileLockTimeout;
-
-            this.StartActionQueueProcessor();
+            this.path = path;
         }
 
         public override int Count => Directory.EnumerateFiles(this.path).Count();
@@ -42,14 +46,6 @@ namespace Graphs.Documents.IO
         public override bool Contains(string key)
         {
             return File.Exists(this.GetFileName(key));
-        }
-
-        public void Flush()
-        {
-            while (this.actionQueue.TryDequeue(out var actionItem))
-            {
-                this.ProcessActionItem(actionItem);
-            }
         }
 
         public override IEnumerator<Document<T>> GetEnumerator()
@@ -62,7 +58,7 @@ namespace Graphs.Documents.IO
 
         protected override void AddDocument(Document<T> document)
         {
-            this.actionQueue.Enqueue(new DocumentActionItem(document, DocumentAction.Add));
+            this.actionQueue.EnqueueAddAction(document);
         }
 
         protected override void ClearCollection()
@@ -75,66 +71,24 @@ namespace Graphs.Documents.IO
 
         protected override Document<T> ReadDocument(string key)
         {
-            if (String.IsNullOrWhiteSpace(key))
-            {
-                throw new ArgumentException($"'{nameof(key)}' cannot be null or whitespace.", nameof(key));
-            }
-
-            return this.ReadFile(this.GetFileName(key));
+            return String.IsNullOrWhiteSpace(key)
+                ? throw new ArgumentException($"'{nameof(key)}' cannot be null or whitespace.", nameof(key))
+                : this.ReadFile(this.GetFileName(key));
         }
 
         protected override void RemoveDocument(string key)
         {
-            this.actionQueue.Enqueue(new DocumentActionItem(key, DocumentAction.Remove));
+            this.actionQueue.EnqueueRemoveAction(key);
         }
 
         protected override void UpdateDocument(Document<T> document)
         {
-            this.actionQueue.Enqueue(new DocumentActionItem(document, DocumentAction.Update));
+            this.actionQueue.EnqueueUpdateAction(document);
         }
 
-        private void StartActionQueueProcessor()
+        private void DeleteFile(string key)
         {
-            // todo: https://www.minatcoding.com/blog/tech-tips/tech-tip-creating-a-long-running-background-task-in-net-core/
-            this.ProcessActionQueue(this.cancellationTokenSource.Token);
-        }
-
-        private void ProcessActionQueue(CancellationToken cancellationToken)
-        {
-            var wait = new SpinWait();
-            while (!cancellationToken.IsCancellationRequested)
-            {
-                if (!this.actionQueue.TryDequeue(out var actionItem))
-                {
-                    wait.SpinOnce();
-                    continue;
-                }
-
-                this.ProcessActionItem(actionItem);
-            }
-
-            this.Flush();
-        }
-
-        private void ProcessActionItem(DocumentActionItem actionItem)
-        {
-            switch (actionItem.Action)
-            {
-                case DocumentAction.Add:
-                case DocumentAction.Update:
-                    var document = actionItem.Item as Document<T>;
-                    this.WriteFile(this.GetFileName(document.Key), document);
-                    break;
-                case DocumentAction.Remove:
-                    var key = actionItem.Item as string;
-                    this.DeleteFile(this.GetFileName(key));
-                    break;
-            }
-        }
-
-        private void DeleteFile(string filename)
-        {
-            ThreadSafeFile.Delete(filename, this.fileLockTimeout);
+            ThreadSafeFile.Delete(this.GetFileName(key), this.fileLockTimeout);
         }
 
         private Document<T> ReadFile(string fileName)
@@ -148,16 +102,16 @@ namespace Graphs.Documents.IO
             return this.serializer.Deserialize(stream);
         }
 
-        private void WriteFile(string fileName, Document<T> document)
+        private void WriteFile(Document<T> document)
         {
             using var stream = ThreadSafeFile.Open(
-                fileName,
+                this.GetFileName(document.Key),
                 FileMode.OpenOrCreate,
                 FileAccess.Write,
                 FileShare.None,
                 this.fileLockTimeout);
             this.serializer.Serialize(document, stream);
-            stream.Flush();
+            stream.Flush(true);
         }
 
         private string GetFileName(string key)
@@ -171,7 +125,7 @@ namespace Graphs.Documents.IO
             {
                 if (disposing)
                 {
-                    this.cancellationTokenSource.Cancel();
+                    this.actionQueue.Dispose();
                 }
 
                 this.disposedValue = true;
