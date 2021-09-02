@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Collections.Immutable;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
 namespace Graphs.DB.Elements
 {
     internal sealed class ConcurrentHashSet<T>
+        : IEnumerable<T>
     {
         private readonly HashSet<T> hashset = new();
         private readonly ReaderWriterLockSlim gate = new();
@@ -98,17 +99,25 @@ namespace Graphs.DB.Elements
             }
         }
 
-        public IEnumerable<T> Items()
+        public IEnumerator<T> GetEnumerator()
         {
             this.gate.EnterReadLock();
             try
             {
-                return this.hashset.ToImmutableArray();
+                foreach (var item in this.hashset)
+                {
+                    yield return item;
+                }
             }
             finally
             {
                 this.gate.ExitReadLock();
             }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
         }
     }
 }

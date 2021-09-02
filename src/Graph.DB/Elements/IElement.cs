@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Graphs.DB.Elements
 {
-    public interface IElement
+    public interface IElement<TId>
         : ICloneable
+        where TId : IComparable, IComparable<TId>, IEquatable<TId>
     {
+        [Key]
+        TId Id { get; }
+
         /// <summary>
         /// Gets the value of an attribute.
         /// </summary>
@@ -28,7 +33,7 @@ namespace Graphs.DB.Elements
         /// <seealso cref="Declassify(String)"/>
         /// <seealso cref="IsClass(String)"/>
         /// </remarks>
-        IElement Classify(string label);
+        IElement<TId> Classify(string label);
 
         /// <summary>
         /// Assigns a set of labels to the element.
@@ -40,7 +45,7 @@ namespace Graphs.DB.Elements
         /// <seealso cref="Declassify(String)"/>
         /// <seealso cref="IsClass(String)"/>
         /// </remarks>
-        IElement Classify(IEnumerable<string> labels);
+        IElement<TId> Classify(IEnumerable<string> labels);
 
         /// <summary>
         /// Unassign a label from the element.
@@ -52,7 +57,7 @@ namespace Graphs.DB.Elements
         /// <seealso cref="Classify(IEnumerable{String})"/>
         /// <seealso cref="IsClass(String)"/>
         /// </remarks>
-        IElement Declassify(string label);
+        IElement<TId> Declassify(string label);
 
         /// <summary>
         /// Checks the map of attribute name-value pairs for a matching name.
@@ -91,7 +96,7 @@ namespace Graphs.DB.Elements
         /// <seealso cref="Attribute(String)"/>
         /// <seealso cref="HasAttribute(String)"/>
         /// </remarks>
-        IElement Qualify(string name, string value);
+        IElement<TId> Qualify(string name, string value);
 
         /// <summary>
         /// Apppends a set of attributes to the element.
@@ -104,6 +109,6 @@ namespace Graphs.DB.Elements
         /// <seealso cref="Attribute(String)"/>
         /// <seealso cref="HasAttribute(String)"/>
         /// </remarks>
-        IElement Qualify(IEnumerable<KeyValuePair<string, string>> attributes);
+        IElement<TId> Qualify(IEnumerable<KeyValuePair<string, string>> attributes);
     }
 }

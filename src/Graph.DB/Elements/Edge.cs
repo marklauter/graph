@@ -11,7 +11,7 @@ namespace Graphs.DB.Elements
     [DebuggerDisplay("{SourceId} : {TargetId}")]
     [JsonObject("edge")]
     public sealed class Edge<TId>
-        : Element
+        : Element<TId>
         , IEquatable<Edge<TId>>
         , IEqualityComparer<Edge<TId>>
         where TId : IComparable, IComparable<TId>, IEquatable<TId>
@@ -20,12 +20,10 @@ namespace Graphs.DB.Elements
         [JsonProperty("directed")]
         public bool IsDirected { get; }
 
-        [Key]
         [Required]
         [JsonProperty("source")]
         public TId SourceId { get; }
 
-        [Key]
         [Required]
         [JsonProperty("target")]
         public TId TargetId { get; }
@@ -40,23 +38,23 @@ namespace Graphs.DB.Elements
             this.IsDirected = other.IsDirected;
         }
 
-        public Edge([DisallowNull] Node<TId> source, [DisallowNull] Node<TId> target)
-            : this(source.Id, target.Id, false)
+        public Edge(TId id, [DisallowNull] Node<TId> source, [DisallowNull] Node<TId> target)
+            : this(id, source.Id, target.Id, false)
         {
         }
 
-        public Edge([DisallowNull] Node<TId> source, [DisallowNull] Node<TId> target, bool isDirected)
-            : this(source.Id, target.Id, isDirected)
+        public Edge(TId id, [DisallowNull] Node<TId> source, [DisallowNull] Node<TId> target, bool isDirected)
+            : this(id, source.Id, target.Id, isDirected)
         {
         }
 
         [JsonConstructor]
-        public Edge(TId sourceId, TId targetId, bool isDirected)
-            : base()
+        public Edge(TId id, TId sourceId, TId targetId, bool isDirected)
+            : base(id)
         {
-            this.IsDirected = isDirected;
             this.SourceId = sourceId;
             this.TargetId = targetId;
+            this.IsDirected = isDirected;
         }
 
         [Pure]

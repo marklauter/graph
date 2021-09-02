@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
@@ -12,17 +11,13 @@ namespace Graphs.DB.Elements
     [DebuggerDisplay("{Key}")]
     [JsonObject("node")]
     public sealed class Node<TId>
-        : Element
+        : Element<TId>
         , IEquatable<Node<TId>>
         , IEqualityComparer<Node<TId>>
         where TId : IComparable, IComparable<TId>, IEquatable<TId>
     {
         [JsonProperty]
         private readonly ConcurrentHashSet<TId> neighbors = new();
-
-        [Key]
-        [JsonProperty("id")]
-        public TId Id { get; }
 
         private Node() : base() { }
 
@@ -34,9 +29,8 @@ namespace Graphs.DB.Elements
 
         [JsonConstructor]
         public Node(TId id)
-            : base()
+            : base(id)
         {
-            this.Id = id;
         }
 
         [Pure]
@@ -107,7 +101,10 @@ namespace Graphs.DB.Elements
         [Pure]
         public IEnumerable<TId> Neighbors()
         {
-            return this.neighbors.Items();
+            foreach (var neighbor in this.neighbors)
+            {
+                yield return neighbor;
+            }
         }
 
         [OnDeserialized]
