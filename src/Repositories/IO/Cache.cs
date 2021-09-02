@@ -53,8 +53,8 @@ namespace Repositories
                     try
                     {
                         entity = this.cache.Set(
-                            key, 
-                            this.repository.Select(key), 
+                            key,
+                            this.repository.Select(key),
                             this.cacheEntryOptions);
                         accessType = CacheAccessType.Miss;
                     }

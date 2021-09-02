@@ -13,15 +13,6 @@ namespace Repositories
         public JsonRepository(string path, TimeSpan lockTimeout)
             : base(path, lockTimeout)
         {
-            var settings = new JsonSerializerSettings
-            {
-                ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
-                NullValueHandling = NullValueHandling.Ignore,
-                Formatting = Formatting.Indented,
-                MissingMemberHandling = MissingMemberHandling.Ignore,
-            };
-
-            this.serializer = JsonSerializer.Create(settings);
         }
 
         protected override string GetFileExtension()

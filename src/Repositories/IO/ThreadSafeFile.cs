@@ -12,7 +12,7 @@ namespace Repositories.IO
             var wait = new SpinWait();
             IOException lastIoEx = null;
             var start = DateTime.UtcNow;
-            
+
             do
             {
                 try
