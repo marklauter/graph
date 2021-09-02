@@ -1,7 +1,7 @@
 using Xunit;
 
 namespace Graphs.Documents.Tests
-{ 
+{
     public class DocumentTests
     {
         [Fact]
