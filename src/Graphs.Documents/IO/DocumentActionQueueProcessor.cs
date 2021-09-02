@@ -84,7 +84,7 @@ namespace Graphs.Documents.IO
 
         private void StartActionQueueProcessor()
         {
-            // todo: https://www.minatcoding.com/blog/tech-tips/tech-tip-creating-a-long-running-background-task-in-net-core/
+            // todo: make this actually run in a thread: https://www.minatcoding.com/blog/tech-tips/tech-tip-creating-a-long-running-background-task-in-net-core/
             this.ProcessActionQueue(this.cancellationTokenSource.Token);
         }
 

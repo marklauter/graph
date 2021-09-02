@@ -75,9 +75,9 @@ namespace Graphs.Documents.IO
         private const uint HRFileLocked = 0x80070020;
         private const uint HRPortionOfFileLocked = 0x80070021;
 
-        private static bool FileIsLocked(IOException ioException)
+        private static bool FileIsLocked(IOException ex)
         {
-            var errorCode = (uint)Marshal.GetHRForException(ioException);
+            var errorCode = (uint)Marshal.GetHRForException(ex);
             return errorCode == HRFileLocked || errorCode == HRPortionOfFileLocked;
         }
     }

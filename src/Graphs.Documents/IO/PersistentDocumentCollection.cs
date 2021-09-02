@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Caching.Memory;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,31 +11,37 @@ namespace Graphs.Documents.IO
         , IDisposable
         where T : class
     {
-        // todo: add cache for reads
         private readonly string path;
         private readonly TimeSpan fileLockTimeout;
         private readonly IDocumentSerializer<T> serializer;
+        private readonly IDocumentCache<T> documentCache;
         private readonly DocumentActionQueueProcessor<T> actionQueue;
         private bool disposedValue;
 
         protected PersistentDocumentCollection(
             string path,
             TimeSpan fileLockTimeout)
-            : this(path, fileLockTimeout, null)
+            : this(path, fileLockTimeout, null, null)
         {
-
         }
 
         protected PersistentDocumentCollection(
             string path,
             TimeSpan fileLockTimeout,
-            IDocumentSerializer<T> serializer)
+            IDocumentSerializer<T> serializer,
+            IDocumentCache<T> documentCache)
         {
             if (String.IsNullOrWhiteSpace(path))
             {
                 throw new ArgumentException($"'{nameof(path)}' cannot be null or whitespace.", nameof(path));
             }
 
+            var cacheEntryOptions = new MemoryCacheEntryOptions
+            {
+                SlidingExpiration = TimeSpan.FromMinutes(5),
+            };
+
+            this.documentCache = documentCache ?? new DocumentCache<T>(cacheEntryOptions, this);
             this.serializer = serializer ?? new JsonDocumentSerializer<T>();
             this.actionQueue = new DocumentActionQueueProcessor<T>(this.DeleteFile, this.WriteFile);
             this.fileLockTimeout = fileLockTimeout;
@@ -45,7 +52,9 @@ namespace Graphs.Documents.IO
 
         public override bool Contains(string key)
         {
-            return File.Exists(this.GetFileName(key));
+            return String.IsNullOrWhiteSpace(key)
+                ? throw new ArgumentException($"'{nameof(key)}' cannot be null or whitespace.", nameof(key))
+                : File.Exists(this.GetFileName(key));
         }
 
         public override IEnumerator<Document<T>> GetEnumerator()
@@ -71,9 +80,7 @@ namespace Graphs.Documents.IO
 
         protected override Document<T> ReadDocument(string key)
         {
-            return String.IsNullOrWhiteSpace(key)
-                ? throw new ArgumentException($"'{nameof(key)}' cannot be null or whitespace.", nameof(key))
-                : this.ReadFile(this.GetFileName(key));
+            return this.documentCache.Read(key, this.ReadDocumentWithKey);
         }
 
         protected override void RemoveDocument(string key)
@@ -91,6 +98,11 @@ namespace Graphs.Documents.IO
             ThreadSafeFile.Delete(this.GetFileName(key), this.fileLockTimeout);
         }
 
+        private Document<T> ReadDocumentWithKey(string key)
+        {
+            return this.ReadFile(this.GetFileName(key));
+        }
+
         private Document<T> ReadFile(string fileName)
         {
             using var stream = ThreadSafeFile.Open(
@@ -99,6 +111,7 @@ namespace Graphs.Documents.IO
                 FileAccess.Read,
                 FileShare.Read,
                 this.fileLockTimeout);
+            
             return this.serializer.Deserialize(stream);
         }
 
@@ -110,6 +123,7 @@ namespace Graphs.Documents.IO
                 FileAccess.Write,
                 FileShare.None,
                 this.fileLockTimeout);
+            
             this.serializer.Serialize(document, stream);
             stream.Flush(true);
         }
@@ -134,7 +148,6 @@ namespace Graphs.Documents.IO
 
         public void Dispose()
         {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
             this.Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
