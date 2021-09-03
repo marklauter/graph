@@ -20,6 +20,10 @@ namespace Graphs.Documents.Tests
             var readArgs = new CacheAccessedEventArgs(document.Key, CacheAccessType.Hit);
             Assert.Equal(document.Key, readArgs.Key);
             Assert.Equal(CacheAccessType.Hit, readArgs.ReadType);
+
+            Assert.Throws<ArgumentNullException>(() => _ = new CacheItemEvictedEventArgs<Member>(null, EvictionReason.None));
+            Assert.Throws<ArgumentException>(() => _ = new CacheAccessedEventArgs(null, CacheAccessType.Hit));
+            Assert.Throws<ArgumentException>(() => _ = new CacheAccessedEventArgs(" ", CacheAccessType.Hit));
         }
 
         private sealed class Value
