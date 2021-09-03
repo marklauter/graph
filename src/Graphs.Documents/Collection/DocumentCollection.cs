@@ -120,6 +120,12 @@ namespace Graphs.Documents
                 throw new ArgumentNullException(nameof(document));
             }
 
+            var d = this.Read(document.Key);
+            if (d.ETag != document.ETag)
+            {
+                throw new ETagMismatchException($"key: {document.Key}, expected: {d.ETag}, actual: {document.ETag}");
+            }
+
             this.UpdateDocument(document);
 
             this.DocumentUpdated?.Invoke(this, new DocumentUpdatedEventArgs<T>(document));

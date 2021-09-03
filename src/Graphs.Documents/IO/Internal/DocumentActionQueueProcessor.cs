@@ -8,7 +8,7 @@ namespace Graphs.Documents.IO
         : IDisposable
         where T : class
     {
-        // queues minimize write collisions on files better than locks would and improve perceived performance
+        // queues minimize write collisions on files better than locks and also improve perceived performance
 
         private readonly ConcurrentQueue<DocumentActionItem<T>> documentActionQueue = new();
         private readonly CancellationTokenSource cancellationTokenSource = new();
