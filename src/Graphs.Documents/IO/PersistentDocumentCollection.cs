@@ -41,7 +41,7 @@ namespace Graphs.Documents.IO
                 SlidingExpiration = TimeSpan.FromMinutes(5),
             };
 
-            this.documentCache = documentCache ?? new DocumentCache<T>(cacheEntryOptions, this);
+            this.documentCache = documentCache ?? new DocumentCache<T>(cacheEntryOptions);
             this.serializer = serializer ?? new JsonDocumentSerializer<T>();
             this.actionQueue = new DocumentActionQueueProcessor<T>(this.DeleteFile, this.WriteFile);
             this.fileLockTimeout = fileLockTimeout;

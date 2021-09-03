@@ -2,10 +2,10 @@
 
 namespace Graphs.Documents
 {
-    public sealed class CacheReadEventArgs
+    public sealed class CacheAccessedEventArgs
         : EventArgs
     {
-        public CacheReadEventArgs(string key, CacheReadType accessType)
+        public CacheAccessedEventArgs(string key, CacheAccessType accessType)
         {
             if (String.IsNullOrWhiteSpace(key))
             {
@@ -18,6 +18,6 @@ namespace Graphs.Documents
 
         public string Key { get; }
 
-        public CacheReadType ReadType { get; }
+        public CacheAccessType ReadType { get; }
     }
 }

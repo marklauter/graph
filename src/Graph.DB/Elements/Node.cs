@@ -57,7 +57,7 @@ namespace Graphs.DB.Elements
         public bool Couple([DisallowNull] Node<TId> target)
         {
             // todo: trying to work out the edge ID problem - need a way to generate ID values for TId.. hmmm
-            var edge = new Edge()
+            //var edge = new Edge()
             return this.neighbors.Add(target.Id);
         }
 

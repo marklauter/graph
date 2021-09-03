@@ -1,6 +1,6 @@
 ﻿namespace Graphs.Documents
 {
-    public enum CacheReadType
+    public enum CacheAccessType
     {
         Hit,
         Miss,

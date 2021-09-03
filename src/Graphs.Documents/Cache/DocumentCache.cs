@@ -14,82 +14,66 @@ namespace Graphs.Documents
         private IMemoryCache cache;
         private bool disposedValue;
 
-        public DocumentCache(
-            MemoryCacheEntryOptions cacheEntryOptions,
-            IDocumentCollection<T> documents)
+        public DocumentCache(MemoryCacheEntryOptions cacheEntryOptions)
         {
-            if (documents is null)
-            {
-                throw new ArgumentNullException(nameof(documents));
-            }
-
             this.cache = new MemoryCache(new MemoryCacheOptions());
             this.cacheEntryOptions = cacheEntryOptions ?? throw new ArgumentNullException(nameof(cacheEntryOptions));
             this.cacheEntryOptions.RegisterPostEvictionCallback(this.OnPostEviction);
-
-            documents.DocumentRemoved += this.Documents_DocumentRemoved;
-            documents.DocumentUpdated += this.Documents_DocumentUpdated;
-            documents.Cleared += this.Documents_Cleared;
         }
 
-        private void Documents_Cleared(object sender, EventArgs e)
+        public event EventHandler<CacheAccessedEventArgs> CacheAccessed;
+        public event EventHandler<CacheItemEvictedEventArgs<T>> CacheItemEvicted;
+
+        public void Clear()
         {
             var c = this.cache;
             this.cache = new MemoryCache(new MemoryCacheOptions());
             c.Dispose();
         }
 
-        private void Documents_DocumentUpdated(object sender, DocumentUpdatedEventArgs<T> e)
+        public void Evict(string key)
         {
-            this.Evict(e.Document);
+            this.cache.Remove(key);
         }
-
-        private void Documents_DocumentRemoved(object sender, DocumentRemovedEventArgs<T> e)
-        {
-            this.Evict(e.Document);
-        }
-
-        public event EventHandler<CacheReadEventArgs> CacheAccessed;
-        public event EventHandler<CacheItemEvictedEventArgs<T>> CacheItemEvicted;
 
         public void Evict(Document<T> document)
         {
-            this.cache.Remove(document.Key);
+            this.Evict(document.Key);
         }
 
-        public Document<T> Read(string key, Func<string, Document<T>> read)
+        public Document<T> Read(string key, Func<string, Document<T>> itemFactory)
         {
             if (String.IsNullOrWhiteSpace(key))
             {
                 throw new ArgumentException($"'{nameof(key)}' cannot be null or whitespace.", nameof(key));
             }
 
-            if (read is null)
+            if (itemFactory is null)
             {
-                throw new ArgumentNullException(nameof(read));
+                throw new ArgumentNullException(nameof(itemFactory));
             }
 
-            var readType = CacheReadType.Hit;
+            var readType = CacheAccessType.Hit;
 
             var document = this.cache.GetOrCreate(key, entry =>
             {
-                readType = CacheReadType.Miss;
+                readType = CacheAccessType.Miss;
                 entry.SetOptions(this.cacheEntryOptions);
-                return read(key);
+                return itemFactory(key);
             });
 
-            this.CacheAccessed?.Invoke(this, new CacheReadEventArgs(key, readType));
+            this.CacheAccessed?.Invoke(this, new CacheAccessedEventArgs(key, readType));
 
             return document;
         }
 
         public IEnumerable<Document<T>> Read(
             IEnumerable<string> keys,
-            Func<string, Document<T>> read)
+            Func<string, Document<T>> itemFactory)
         {
             return keys is null
                 ? throw new ArgumentNullException(nameof(keys))
-                : keys.Select(key => this.Read(key, read));
+                : keys.Select(key => this.Read(key, itemFactory));
         }
 
         private void OnPostEviction(object key, object value, EvictionReason reason, object state)
