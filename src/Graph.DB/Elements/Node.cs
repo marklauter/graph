@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -10,58 +11,69 @@ namespace Graphs.DB.Elements
 {
     [DebuggerDisplay("{Key}")]
     [JsonObject("node")]
-    public sealed class Node<TId>
-        : Element<TId>
-        , IEquatable<Node<TId>>
-        , IEqualityComparer<Node<TId>>
-        where TId : IComparable, IComparable<TId>, IEquatable<TId>
+    public sealed class Node
+        : Element
+        , IEquatable<Node>
+        , IEqualityComparer<Node>
     {
         [JsonProperty]
-        private readonly ConcurrentHashSet<TId> neighbors = new();
+        private readonly ConcurrentHashSet<Guid> neighbors = new();
+
+        private readonly ConcurrentDictionary<string, ConcurrentHashSet<Guid>> index = new();
 
         [JsonProperty]
-        private readonly ConcurrentHashSet<TId> edges = new();
+        private readonly ConcurrentHashSet<Guid> edges = new();
 
         private Node() : base() { }
 
-        private Node([DisallowNull] Node<TId> other)
+        private Node([DisallowNull] Node other)
             : base(other)
         {
-            this.neighbors = new ConcurrentHashSet<TId>(other.neighbors);
+            this.neighbors = new ConcurrentHashSet<Guid>(other.neighbors);
         }
 
         [JsonConstructor]
-        public Node(TId id)
+        public Node(Guid id)
             : base(id)
         {
         }
 
         [Pure]
-        public bool Adjacent(TId targetId)
+        public bool IsAdjacent(Guid targetId)
         {
             return this.neighbors.Contains(targetId);
         }
 
         [Pure]
-        public bool Adjacent(Node<TId> target)
+        public bool IsAdjacent(Node target)
         {
-            return this.Adjacent(target.Id);
+            return this.IsAdjacent(target.Id);
         }
 
         [Pure]
         public override object Clone()
         {
-            return new Node<TId>(this);
+            return new Node(this);
         }
 
-        public bool Couple([DisallowNull] Node<TId> target)
+        public Edge Couple([DisallowNull] Node target, bool isDirected)
         {
-            // todo: trying to work out the edge ID problem - need a way to generate ID values for TId.. hmmm
-            //var edge = new Edge()
-            return this.neighbors.Add(target.Id);
+            var edge = new Edge(this, target);
+            _ = this.edges.Add(edge.Id);
+            _ = this.neighbors.Add(target.Id);
+            this.IndexNode(target);
+
+            if (!isDirected)
+            {
+                _ = target.edges.Add(edge.Id);
+                _ = target.neighbors.Add(target.Id);
+                target.IndexNode(this);
+            }
+
+            return edge;
         }
 
-        public bool TryDecouple([DisallowNull] Node<TId> target)
+        public bool TryDecouple([DisallowNull] Node target)
         {
             return this.neighbors.Remove(target.Id);
         }
@@ -73,14 +85,14 @@ namespace Graphs.DB.Elements
         }
 
         [Pure]
-        public bool Equals(Node<TId> other)
+        public bool Equals(Node other)
         {
             return other != null
                 && other.Id.Equals(this.Id);
         }
 
         [Pure]
-        public bool Equals(Node<TId> x, Node<TId> y)
+        public bool Equals(Node x, Node y)
         {
             return x != null && x.Equals(y) || y == null;
         }
@@ -88,11 +100,11 @@ namespace Graphs.DB.Elements
         [Pure]
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as Node<TId>);
+            return this.Equals(obj as Node);
         }
 
         [Pure]
-        public int GetHashCode([DisallowNull] Node<TId> obj)
+        public int GetHashCode([DisallowNull] Node obj)
         {
             return obj.GetHashCode();
         }
@@ -104,11 +116,20 @@ namespace Graphs.DB.Elements
         }
 
         [Pure]
-        public IEnumerable<TId> Neighbors()
+        public IEnumerable<Guid> Neighbors()
         {
             foreach (var neighbor in this.neighbors)
             {
                 yield return neighbor;
+            }
+        }
+
+        private void IndexNode(Node target)
+        {
+            foreach (var label in target.GetLabels())
+            {
+                var nodes = this.index.GetOrAdd(label, new ConcurrentHashSet<Guid>());
+                nodes.Add(target.Id);
             }
         }
 

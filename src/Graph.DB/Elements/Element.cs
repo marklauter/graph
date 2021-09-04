@@ -10,9 +10,8 @@ using System.Diagnostics.Contracts;
 namespace Graphs.DB.Elements
 {
     [DebuggerDisplay("{Key}")]
-    public abstract class Element<TId>
-        : IElement<TId>
-        where TId : IComparable, IComparable<TId>, IEquatable<TId>
+    public abstract class Element
+        : IElement
     {
         [JsonProperty("attributes")]
         private readonly ConcurrentDictionary<string, string> attributes = new();
@@ -22,12 +21,12 @@ namespace Graphs.DB.Elements
 
         protected Element() { }
 
-        protected Element(TId id)
+        protected Element(Guid id)
         {
             this.Id = id;
         }
 
-        protected Element([DisallowNull] Element<TId> other)
+        protected Element([DisallowNull] Element other)
         {
             this.Id = other.Id;
             this.attributes = new(other.attributes);
@@ -38,7 +37,7 @@ namespace Graphs.DB.Elements
         [Key]
         [Required]
         [JsonProperty("id")]
-        public TId Id { get; }
+        public Guid Id { get; }
 
         /// <inheritdoc/>
         [Pure]
@@ -50,14 +49,14 @@ namespace Graphs.DB.Elements
         }
 
         /// <inheritdoc/>
-        public IElement<TId> Classify(string label)
+        public IElement Classify(string label)
         {
             this.labels.Add(label);
             return this;
         }
 
         /// <inheritdoc/>
-        public IElement<TId> Classify([DisallowNull] IEnumerable<string> labels)
+        public IElement Classify([DisallowNull] IEnumerable<string> labels)
         {
             this.labels.UnionWith(labels);
             return this;
@@ -68,7 +67,7 @@ namespace Graphs.DB.Elements
         public abstract object Clone();
 
         /// <inheritdoc/>
-        public IElement<TId> Declassify(string label)
+        public IElement Declassify(string label)
         {
             this.labels.Remove(label);
             return this;
@@ -83,20 +82,20 @@ namespace Graphs.DB.Elements
 
         /// <inheritdoc/>
         [Pure]
-        public bool IsClass(string label)
+        public bool HasLabel(string label)
         {
             return this.labels.Contains(label);
         }
 
         /// <inheritdoc/>
-        public IElement<TId> Qualify(string name, string value)
+        public IElement Qualify(string name, string value)
         {
             this.attributes[name] = value;
             return this;
         }
 
         /// <inheritdoc/>
-        public IElement<TId> Qualify([DisallowNull] IEnumerable<KeyValuePair<string, string>> attributes)
+        public IElement Qualify([DisallowNull] IEnumerable<KeyValuePair<string, string>> attributes)
         {
             foreach (var kvp in attributes)
             {
@@ -104,6 +103,11 @@ namespace Graphs.DB.Elements
             }
 
             return this;
+        }
+
+        protected IEnumerable<string> GetLabels()
+        {
+            return this.labels;
         }
     }
 }

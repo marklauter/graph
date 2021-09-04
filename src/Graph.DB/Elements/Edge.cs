@@ -10,11 +10,10 @@ namespace Graphs.DB.Elements
 {
     [DebuggerDisplay("{SourceId} : {TargetId}")]
     [JsonObject("edge")]
-    public sealed class Edge<TId>
-        : Element<TId>
-        , IEquatable<Edge<TId>>
-        , IEqualityComparer<Edge<TId>>
-        where TId : IComparable, IComparable<TId>, IEquatable<TId>
+    public sealed class Edge
+        : Element
+        , IEquatable<Edge>
+        , IEqualityComparer<Edge>
     {
         [Required]
         [JsonProperty("directed")]
@@ -22,15 +21,15 @@ namespace Graphs.DB.Elements
 
         [Required]
         [JsonProperty("source")]
-        public TId SourceId { get; }
+        public Guid SourceId { get; }
 
         [Required]
         [JsonProperty("target")]
-        public TId TargetId { get; }
+        public Guid TargetId { get; }
 
         private Edge() : base() { }
 
-        private Edge([DisallowNull] Edge<TId> other)
+        private Edge([DisallowNull] Edge other)
             : base(other)
         {
             this.SourceId = other.SourceId;
@@ -38,19 +37,19 @@ namespace Graphs.DB.Elements
             this.IsDirected = other.IsDirected;
         }
 
-        public Edge(TId id, [DisallowNull] Node<TId> source, [DisallowNull] Node<TId> target)
-            : this(id, source.Id, target.Id, false)
+        public Edge([DisallowNull] Node source, [DisallowNull] Node target)
+            : this(source.Id, target.Id, false)
         {
         }
 
-        public Edge(TId id, [DisallowNull] Node<TId> source, [DisallowNull] Node<TId> target, bool isDirected)
-            : this(id, source.Id, target.Id, isDirected)
+        public Edge([DisallowNull] Node source, [DisallowNull] Node target, bool isDirected)
+            : this(source.Id, target.Id, isDirected)
         {
         }
 
         [JsonConstructor]
-        public Edge(TId id, TId sourceId, TId targetId, bool isDirected)
-            : base(id)
+        public Edge(Guid sourceId, Guid targetId, bool isDirected)
+            : base()
         {
             this.SourceId = sourceId;
             this.TargetId = targetId;
@@ -60,11 +59,11 @@ namespace Graphs.DB.Elements
         [Pure]
         public override object Clone()
         {
-            return new Edge<TId>(this);
+            return new Edge(this);
         }
 
         [Pure]
-        public bool Equals(Edge<TId> other)
+        public bool Equals(Edge other)
         {
             return other != null
                 && this.SourceId.Equals(other.SourceId)
@@ -73,7 +72,7 @@ namespace Graphs.DB.Elements
         }
 
         [Pure]
-        public bool Equals(Edge<TId> x, Edge<TId> y)
+        public bool Equals(Edge x, Edge y)
         {
             return x != null && x.Equals(y) || y == null;
         }
@@ -81,11 +80,11 @@ namespace Graphs.DB.Elements
         [Pure]
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as Edge<TId>);
+            return this.Equals(obj as Edge);
         }
 
         [Pure]
-        public int GetHashCode([DisallowNull] Edge<TId> obj)
+        public int GetHashCode([DisallowNull] Edge obj)
         {
             return obj.GetHashCode();
         }
