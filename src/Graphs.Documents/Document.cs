@@ -58,9 +58,9 @@ namespace Graphs.Documents
             return String.Join('.', keys);
         }
 
-        public static explicit operator T(Document<T> entity)
+        public static explicit operator T(Document<T> document)
         {
-            return entity.Member;
+            return document.Member;
         }
 
         public static explicit operator Document<T>(T member)
