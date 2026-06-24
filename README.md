@@ -6,6 +6,10 @@ every problem that matters can be solved with graphs. for instance, if you know 
 
 i'm interested in AI/ML, NLP, semantic networks, data structures, and exploring how to build indexeed files. this project lets me mash all that together. just screwing around.
 
+## wiki
+
+the [project wiki](https://github.com/marklauter/graph/wiki) maps the branches — what idea each one explores, how far it got, and whether it still builds. start with [storage design](https://github.com/marklauter/graph/wiki/Storage-Design) for the document-store vs. binary-index-store split.
+
 ## semantic networks
 ![semantic network image](https://www.assignmentpoint.com/wp-content/uploads/2016/04/Semantic-Network.jpg)
 
